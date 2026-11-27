@@ -12,7 +12,7 @@ cid='cover_01b' if 'court' in sys.argv else 'cover_01'
 cover=os.path.join(R,'assets/img/'+cid+'.webp')
 if os.path.exists(cover):
     t=t.replace('<!--COVERIMG-->','<img class="cv" src="assets/img/'+cid+'.webp" width="1600" height="900" alt="케이크 상자 네 개 앞에서 연구실 식구들이 숫자 표를 들여다보는 픽셀아트 표지" fetchpriority="high" decoding="async"><style>.cover .alt{display:none}.cover{max-height:72vh}</style>')
-    t=t.replace('<!--OGIMAGE-->','<meta property="og:image" content="assets/img/og_'+cid[6:]+'.jpg">')
+    t=t.replace('<!--OGIMAGE-->','<meta property="og:image" content="https://adminmrobo.github.io/likelihood_vs_probability/assets/img/og_'+cid[6:]+'.jpg">')
 t=t.replace('/*SPRITES*/',sp).replace('/*MOTION*/',mo)
 open(os.path.join(R,outn),'w',encoding='utf-8').write(t)
 print(outn,len(t.encode())//1024,'KB')

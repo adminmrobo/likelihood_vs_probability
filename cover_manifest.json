@@ -59,7 +59,7 @@
       "robot": "jupanbot-v2",
       "prompt_en": "see docs/GENSPARK_01_likelihood_vs_probability.md §1",
       "source_of": null,
-      "status": "pending"
+      "status": "ok"
     },
     {
       "id": "og_01",
@@ -80,7 +80,7 @@
       "robot": "jupanbot-v2",
       "prompt_en": null,
       "source_of": "cover_01",
-      "status": "pending"
+      "status": "ok"
     },
     {
       "id": "cover_01b",
@@ -101,7 +101,98 @@
       "robot": "jupanbot-v2",
       "prompt_en": "see docs/GENSPARK_01_likelihood_vs_probability.md §6",
       "source_of": null,
-      "status": "pending"
+      "status": "ok"
+    },
+    {
+      "id": "og_01b",
+      "role": "og",
+      "path": "assets/img/og_01b.jpg",
+      "size": [
+        1200,
+        630
+      ],
+      "characters": [
+        "doc",
+        "asst",
+        "fly",
+        "jupanbot",
+        "sia",
+        "moa"
+      ],
+      "robot": "jupanbot-v2",
+      "prompt_en": null,
+      "source_of": "cover_01b",
+      "status": "ok"
+    },
+    {
+      "id": "sc_01_duel",
+      "role": "scene",
+      "path": "assets/img/sc_01_duel.webp",
+      "size": [
+        1200,
+        800
+      ],
+      "characters": [],
+      "robot": "jupanbot-v2",
+      "prompt_en": "docs/GENSPARK_01_likelihood_vs_probability.md",
+      "source_of": null,
+      "status": "ok"
+    },
+    {
+      "id": "sc_01b_trial",
+      "role": "scene",
+      "path": "assets/img/sc_01b_trial.webp",
+      "size": [
+        1200,
+        800
+      ],
+      "characters": [],
+      "robot": "jupanbot-v2",
+      "prompt_en": "docs/GENSPARK_01_likelihood_vs_probability.md",
+      "source_of": null,
+      "status": "ok"
+    },
+    {
+      "id": "sc_01b_act2",
+      "role": "scene",
+      "path": "assets/img/sc_01b_act2.webp",
+      "size": [
+        1200,
+        800
+      ],
+      "characters": [],
+      "robot": "jupanbot-v2",
+      "prompt_en": "docs/GENSPARK_01_likelihood_vs_probability.md",
+      "source_of": null,
+      "status": "ok"
+    },
+    {
+      "id": "sc_01_act1",
+      "role": "scene",
+      "path": "assets/img/sc_01_act1.webp",
+      "size": [
+        1200,
+        800
+      ],
+      "characters": [],
+      "robot": "jupanbot-v2",
+      "prompt_en": "docs/GENSPARK_01_likelihood_vs_probability.md",
+      "source_of": null,
+      "status": "redo"
+    },
+    {
+      "id": "sc_01_act2",
+      "role": "scene",
+      "path": "assets/img/sc_01_act2.webp",
+      "size": [
+        1200,
+        800
+      ],
+      "characters": [],
+      "robot": "jupanbot-v2",
+      "prompt_en": "docs/GENSPARK_01_likelihood_vs_probability.md",
+      "source_of": null,
+      "status": "redo"
     }
   ],
   "updated": "2026-11-27"

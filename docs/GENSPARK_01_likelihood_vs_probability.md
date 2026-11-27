@@ -151,3 +151,27 @@ No text, no letters, no numbers, no logos, no speech bubbles, no weapons, no rea
 ```
 3:2 scene, 1536x1024, same 16-bit high-resolution pixel-art style and characters as the attached cover. Roles reversed: the fruit fly researcher now sits small at a defendant's stool in the middle, clutching a tall pile of work papers. Three cute solid dark navy-black silhouettes with a thin purple rim light and round white dot eyes stand as witnesses: one with a pink ribbon holding an old record book, one with teal glasses reflection holding a magnifier, one with a small yellow bell. The chibi judge brings down the gavel with harmless purple sparks. The ash-beige maid intern quietly brings tea and a slice of cake to the fly. Funny, not scary. No text, no letters, no numbers.
 ```
+
+---
+
+# 받은 그림 점검 (2026-11-27)
+
+| 파일 | 판정 | 반영 위치 |
+|---|---|---|
+| `cover_01` | 통과 | 기본판 표지·공유 미리보기 |
+| `cover_01b` | 통과 | 법정판 표지·공유 미리보기 |
+| `sc_01_duel` | 통과 | 기본판 대결 |
+| `sc_01b_trial` | 통과 | 법정판 ③ 증언 흔들기 |
+| `sc_01b_act2` | 통과 | 법정판 ⑤ 2막 |
+| `sc_01_act1` | **다시** — 케이크를 든 사람이 초파리가 아니라 박사 | 보류 |
+| `sc_01_act2` | **다시** — 야근 데미지를 받는 사람이 초파리가 아니라 하루, 초파리가 없음 | 보류 |
+
+## 고쳐 받기 — `sc_01_act1` (받은 그림을 첨부하고 같은 대화에서)
+```
+Same scene, same 16-bit pixel-art style, same composition and props. Change only: the chibi scientist must NOT be on the cake boxes. Put the anthropomorphic fruit fly researcher (black body, big red compound eyes, blue helmet with gold stripe and pink and blue cables, white lab coat, transparent wings) standing on top of the stacked cake boxes, holding the strawberry cake high with a teasing grin. The chibi scientist stands calmly at the side watching. Keep the seven cake slices and three empty plates on the table. Still no text.
+```
+
+## 고쳐 받기 — `sc_01_act2`
+```
+Same scene, same 16-bit pixel-art style and composition. Change only: the character knocked back into the office chair in front of the paper pile must be the anthropomorphic fruit fly researcher (black body, big red compound eyes, blue helmet with gold stripe and pink and blue cables, white lab coat over black vest, transparent wings), with comic waterfall tears. Remove the pink-haired girl from the chair; she stands calmly beside the robot holding a clipboard. Keep the three dark silhouettes, the purple harmless wave from the scientist, the tea and cake from the ash-beige maid. Still no text.
+```
