@@ -721,7 +721,8 @@ sum(L)   # 0.4504 → 세로줄 합, 1이 아님</pre>
       </div>
       <div class="group"><label class="glabel" for="k5">끝낸 일감 (10개 중)</label><input type="range" id="k5" min="0" max="10" step="1" value="3"><span class="val" id="k5v">3개</span></div>
     </div>
-    <div class="cwrap"><canvas id="c5" height="320" aria-label="사전분포, 가능도, 곱, 사후분포 막대"></canvas></div>
+    <div class="cwrap"><canvas id="c5" height="210" aria-label="평소(사전)와 판결(사후)의 느긋 쪽·성실 쪽 비율 막대"></canvas></div>
+    <div class="ctrl"><button class="bt" id="det5" aria-pressed="false">계산 과정 펼치기 (사전 × 가능도 → 사후)</button></div>
     <div class="kpis k3">
       <div class="kpi r"><b id="k5a">93.3%</b><span>느긋 쪽(θ ≤ 0.5) 사후확률</span></div>
       <div class="kpi a"><b id="k5b">야근</b><span>판결 (기준 90%)</span></div>
@@ -1028,7 +1029,18 @@ var TH=[0.3,0.5,0.7,0.9];
     if(touched){if(pk==='ledger'&&k===3){seen.m1=1}if(pk==='fly'&&k===3&&guilty)seen.m2=1;if(pk==='ledger'&&!guilty&&k===4)seen.m3=1}
     ['m1','m2','m3'].forEach(function(m){$('#'+m).classList.toggle('ok',!!seen[m])});
     $('#after5').classList.toggle('on',touched&&guilty);draw()}
-  function draw(){var o=fit(c),x=o.x,W=o.W,H=o.H;grid(x,W,H);var r=calc();var titles=['사전 (X1)','가능도 (X2)','곱','사후 (X3)'],data=[r.pr,r.li,r.pd,r.po];var gw=(W-20)/4,top=46,bot=H-40;
+  var det=false;
+  function draw(){c.setAttribute('height',det?320:220);c.__w=0;if(det)return drawDet();var o=fit(c),x=o.x,W=o.W,H=o.H;grid(x,W,H);var r=calc();
+    var l=Math.max(84,W*.14),rr=W-14,bw=rr-l,bh=34;
+    function row(y,lazy,title){txt(x,title,l-10,y+bh/2,{a:'right',s:13,b:true});var lw=bw*lazy;x.fillStyle='#c9302c';x.fillRect(l,y,lw,bh);x.fillStyle='#13733a';x.fillRect(l+lw,y,bw-lw,bh);
+      function lab(nm,v,sp){var pc=(v*100).toFixed(1)+'%';return sp>110?nm+' '+pc:sp>46?pc:''}var t1=lab('느긋',lazy,lw),t2=lab('성실',1-lazy,bw-lw);if(t1)txt(x,t1,l+8,y+bh/2,{a:'left',s:13,b:true,c:'#fff'});if(t2)txt(x,t2,rr-8,y+bh/2,{a:'right',s:13,b:true,c:'#fff'})}
+    var pl=r.pr[0]+r.pr[1];row(42,pl,'평소 (사전)');
+    txt(x,W<520?'× 이번 주 '+k+'개 (가능도) → 합 1로':'× 이번 주 '+k+'개 기록 (가능도) → 합 1로 맞추기',l+bw/2,42+bh+22,{s:13,c:'#9b3fb5',b:true});
+    var y2=42+bh+44;row(y2,r.lazy,'판결 (사후)');
+    var tx=l+bw*.9;x.setLineDash([5,4]);x.strokeStyle='#16212b';x.lineWidth=2;x.beginPath();x.moveTo(tx,y2-8);x.lineTo(tx,y2+bh+8);x.stroke();x.setLineDash([]);
+    txt(x,'야근 기준 90%',tx,y2+bh+20,{s:12,c:'#16212b'});
+    stamp(x,W,'예시값')}
+  function drawDet(){var o=fit(c),x=o.x,W=o.W,H=o.H;grid(x,W,H);var r=calc();var titles=['사전 (X1)','가능도 (X2)','곱','사후 (X3)'],data=[r.pr,r.li,r.pd,r.po];var gw=(W-20)/4,top=46,bot=H-40;
     data.forEach(function(arr,g){var gx=10+gw*g,mx=Math.max.apply(null,arr)*1.15||1;if(g===3||g===0)mx=1;txt(x,titles[g],gx+gw/2,22,{s:13,b:true,c:g===3?'#13733a':'#16212b'});
       x.strokeStyle='#d5dbe2';x.beginPath();x.moveTo(gx+6,bot+.5);x.lineTo(gx+gw-6,bot+.5);x.stroke();var bw=(gw-12)/4;
       arr.forEach(function(v,i){var hh=(bot-top)*v/mx,bx=gx+6+bw*i;x.fillStyle=g===3?(i<2?'#c9302c':'#13733a'):(i<2?'rgba(201,48,44,.55)':'rgba(19,115,58,.55)');x.fillRect(bx+bw*.15,bot-hh,bw*.7,hh);txt(x,String(TH[i]),bx+bw/2,bot+12,{s:11,c:'#5b6874'});
@@ -1049,6 +1061,7 @@ var TH=[0.3,0.5,0.7,0.9];
   draw2.anim=true;reg(c,draw);reg(c2,draw2);
   $$('[data-prior]').forEach(function(b){b.onclick=function(){pk=b.dataset.prior;touched=true;$$('[data-prior]').forEach(function(z){z.setAttribute('aria-pressed',z===b?'true':'false')});upd()}});
   $('#k5').oninput=function(){k=+this.value;touched=true;upd()};
+  $('#det5').onclick=function(){det=!det;this.setAttribute('aria-pressed',det?'true':'false');this.textContent=det?'계산 과정 접기':'계산 과정 펼치기 (사전 × 가능도 → 사후)';draw()};
   $('#callX').onclick=function(){var on=$('#xrow').classList.toggle('on');this.setAttribute('aria-expanded',on?'true':'false');this.textContent=on?'지원군 숨기기':'지원군 부르기';if(on){touched=true;upd()}};
   upd();
 })();
