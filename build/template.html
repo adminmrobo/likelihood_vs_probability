@@ -211,6 +211,9 @@ details.code pre{background:var(--panel2);padding:10px;border-radius:8px;overflo
 @media (max-width:640px){.glance{grid-template-columns:1fr}.ga{font-size:22px;height:24px}}
 .tree svg{width:100%;height:auto;display:block}
 .tree{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:8px}
+.guide{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--amber-soft);border:2px solid #e8c98e;border-radius:12px;padding:12px 14px;margin:8px 0}
+.guide .gs{flex:1 1 320px}.guide .gs b{color:var(--amber)}.guide .gs p{margin:.3em 0 0}
+.guide .dots{display:flex;gap:5px;margin-top:6px}.guide .dots i{width:9px;height:9px;border-radius:50%;background:#e8c98e}.guide .dots i.on{background:var(--amber)}
 .jt{border-bottom:2px dotted var(--amber);cursor:help}
 #tip{position:absolute;z-index:60;max-width:300px;background:#fff;border:1px solid var(--rule);border-left:4px solid var(--amber);border-radius:8px;padding:10px 12px;box-shadow:0 4px 16px rgba(22,33,43,.12);font-size:14px;line-height:1.6;display:none}
 #tip b{display:block}
@@ -397,12 +400,16 @@ details.abbr{margin-top:10px;font-size:15px}
   <div class="panel">
     <h4>실험 ① 상자를 정하고 10번 조르기</h4>
     <div class="ctrl">
-      <div class="group" role="group" aria-label="상자 고르기"><span class="glabel">상자</span>
+      <div class="group" role="group" aria-label="상자 고르기"><span class="glabel">상자 고르기 (θ = 한 번에 케이크가 나올 확률)</span>
         <button class="bt" data-t1="0.3">0.3</button><button class="bt" data-t1="0.5">0.5</button><button class="bt" data-t1="0.7" aria-pressed="true">0.7</button><button class="bt" data-t1="0.9">0.9</button></div>
-      <div class="group"><label class="glabel" for="t1">θ 직접</label><input type="range" id="t1" min="0.05" max="0.95" step="0.01" value="0.7"><span class="val" id="t1v">0.70</span></div>
+      <div class="group"><label class="glabel" for="t1">θ 직접 정하기</label><input type="range" id="t1" min="0.05" max="0.95" step="0.01" value="0.7"><span class="val" id="t1v">0.70</span></div>
       <div class="group"><button class="bt primary" id="press10">10번 조르기</button><button class="bt" id="press1000">1,000판 몰아 하기</button><button class="bt" id="press0">기록 지우기</button></div>
     </div>
-    <div class="cwrap"><canvas id="c1" height="300" aria-label="받은 케이크 개수별 확률 막대와 시뮬레이션 빈도"></canvas></div>
+    <div class="guide" id="g1">
+      <div class="gs"><b id="g1n">그래프 읽는 법 1 / 5</b><p id="g1t" aria-live="polite"></p><div class="dots" id="g1d"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="group"><button class="bt" id="g1p">◀ 이전</button><button class="bt primary" id="g1x">다음 ▶</button></div>
+    </div>
+    <div class="cwrap"><canvas id="c1" height="330" aria-label="받은 케이크 개수별 확률 막대와 시뮬레이션 빈도"></canvas></div>
     <div class="kpis k4">
       <div class="kpi g"><b id="k1a">0.267</b><span>정확히 7개 받을 확률</span></div>
       <div class="kpi g"><b id="k1b">1.000</b><span>가로줄 합 (0~10개)</span></div>
@@ -1009,22 +1016,44 @@ var TH=[0.3,0.5,0.7,0.9];
 
 /* ── ① 확률 막대 + 시뮬레이션 ── */
 (function(){var c=$('#c1'),th=0.7,cnt=new Array(11).fill(0),rounds=0,R=rng(20261127),anim=null,sumK=0;
-  function setT(t){th=t;$('#t1').value=t;$('#t1v').textContent=t.toFixed(2);$$('[data-t1]').forEach(function(b){b.setAttribute('aria-pressed',Math.abs(+b.dataset.t1-t)<1e-9?'true':'false')});cnt.fill(0);rounds=0;sumK=0;anim=null;upd();draw(0)}
+  function setT(t){th=t;$('#t1').value=t;$('#t1v').textContent=t.toFixed(2);$$('[data-t1]').forEach(function(b){b.setAttribute('aria-pressed',Math.abs(+b.dataset.t1-t)<1e-9?'true':'false')});cnt.fill(0);rounds=0;sumK=0;anim=null;upd();if($('#g1t'))$('#g1t').textContent=GT[G1-1]();draw(0)}
   function oneRound(){var k=0,seq=[];for(var i=0;i<10;i++){var g=R()<th;seq.push(g);if(g)k++}return {k:k,seq:seq}}
   function upd(){$('#k1a').textContent=f3(L(7,th));var s=0;for(var k=0;k<=10;k++)s+=L(k,th);$('#k1b').textContent=f3(s);$('#k1c').textContent=rounds.toLocaleString('ko-KR');$('#k1d').textContent=rounds?(sumK/rounds).toFixed(2)+' (이론 '+(10*th).toFixed(1)+')':'–';
     var n=$('#n1');n.textContent=rounds<30?'θ = '+th.toFixed(2)+' 상자: 테두리 막대가 공식값이에요. “10번 조르기”나 “1,000판 몰아 하기”로 직접 돌려 보세요.':rounds+'판을 돌렸더니 초록 막대(빈도)가 테두리 막대(공식값)에 거의 붙었어요. 어느 θ든 막대 11개의 합은 1입니다.'}
-  function draw(dt){var o=fit(c),x=o.x,W=o.W,H=o.H;grid(x,W,H);var top=70,bot=H-30,l=40,r=W-12,bw=(r-l)/11;
+  function draw(dt){var o=fit(c),x=o.x,W=o.W,H=o.H;grid(x,W,H);var top=86,bot=H-40,l=46,r=W-12,bw=(r-l)/11;
     var mx=0;for(var k=0;k<=10;k++)mx=Math.max(mx,L(k,th),rounds?cnt[k]/rounds:0);mx=Math.max(mx,.1)*1.1;
-    x.strokeStyle='#d5dbe2';x.beginPath();x.moveTo(l,bot+.5);x.lineTo(r,bot+.5);x.stroke();
+    x.strokeStyle='#d5dbe2';x.beginPath();x.moveTo(l,bot+.5);x.lineTo(r,bot+.5);x.moveTo(l+.5,top-6);x.lineTo(l+.5,bot);x.stroke();
+    var stp=mx>0.25?0.1:0.05;for(var yv=0;yv<=mx+1e-9;yv+=stp){var yy=bot-(bot-top)*yv/mx;x.strokeStyle='rgba(22,33,43,.08)';x.beginPath();x.moveTo(l,yy+.5);x.lineTo(r,yy+.5);x.stroke();txt(x,yv.toFixed(2),l-5,yy,{a:'right',s:10,c:G1===2?'#a35c00':'#5b6874',b:G1===2})}
+    txt(x,'확률 ↑',l-4,top-16,{a:'left',s:11,c:G1===2?'#a35c00':'#5b6874',b:G1===2});
     for(var k2=0;k2<=10;k2++){var cx=l+bw*k2,p=L(k2,th),hh=(bot-top)*p/mx;
       if(rounds){var f=cnt[k2]/rounds,fh=(bot-top)*f/mx;x.fillStyle='#13733a';x.fillRect(cx+bw*.25,bot-fh,bw*.5,fh)}
       x.strokeStyle='#4a6a96';x.lineWidth=2;x.strokeRect(cx+bw*.1+.5,bot-hh+.5,bw*.8-1,hh);
-      txt(x,String(k2),cx+bw/2,bot+12,{s:12,c:'#5b6874'});if(p>=.005)txt(x,p.toFixed(3),cx+bw/2,bot-hh-9,{s:11,c:'#4a6a96'})}
-    txt(x,'받은 케이크 개수 →',r,H-8,{a:'right',s:11,c:'#5b6874'});
+      txt(x,String(k2),cx+bw/2,bot+12,{s:12,c:G1===1?'#a35c00':'#5b6874',b:G1===1});if(p>=.005)txt(x,p.toFixed(3),cx+bw/2,bot-hh-9,{s:11,c:'#4a6a96'})}
+    txt(x,'받은 케이크 개수 →',r,H-8,{a:'right',s:11,c:G1===1?'#a35c00':'#5b6874',b:G1===1});
+    if(G1)guide(x,l,r,top,bot,bw,mx,W,H);
     /* 마지막 10번 */
-    txt(x,'마지막 10번:',l,22,{a:'left',s:12,c:'#5b6874'});
-    if(anim){anim.t+=dt||0;var shown=RM?10:Math.min(10,Math.floor(anim.t/0.12)+1);for(var i=0;i<shown;i++)cake(x,l+86+i*26,14,anim.seq[i]);if(shown>=10&&!anim.done){anim.done=true;cnt[anim.k]++;rounds++;sumK+=anim.k;upd()}}
+    txt(x,'마지막 10번:',l,16,{a:'left',s:12,c:'#5b6874'});
+    if(anim){anim.t+=dt||0;var shown=RM?10:Math.min(10,Math.floor(anim.t/0.12)+1);for(var i=0;i<shown;i++)cake(x,l+86+i*26,8,anim.seq[i]);if(shown>=10&&!anim.done){anim.done=true;cnt[anim.k]++;rounds++;sumK+=anim.k;upd()}}
     stamp(x,W,'설명용 모형 · 실제 데이터 아님')}
+  function Y(v,top,bot,mx){return bot-(bot-top)*v/mx}
+  function hl(x,X,Yy,w,h){x.save();x.strokeStyle='#e0a400';x.lineWidth=3;x.setLineDash([6,4]);x.strokeRect(X,Yy,w,h);x.restore()}
+  function guide(x,l,r,top,bot,bw,mx,W,H){var pk=0,pv=0;for(var k=0;k<=10;k++)if(L(k,th)>pv){pv=L(k,th);pk=k}
+    if(G1===1){hl(x,l-2,bot+2,r-l+4,20)}
+    if(G1===2){var v=L(7,th),cx=l+bw*7+bw/2,yy=Y(v,top,bot,mx);hl(x,l+bw*7+2,yy-4,bw-4,bot-yy+4);x.save();x.setLineDash([4,3]);x.strokeStyle='#a35c00';x.beginPath();x.moveTo(l,yy+.5);x.lineTo(cx,yy+.5);x.stroke();x.restore();
+      txt(x,'7개가 나올 확률 = '+v.toFixed(3),Math.min(r-80,Math.max(l+80,cx)),top-30,{s:13,b:true,c:'#a35c00'})}
+    if(G1===3){var cx2=l+bw*pk+bw/2,yy2=Y(pv,top,bot,mx);txt(x,'▼ 꼭대기: '+pk+'개 (10 × θ = '+(10*th).toFixed(1)+' 근처)',Math.min(r-110,Math.max(l+110,cx2)),yy2-28,{s:13,b:true,c:'#a35c00'});
+      var ya=bot-(bot-top)*0.6;txt(x,'← 낮아짐',Math.max(l+30,cx2-bw*2.6),ya,{s:12,c:'#a35c00',b:true});txt(x,'낮아짐 →',Math.min(r-30,cx2+bw*2.6),ya,{s:12,c:'#a35c00',b:true})}
+    if(G1===4&&rounds){txt(x,'초록 = 실제로 '+rounds.toLocaleString('ko-KR')+'판 해 본 비율, 테두리 = 공식',(l+r)/2,top-30,{s:13,b:true,c:'#13733a'})}
+    if(G1===5){x.save();x.strokeStyle='#a35c00';x.lineWidth=2;x.beginPath();x.moveTo(l+4,top-14);x.lineTo(l+4,top-22);x.lineTo(r-4,top-22);x.lineTo(r-4,top-14);x.stroke();x.restore();
+      var s5=0;for(var q=0;q<=10;q++)s5+=L(q,th);txt(x,'막대 11개를 모두 더하면 '+s5.toFixed(3),(l+r)/2,top-34,{s:13,b:true,c:'#a35c00'})}}
+  var G1=1,GT=[
+    function(){return '가로축은 10번 눌렀을 때 받을 수 있는 케이크 개수예요. 0개부터 10개까지, 결과는 모두 11가지예요.'},
+    function(){return '막대 하나의 높이는 “그 개수가 나올 확률”이에요. 왼쪽 세로축 눈금으로 읽어요. 7개 막대의 높이 '+L(7,th).toFixed(3)+'은 “10번 중 정확히 7번 받을 확률”이에요. 준비 ②에서처럼 (순서의 수) × (순서 하나의 확률)로 계산했어요: 120 × '+Math.pow(th,7).toFixed(4)+' × '+Math.pow(1-th,3).toFixed(4)+'.'},
+    function(){return '막대가 산 모양인 이유: 7개 근처는 나올 수 있는 순서가 아주 많아요(7개는 120가지). 0개나 10개는 순서가 1가지뿐이라 낮아요. 그래서 꼭대기는 10 × θ 근처에 생겨요. 지금은 '+(10*th).toFixed(1)+'개 근처.'},
+    function(){return '초록 막대는 계산이 아니라 실제로 해 본 결과예요. “10번 누르기”를 여러 판 하고, 각 개수가 나온 판의 비율을 그렸어요. 판 수가 많을수록 초록 막대가 테두리 막대(공식값)에 붙어요. 공식이 실제 결과를 잘 맞힌다는 뜻이에요.'},
+    function(){return '막대 11개를 모두 더하면 1이에요. 10번 누르면 0~10개 중 하나는 반드시 나오니까요. 위의 상자 버튼으로 0.3 상자로 바꿔 보세요. 산은 3개 근처로 옮겨 가지만, 합은 여전히 1이에요.'}];
+  function gset(n){G1=Math.max(1,Math.min(5,n));$('#g1n').textContent='그래프 읽는 법 '+G1+' / 5';$('#g1t').textContent=GT[G1-1]();$$('#g1d i').forEach(function(d,i){d.classList.toggle('on',i<G1)});
+    $('#g1p').disabled=G1===1;$('#g1x').textContent=G1===5?'처음으로 ↺':'다음 ▶';if(G1===4&&!rounds){for(var i=0;i<1000;i++){var o=oneRound();cnt[o.k]++;sumK+=o.k}rounds+=1000;upd()}draw(0)}
   function cake(x,X,Y,g){var p=3;if(g){x.fillStyle='#1d1a22';x.fillRect(X,Y+2*p,6*p,4*p);x.fillStyle='#ffe1ec';x.fillRect(X+p,Y+3*p,4*p,2*p);x.fillStyle='#c42a6e';x.fillRect(X+p,Y+3*p,4*p,p);x.fillStyle='#ffd54a';x.fillRect(X+2.5*p,Y+p,p,p)}else{x.fillStyle='#c9d3e3';x.fillRect(X,Y+5*p,6*p,p);x.fillStyle='#eef2f6';x.fillRect(X+p,Y+4*p,4*p,p)}}
   draw.anim=true;reg(c,draw);
   $$('[data-t1]').forEach(function(b){b.onclick=function(){setT(+b.dataset.t1)}});
@@ -1032,7 +1061,8 @@ var TH=[0.3,0.5,0.7,0.9];
   $('#press10').onclick=function(){var o=oneRound();anim={seq:o.seq,k:o.k,t:0,done:false}};
   $('#press1000').onclick=function(){for(var i=0;i<1000;i++){var o=oneRound();cnt[o.k]++;sumK+=o.k}rounds+=1000;upd();draw(0)};
   $('#press0').onclick=function(){setT(th)};
-  upd();
+  $('#g1p').onclick=function(){gset(G1-1)};$('#g1x').onclick=function(){gset(G1===5?1:G1+1)};
+  upd();gset(1);
 })();
 
 /* ── ② 가능도 막대 ── */
