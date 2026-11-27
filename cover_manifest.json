@@ -1,0 +1,79 @@
+{
+  "series_ko": "고급통계 연구실 · 확률 vs 가능도",
+  "title_ko": "초파리의 케이크 상자 — 확률과 가능도는 왜 다를까",
+  "site_title": "확률 vs 가능도(우도) — 초파리의 케이크 상자",
+  "site_url": "https://adminmrobo.github.io/likelihood_vs_probability/",
+  "ontology": {
+    "pages": [
+      {
+        "path": "index.html",
+        "kg": true,
+        "export": true
+      }
+    ],
+    "files": [
+      "kg/kg.json",
+      "kg/refs.json",
+      "kg/meta.json"
+    ]
+  },
+  "i18n": {
+    "langs": [
+      "ko"
+    ],
+    "pages": {
+      "ko": 1
+    },
+    "readme_langs": [
+      "ko"
+    ]
+  },
+  "languages": [
+    "ko"
+  ],
+  "items": [
+    {
+      "id": "cover_01",
+      "role": "cover",
+      "path": "assets/img/cover_01.webp",
+      "size": [
+        1600,
+        900
+      ],
+      "characters": [
+        "doc",
+        "asst",
+        "fly",
+        "jupanbot",
+        "sia",
+        "moa"
+      ],
+      "robot": "jupanbot-v2",
+      "prompt_en": "see docs/GENSPARK_01_likelihood_vs_probability.md §1",
+      "source_of": null,
+      "status": "pending"
+    },
+    {
+      "id": "og_01",
+      "role": "og",
+      "path": "assets/img/og_01.jpg",
+      "size": [
+        1200,
+        630
+      ],
+      "characters": [
+        "doc",
+        "asst",
+        "fly",
+        "jupanbot",
+        "sia",
+        "moa"
+      ],
+      "robot": "jupanbot-v2",
+      "prompt_en": null,
+      "source_of": "cover_01",
+      "status": "pending"
+    }
+  ],
+  "updated": "2026-11-27"
+}

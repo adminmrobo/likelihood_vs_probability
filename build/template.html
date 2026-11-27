@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>확률 vs 가능도(우도) — 초파리의 케이크 상자 | 고급통계 연구실</title>
+<meta name="description" content="같은 숫자 표를 가로로 읽으면 확률, 세로로 읽으면 가능도(우도). 케이크 상자와 야근 판결로 따라가는 통계 입문 연구실 해설.">
+<meta property="og:title" content="확률 vs 가능도(우도) — 초파리의 케이크 상자">
+<meta property="og:description" content="가로줄 합은 1, 세로줄 합은 0.450. 가능도가 확률이 아닌 이유를 직접 눌러 보며 확인합니다.">
+<meta property="og:type" content="article">
+<!--OGIMAGE-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#ffffff; --panel:#f6f8fa; --panel2:#eef2f6; --rule:#d5dbe2;
+  --text:#16212b; --muted:#5b6874;
+  --stain:#9b3fb5; --gfp:#13733a; --eye:#c9302c; --amber:#a35c00; --info:#1e55c8;
+  --stain-soft:#f6ecfa; --gfp-soft:#e7f5ec; --eye-soft:#fcebea; --amber-soft:#fdf3e1; --info-soft:#e6eefb;
+  --c-doc:#7a3fd6; --c-asst:#c42a6e; --c-fly:#c93030; --c-robo:#0b7a86; --c-sia:#5a5a6e; --c-moa:#93651a; --c-x:#2b2d42;
+  --accent:#4a6a96;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;font-size:16px;line-height:1.8;overflow-x:hidden}
+h1,h2,h3,p,li,td,th{word-break:keep-all}
+h1{font-size:clamp(30px,5vw,54px);line-height:1.25;margin:.2em 0 .3em}
+h2{font-size:clamp(24px,3vw,34px);line-height:1.35;margin:0 0 .5em}
+h3{font-size:19px;margin:1.2em 0 .4em}
+a{color:var(--info)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+:focus-visible{outline:3px solid #e0a400;outline-offset:2px}
+/* nav */
+nav.top{position:sticky;top:0;z-index:40;height:54px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:14px;padding:0 16px;overflow-x:auto;white-space:nowrap}
+nav.top .logo{font-weight:700;color:var(--text);text-decoration:none}
+nav.top a{font-size:14px;color:var(--muted);text-decoration:none}
+nav.top a:hover{color:var(--text)}
+#prog{position:fixed;top:0;left:0;height:3px;background:var(--gfp);width:0;z-index:50}
+/* cover */
+.cover{position:relative;margin:0;background:linear-gradient(160deg,#eef2f8,#ffffff);aspect-ratio:16/9;max-height:48vh;overflow:hidden;border-bottom:1px solid var(--rule)}
+.cover img.cv{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.cover-chip{position:absolute;left:16px;bottom:14px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.88);border:1px solid var(--rule);color:var(--text);font-size:13px}
+.cover .alt{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;gap:2%;padding:0 4% 7%}
+.cover .alt svg.props{position:absolute;left:50%;top:10%;transform:translateX(-50%);width:min(62%,640px);height:auto}
+.cover .alt .line{position:relative;display:flex;align-items:flex-end;gap:1.5%;width:100%;justify-content:center}
+.cover .alt .line img{width:clamp(44px,9vw,110px);height:auto}
+.cover .alt .hex{position:absolute;right:0;top:0;width:45%;height:100%;opacity:.25;background-image:radial-gradient(circle at 70% 30%,#c9d3e3 1.5px,transparent 2px);background-size:18px 18px;-webkit-mask-image:radial-gradient(circle at 80% 20%,#000,transparent 70%);mask-image:radial-gradient(circle at 80% 20%,#000,transparent 70%)}
+@media (max-width:600px){.cover{max-height:none}}
+/* hero */
+header.hero{position:relative;padding:40px 0 24px;overflow:hidden}
+header.hero:before{content:"";position:absolute;right:-60px;top:-40px;width:420px;height:420px;background-image:radial-gradient(circle,#dfe6ef 2px,transparent 2.5px);background-size:22px 22px;-webkit-mask-image:radial-gradient(circle,#000 20%,transparent 70%);mask-image:radial-gradient(circle,#000 20%,transparent 70%);opacity:.8;pointer-events:none}
+.kicker{font-size:14px;color:var(--accent);font-weight:700;letter-spacing:.02em}
+.q{font-size:clamp(18px,2.2vw,22px);font-weight:500;color:var(--text);background:var(--amber-soft);border-left:5px solid var(--amber);padding:12px 16px;border-radius:6px;margin:12px 0}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0}
+.kpis.k4{grid-template-columns:repeat(4,1fr)}.kpis.k3{grid-template-columns:repeat(3,1fr)}
+.wm>*,.kpis>*,.pair>*,.steps>*,.more>*,.score>*{min-width:0}
+.kpi{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:10px 12px}
+.kpi b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--muted);line-height:1.4;display:block}
+.kpi.g b{color:var(--gfp)} .kpi.m b{color:var(--stain)} .kpi.r b{color:var(--eye)} .kpi.a b{color:var(--amber)} .kpi.i b{color:var(--info)}
+.note{font-size:13px;color:var(--muted)}
+/* talk */
+.talk{display:flex;flex-direction:column;gap:10px;margin:16px 0}
+.say{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1.5px solid var(--rule);border-radius:12px;padding:10px 12px}
+.say img.who{width:64px;height:64px;flex:0 0 64px;object-fit:contain;border-radius:8px;background:var(--panel)}
+.say .name{display:block;font-size:13px;margin-bottom:2px}
+.say p{margin:0}
+.say[data-who=doc]{border-color:var(--c-doc)} .say[data-who=doc] .name{color:var(--c-doc)}
+.say[data-who=asst]{border-color:var(--c-asst)} .say[data-who=asst] .name{color:var(--c-asst)}
+.say[data-who=fly]{border-color:var(--c-fly)} .say[data-who=fly] .name{color:var(--c-fly)}
+.say[data-who=robo]{border-color:var(--c-robo)} .say[data-who=robo] .name{color:var(--c-robo)}
+.say[data-who=sia]{border-color:var(--c-sia)} .say[data-who=sia] .name{color:var(--c-sia)}
+.say[data-who=moa]{border-color:var(--c-moa)} .say[data-who=moa] .name{color:var(--c-moa)}
+.say[data-who=x]{border-color:var(--c-x)} .say[data-who=x] .name{color:var(--c-x)}
+.flip{transform:scaleX(-1)}
+@media (max-width:600px){.say img.who{width:52px;height:52px;flex-basis:52px}}
+/* sections */
+section{padding:64px 0 24px}
+section.level{padding-top:88px}
+@media (max-width:600px){section.level{padding-top:64px}}
+.hexn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:50px;background:var(--accent);color:#fff;font-weight:700;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);margin-right:10px;vertical-align:middle}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 16px}
+.tag{font-size:13px;padding:2px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--panel)}
+.tag.m{background:var(--stain-soft);color:var(--stain);border-color:#e3c9ee}
+.tag.d{background:var(--eye-soft);color:var(--eye);border-color:#f2c9c7}
+.box3{background:var(--gfp-soft);border:1px solid #bfe0cb;border-radius:12px;padding:18px 20px}
+.box3 ol{margin:6px 0 6px 0;padding-left:22px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:16px 18px}
+.card h3{margin-top:0}
+.cast{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cast .card{display:flex;gap:12px;align-items:center}
+.cast img{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:8px;border:1px solid var(--rule)}
+.cast b{display:block}
+.cast small{color:var(--muted);line-height:1.5;display:block}
+.wm{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+.why{background:var(--panel);border:1px solid var(--rule);border-top:4px solid var(--accent);border-radius:12px;padding:20px}
+.mathbox{background:#fff;border:1px solid var(--rule);border-top:4px solid var(--c-asst);border-radius:12px;padding:20px}
+.why h4,.mathbox h4{margin:0 0 8px;font-size:16px}
+.why p,.mathbox p{margin:.4em 0}
+.easy{background:var(--amber-soft);border-radius:8px;padding:8px 12px;margin-top:10px}
+.mini{display:flex;gap:10px;align-items:flex-start;margin:8px 0}
+.mini img{width:48px;height:48px;object-fit:contain;flex:0 0 48px;background:var(--panel);border-radius:8px}
+.mini p{margin:0;background:var(--stain-soft);border-radius:8px;padding:8px 10px}
+.pieces{width:100%;border-collapse:collapse;font-size:15px;margin:8px 0}
+.pieces td{border-top:1px solid var(--rule);padding:6px 6px;vertical-align:top}
+.pieces td:first-child{white-space:nowrap;font-weight:700;color:var(--stain)}
+.eq{font-variant-numeric:tabular-nums;background:var(--panel2);border-radius:8px;padding:8px 12px;margin:8px 0;overflow-x:auto;white-space:nowrap}
+.eq b{color:var(--gfp)} .eq em{color:var(--stain);font-style:normal} .eq i{color:var(--amber);font-style:normal}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.pair > div{border:1px solid var(--rule);border-radius:12px;padding:14px 16px}
+.pair .tg{display:inline-block;font-size:13px;font-weight:700;padding:1px 10px;border-radius:999px;margin-bottom:6px}
+.pair .fly .tg{background:var(--eye-soft);color:var(--eye)}
+.pair .nn .tg{background:var(--stain-soft);color:var(--stain)}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:16px;margin:16px 0;box-shadow:0 1px 2px rgba(22,33,43,.06)}
+.panel h4{margin:0 0 8px;color:var(--info);font-size:15px}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:8px 0}
+.group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.glabel{font-size:13px;color:var(--muted)}
+.bt{font:inherit;font-size:14px;padding:6px 12px;border-radius:8px;border:1px solid var(--rule);background:#fff;color:var(--text);cursor:pointer;min-height:36px}
+.bt:hover{border-color:var(--accent)}
+.bt.primary,.bt[aria-pressed=true]{background:var(--gfp);border-color:var(--gfp);color:#fff}
+.val{font-variant-numeric:tabular-nums;font-weight:700;min-width:3.2em;display:inline-block}
+input[type=range]{width:160px;accent-color:var(--gfp)}
+.cwrap{overflow-x:auto}
+canvas{display:block;width:100%;background:#fff;border:1px solid var(--rule);border-radius:10px;touch-action:pan-y}
+.insight{margin-top:10px}
+.insight p{margin:.2em 0;padding:8px 12px;border-radius:8px}
+.insight p.g{background:var(--gfp-soft)} .insight p.m{background:var(--stain-soft)} .insight p.r{background:var(--eye-soft)} .insight p.a{background:var(--amber-soft)}
+.explain{background:var(--amber-soft);border-left:5px solid var(--amber);border-radius:8px;padding:14px 18px;margin:14px 0}
+.explain h4{margin:0 0 6px;color:var(--amber)}
+.explain ol{margin:4px 0;padding-left:22px}
+.lim{margin-top:8px;padding-top:8px;border-top:1px dashed #e3c79a}
+.bridge{border-radius:12px;padding:14px 18px;margin:12px 0}
+.bridge.gen{background:var(--info-soft);border-left:5px solid var(--info)}
+.bridge.field{background:var(--eye-soft);border-left:5px solid var(--eye)}
+.bridge h4{margin:0 0 4px}
+.bridge .lm{font-size:14px;color:var(--muted)}
+details.code{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:8px 14px;margin:12px 0}
+details.code summary{cursor:pointer;font-weight:500}
+details.code pre{background:var(--panel2);padding:10px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6}
+.quiz{border:1px solid #c9d6ee;background:var(--info-soft);border-radius:12px;padding:14px 16px;margin:14px 0}
+.quiz .qq{font-weight:700;margin:6px 0}
+.quiz .opts{display:flex;flex-wrap:wrap;gap:6px}
+.quiz .fb{margin-top:6px;font-size:15px}
+.quiz .fb.ok{color:var(--gfp)} .quiz .fb.no{color:var(--eye)}
+.quiz input{font:inherit;padding:5px 8px;border:1px solid var(--rule);border-radius:6px;width:110px}
+.tb{width:100%;border-collapse:collapse;font-size:15px}
+.tb th,.tb td{border:1px solid var(--rule);padding:6px 8px;text-align:center;font-variant-numeric:tabular-nums}
+.tb th{background:var(--panel2)}
+.tw{overflow-x:auto}
+#heat td.c{cursor:pointer;min-width:52px}
+#heat td.c.hl{outline:3px solid var(--gfp);outline-offset:-3px;font-weight:700}
+#heat td.c.hc{outline:3px solid #e07a2c;outline-offset:-3px;font-weight:700}
+#heat td.sum{font-weight:700}
+.ai{border:2px dashed var(--info);border-radius:12px;padding:14px 16px;background:#fff;margin:14px 0}
+.ai h4{margin:0 0 6px;color:var(--info)}
+.ai blockquote{margin:6px 0;padding:8px 12px;background:var(--panel);border-radius:8px}
+.duel{background:#fff;border:2px solid var(--rule);border-radius:16px;padding:18px}
+.duel .head{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;text-align:center}
+.duel .head img{width:96px;height:96px;object-fit:contain}
+.duel .vs{font-size:28px;font-weight:700;color:var(--muted)}
+.duel .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.duel .choices > div{border-radius:12px;padding:12px}
+.duel .cf{background:var(--eye-soft)} .duel .cr{background:#e3f3f4}
+.score{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.score .cond{border:1px solid var(--rule);border-radius:12px;padding:12px}
+.score .cond.on{border:2px solid var(--gfp)}
+.bar{height:22px;background:var(--panel2);border-radius:6px;position:relative;margin:4px 0}
+.bar i{display:block;height:100%;border-radius:6px}
+.bar span{position:absolute;right:6px;top:0;font-size:13px;line-height:22px;font-variant-numeric:tabular-nums}
+.verdict{display:none}
+.verdict.on{display:block}
+.cmp{width:100%;border-collapse:collapse}
+.cmp th,.cmp td{border:1px solid var(--rule);padding:8px 10px;text-align:left;vertical-align:top}
+.cmp th{background:var(--panel2);width:18%}
+.cmp td.p{background:var(--gfp-soft)} .cmp td.l{background:#fdeee2}
+.more{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.xrow{display:none;gap:12px;flex-wrap:wrap;margin:10px 0}
+.xrow.on{display:flex}
+.xrow .xc{display:flex;gap:8px;align-items:center;background:#fff;border:1px solid var(--rule);border-radius:10px;padding:6px 10px}
+.xrow img{width:56px;height:56px;object-fit:contain}
+.mission{list-style:none;padding:0;margin:8px 0}
+.mission li{padding:6px 10px;border-radius:8px;background:#fff;border:1px solid var(--rule);margin:4px 0}
+.mission li.ok{background:var(--gfp-soft);border-color:#bfe0cb}
+.mission li.ok:before{content:"✔ ";color:var(--gfp);font-weight:700}
+.after{display:none}
+.after.on{display:block}
+.jt{border-bottom:2px dotted var(--amber);cursor:help}
+#tip{position:absolute;z-index:60;max-width:300px;background:#fff;border:1px solid var(--rule);border-left:4px solid var(--amber);border-radius:8px;padding:10px 12px;box-shadow:0 4px 16px rgba(22,33,43,.12);font-size:14px;line-height:1.6;display:none}
+#tip b{display:block}
+#tip small{color:var(--muted)}
+#study{position:fixed;right:14px;bottom:14px;z-index:45;background:#fff;border:1px solid var(--rule);border-radius:999px;padding:6px 12px;font-size:13px;box-shadow:0 2px 8px rgba(22,33,43,.1);display:flex;gap:8px;align-items:center}
+#study button{font:inherit;font-size:12px;border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:2px 8px;cursor:pointer}
+footer{border-top:1px solid var(--rule);margin-top:40px;padding:28px 0 80px;font-size:14px;color:var(--muted)}
+footer table{font-size:14px}
+footer a{overflow-wrap:anywhere}
+abbr{text-decoration:none}
+details.abbr{margin-top:10px;font-size:15px}
+@media (max-width:980px){.kpis{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:860px){.wm{grid-template-columns:1fr}.cast{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:1fr}.more{grid-template-columns:1fr}}
+@media (max-width:760px){.pair{grid-template-columns:1fr}.duel .choices,.score{grid-template-columns:1fr}}
+@media (max-width:520px){#study{left:10px;right:10px;justify-content:center}.cast{grid-template-columns:1fr}}
+@media (max-width:460px){.kpis,.kpis.k4,.kpis.k3{grid-template-columns:repeat(2,1fr)}.pieces td:first-child{white-space:normal}input[type=range]{width:130px}}
+</style>
+<!-- px-fix v1 --><style id="px-fix">img{image-rendering:auto!important}</style><script id="px-fix-js">(function(){var R=window.ResizeObserver;function f(i){var n=i.naturalWidth,w=i.getBoundingClientRect().width;if(!n||!w)return;var s=w*(window.devicePixelRatio||1)/n;i.style.setProperty("image-rendering",s>=1.95?"pixelated":"auto","important")}var ro=R?new R(function(es){es.forEach(function(e){f(e.target)})}):null;function a(i){if(i.__px)return;i.__px=1;i.addEventListener("load",function(){f(i)});if(ro)ro.observe(i);f(i)}function all(r){(r||document).querySelectorAll&&(r||document).querySelectorAll("img").forEach(a)}function go(){all();if(window.MutationObserver)new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType!==1)return;if(n.tagName==="IMG")a(n);else all(n)})})}).observe(document.documentElement,{childList:true,subtree:true});window.addEventListener("resize",function(){document.querySelectorAll("img").forEach(f)})}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go()})();</script><!-- /px-fix -->
+</head>
+<body id="top">
+<div id="prog"></div>
+<nav class="top" aria-label="페이지 목차">
+  <a class="logo" href="#top">고급통계 연구실</a>
+  <a href="#intro">3줄 요약</a><a href="#cast">등장인물</a><a href="#map">큰 그림</a>
+  <a href="#lv1">① 확률</a><a href="#lv2">② 가능도</a><a href="#lv3">③ 함정</a><a href="#lv4">④ 비교</a>
+  <a href="#duel">대결</a><a href="#lv5">⑤ 2막 야근</a><a href="#sum">정리</a><a href="#outro">마무리</a>
+</nav>
+
+<header class="cover" id="cover" data-img="cover_01">
+  <!--COVERIMG-->
+  <div class="alt" id="altCover" aria-label="대체 표지: 케이크 상자 네 개와 연구실 식구들">
+    <div class="hex"></div>
+    <svg class="props" viewBox="0 0 64 22" shape-rendering="crispEdges" aria-hidden="true" id="propSvg"></svg>
+    <div class="line">
+      <img data-who="fly" data-mood="point" class="flip" alt="" aria-hidden="true">
+      <img data-who="sia" data-mood="smile" alt="" aria-hidden="true">
+      <img data-who="doc" data-mood="think" alt="" aria-hidden="true">
+      <img data-who="asst" data-mood="firm" alt="" aria-hidden="true">
+      <img data-who="moa" data-mood="smile" alt="" aria-hidden="true">
+      <img data-who="robo" data-mood="calc" alt="" aria-hidden="true">
+    </div>
+  </div>
+  <span class="cover-chip">고급통계 연구실 · 확률 vs 가능도</span>
+</header>
+
+<header class="hero">
+<div class="wrap">
+  <div class="kicker">고급통계 연구실 · 통계 입문 · 확률과 가능도(우도)</div>
+  <h1>초파리의 케이크 상자<br>— 확률과 가능도는 왜 다를까</h1>
+  <p class="q">10번 졸라서 7번 케이크를 받았다. 그렇다면 이 상자가 ‘0.7 상자’일 확률은 26.7%일까?</p>
+  <p>초파리 연구원이 케이크 상자 네 개를 숨겨 두고, 인턴 시아와 모아를 숫자로 놀리고 있습니다. 같은 숫자 표를 <b>가로로 읽으면 확률</b>, <b>세로로 읽으면 가능도</b>가 된다는 것만 알면 초파리의 말장난을 깰 수 있어요. 그리고 2막에서는 같은 도구가 초파리에게 되돌아옵니다.</p>
+  <div class="kpis">
+    <div class="kpi g"><b>1.000</b><span>가로줄(확률) 합 — 어느 상자든</span></div>
+    <div class="kpi r"><b>0.450</b><span>세로줄(가능도) 합 — 결과 7개</span></div>
+    <div class="kpi m"><b>1/11</b><span>가능도 곡선 아래 넓이</span></div>
+    <div class="kpi a"><b>2.28배</b><span>0.7 상자 ÷ 0.5 상자 가능도</span></div>
+    <div class="kpi i"><b>93%</b><span>2막 야근 판결의 사후확률</span></div>
+  </div>
+  <p class="note">숫자는 모두 이 페이지의 예시값이며, 이항분포 공식으로 다시 계산한 값입니다(소수 셋째 자리 반올림).</p>
+  <div class="talk">
+    <div class="say" data-who="doc"><img class="who" data-who="doc" data-mood="think" alt="" aria-hidden="true"><div><b class="name">박사</b><p>오늘 연구실에 작은 사건이 생겼어요. 초파리가 케이크를 걸고 숫자 장난을 치고 있거든요.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="firm" alt="" aria-hidden="true"><div><b class="name">조수 하루</b><p>시아랑 모아가 상자를 10번 눌러서 케이크를 7번 받았대요. 그런데 초파리가 남은 케이크를 안 준대요.</p></div></div>
+    <div class="say" data-who="fly"><img class="who flip" data-who="fly" data-mood="point" alt="" aria-hidden="true"><div><b class="name">초파리 연구원</b><p>약속은 이거야. 0.7 상자일 확률이 50%를 넘으면 케이크를 줄게. 그런데 겨우 26.7%잖아? 우도로 보면 안 주고, 가능도로 보면… 글쎄?</p></div></div>
+    <div class="say" data-who="robo"><img class="who" data-who="robo" data-mood="calc" alt="" aria-hidden="true"><div><b class="name">주판봇</b><p>표를 가로로 읽을지 세로로 읽을지부터 정리하자. 내 주판이 기다리고 있어.</p></div></div>
+  </div>
+</div>
+</header>
+
+<main>
+<section id="intro"><div class="wrap">
+  <div class="box3">
+    <h2 style="font-size:24px">처음 오신 분께 — 이 페이지를 3줄로</h2>
+    <ol>
+      <li><b>무엇을:</b> 같은 숫자 표를 가로로 읽으면 <span class="jt" data-g="확률">확률</span>, 세로로 읽으면 <span class="jt" data-g="가능도">가능도</span>(우도)입니다. 표는 하나, 읽는 방향이 둘이에요.</li>
+      <li><b>왜 중요한가:</b> 방향을 바꿔 읽으면 “이 상자가 0.7일 확률 26.7%” 같은 틀린 문장이 나옵니다. 보고서와 AI 답변에서도 자주 보이는 실수예요.</li>
+      <li><b>업무에서는:</b> 불량률·클릭률을 데이터로 추정할 때, 그리고 머신러닝 모델을 학습시킬 때 쓰는 것이 가능도입니다.</li>
+    </ol>
+    <p style="margin:.4em 0 0"><b>코드·수식을 몰라도 됩니다.</b> 수식 옆에는 조수 하루가 대신 질문하고, 숫자는 버튼으로 직접 확인할 수 있어요.</p>
+    <details class="abbr"><summary>기호·영어 약어 풀이 (접기)</summary>
+      <ul>
+        <li><b>θ</b>(세타): 상자가 케이크를 줄 확률. 상자의 ‘성격’을 나타내는 숫자(모수)예요.</li>
+        <li><b>n, k</b>: 누른 횟수(10)와 케이크를 받은 횟수(7).</li>
+        <li><b>P(A | B)</b>: “B라고 정해 두면 A일 확률”. 세로 막대는 나누기가 아니라 ‘조건’이에요.</li>
+        <li><b>L(θ)</b>: likelihood(가능도·우도). 결과를 고정하고 θ를 바꿔 가며 보는 점수.</li>
+        <li><b>θ̂</b>(세타 햇): 데이터로 추정한 θ. <b>MLE</b>는 Maximum Likelihood Estimation, 최대가능도 추정.</li>
+      </ul>
+    </details>
+  </div>
+</div></section>
+
+<section id="cast"><div class="wrap">
+  <h2>등장인물과 이 페이지 사용법</h2>
+  <div class="cast">
+    <div class="card"><img data-who="doc" data-mood="front" alt="" aria-hidden="true"><div><b>박사</b><small>해설과 판정. 2막에서 판결을 내립니다.</small></div></div>
+    <div class="card"><img data-who="asst" data-mood="smile" alt="" aria-hidden="true"><div><b>조수 하루</b><small>숫자를 다시 계산해 발표하고, 수식을 대신 질문해요.</small></div></div>
+    <div class="card"><img data-who="robo" data-mood="smile" alt="" aria-hidden="true"><div><b>주판봇</b><small>가로줄 합계에 진심. 확신이 빠른 편입니다.</small></div></div>
+    <div class="card"><img class="flip" data-who="fly" data-mood="clip" alt="" aria-hidden="true"><div><b>초파리 연구원</b><small>1막에서 숫자로 놀리는 쪽. 2막에서는…</small></div></div>
+    <div class="card"><img data-who="sia" data-mood="smile" alt="" aria-hidden="true"><div><b>인턴 시아</b><small>케이크를 조용히 기다리다 가끔 졸아요.</small></div></div>
+    <div class="card"><img data-who="moa" data-mood="smile" alt="" aria-hidden="true"><div><b>인턴 모아</b><small>응원 담당. 차와 케이크를 챙깁니다.</small></div></div>
+  </div>
+  <p>노란 점선 밑줄 단어를 누르면 뜻이 나와요. 회색 상자의 버튼과 슬라이더는 직접 움직여 보세요. 숫자를 다 따라가지 않아도 결론은 따라올 수 있게 만들었습니다.</p>
+</div></section>
+
+<section id="why"><div class="wrap">
+  <h2>왜 이 주제인가</h2>
+  <div class="steps">
+    <div class="card"><h3>① 이름부터 둘이다</h3><p>likelihood를 우리말로 ‘우도(尤度)’ 또는 ‘가능도’라고 옮깁니다. 통계학계에서는 흔히 우도라고 부르고<sup>[2]</sup>, 가능도라는 번역도 책과 강의에서 널리 씁니다. <b>둘은 같은 개념</b>이에요. 이 페이지는 뜻이 더 잘 떠오르는 ‘가능도’로 부르고 우도를 괄호에 둡니다.</p></div>
+    <div class="card"><h3>② 베이즈와 머신러닝의 출발점</h3><p>사후분포를 만들 때도, 모델을 학습시킬 때도 가능도가 들어갑니다. 여기서 헷갈리면 뒤가 다 흔들려요.</p></div>
+    <div class="card"><h3>③ 바꿔 읽는 실수가 흔하다</h3><p>“이 결과가 나올 확률”과 “이 원인일 확률”을 바꿔 말하는 실수는 사람도, AI도 자주 합니다. 이번 페이지의 핵심 연습이에요.</p></div>
+  </div>
+</div></section>
+
+<section id="map"><div class="wrap">
+  <h2>큰 그림 — 표는 하나, 읽는 방향은 둘</h2>
+  <p>상자 네 개(θ = 0.3, 0.5, 0.7, 0.9)를 각각 10번 눌렀을 때, 케이크를 0~10번 받을 확률을 모두 계산한 표입니다. 아래 버튼으로 읽는 방향을 바꾸고, 줄을 눌러 보세요.</p>
+  <div class="panel">
+    <h4>케이크 표 — 가로줄과 세로줄</h4>
+    <div class="ctrl"><div class="group" role="group" aria-label="읽는 방향">
+      <button class="bt" id="mapRow" aria-pressed="true">가로로 읽기 (확률)</button>
+      <button class="bt" id="mapCol" aria-pressed="false">세로로 읽기 (가능도)</button>
+    </div></div>
+    <div class="tw"><table class="tb" id="heat" aria-label="상자별 케이크 횟수 확률 표"></table></div>
+    <div class="insight" aria-live="polite"><p class="g" id="mapNote"></p></div>
+    <p class="note">예시값 · 이항분포로 계산 · 소수 셋째 자리 반올림이라 표의 값을 손으로 더하면 0.001 차이가 날 수 있어요.</p>
+  </div>
+  <div class="tags" style="margin-top:10px">
+    <span class="tag">① 확률: 상자 고정</span><span class="tag">→ ② 가능도: 결과 고정</span><span class="tag">→ ③ 바꿔 읽는 함정</span><span class="tag">→ ④ 가능도로 비교하기</span><span class="tag">→ ⑤ 사전 × 가능도 = 사후</span>
+  </div>
+</div></section>
+
+<!-- ① -->
+<section class="level" id="lv1"><div class="wrap">
+  <h2><span class="hexn">1</span>상자를 고정하면 — 확률</h2>
+  <div class="tags"><span class="tag m">방법: 이항분포</span><span class="tag d">일상: 케이크 상자 하나</span></div>
+  <div class="mini"><img data-who="doc" data-mood="front" alt="" aria-hidden="true"><p><b>박사:</b> 회사 자판기가 열 번에 일곱 번꼴로 음료를 준다고 해 봐요. 오늘 10번 넣으면 몇 번 받을지 미리 말할 수 있을까요? 오늘의 첫 질문입니다.</p></div>
+  <div class="wm">
+    <div class="why">
+      <h4>왜 이 방법을 쓰나</h4>
+      <p><b>문제 상황:</b> 상자가 케이크를 줄 확률(θ)을 안다고 할 때, 10번 눌러 몇 번 받을지 미리 알고 싶어요.</p>
+      <p><b>앞 방법의 한계:</b> 한 번 누를 때의 확률(0.7)만으로는 “10번 중 7번” 같은 묶음 결과를 말할 수 없어요.</p>
+      <p><b>해법:</b> 한 번 한 번이 서로 영향을 주지 않는 <span class="jt" data-g="독립시행">독립시행</span>을 세는 <span class="jt" data-g="이항분포">이항분포</span>를 씁니다.</p>
+      <p class="easy"><b>쉽게 말하면:</b> 동전 10번 던지기의 결과 표를 미리 만들어 두는 일이에요.</p>
+    </div>
+    <div class="mathbox">
+      <h4>수학 수식을 어려워하는 조수가 대신 물어봅니다</h4>
+      <div class="mini"><img data-who="asst" data-mood="shock" alt="" aria-hidden="true"><p>P(X = 7 | θ = 0.7)… 가운데 세로 막대는 나누기예요?</p></div>
+      <p><b>학교 수학으로 보면:</b> 확률과 통계의 ‘독립시행의 확률’ <sub>n</sub>C<sub>k</sub> p<sup>k</sup>(1−p)<sup>n−k</sup> 그대로예요. 세로 막대는 “θ = 0.7이라고 정해 두면”이라는 조건 표시입니다.</p>
+      <div class="eq">P(X = <b>k</b> | <em>θ</em>) = <sub>10</sub>C<sub><b>k</b></sub> · <em>θ</em><sup><b>k</b></sup> · (1 − <em>θ</em>)<sup>10 − <b>k</b></sup></div>
+      <table class="pieces">
+        <tr><td><sub>10</sub>C<sub>7</sub> = 120</td><td>10번 중 케이크가 나온 7번의 자리를 고르는 방법 수</td></tr>
+        <tr><td>θ<sup>7</sup></td><td>그 7번이 모두 케이크일 확률</td></tr>
+        <tr><td>(1 − θ)<sup>3</sup></td><td>나머지 3번이 모두 빈 접시일 확률</td></tr>
+        <tr><td>| θ</td><td>상자를 정해 둔 상태(조건). 여기서는 θ가 고정, k가 움직입니다</td></tr>
+      </table>
+      <p><b>숫자로 한 번 해 보기:</b> 0.7<sup>7</sup> ≈ 0.0824, 0.3<sup>3</sup> = 0.027이니 120 × 0.0824 × 0.027 ≈ <b>0.267</b>.</p>
+      <div class="mini"><img data-who="asst" data-mood="spark" alt="" aria-hidden="true"><p>막대는 나누기가 아니라 ‘~라고 정해 두면’이었네요. 표의 0.267이 이렇게 나온 거였어요!</p></div>
+    </div>
+  </div>
+  <div class="pair">
+    <div class="fly"><span class="tg">일상으로 치면</span><p>당첨률을 이미 아는 뽑기 기계로 10번 뽑을 때, “당첨 0번, 1번, …, 10번”이 각각 얼마나 자주 나올지 미리 점쳐 보는 일입니다.</p></div>
+    <div class="nn"><span class="tg">통계로는</span><p><span class="jt" data-g="모수">모수</span> θ를 고정하면 결과 X의 분포가 정해집니다. 가능한 결과 11가지의 확률을 모두 더하면 반드시 1이에요.</p></div>
+  </div>
+  <div class="talk">
+    <div class="say" data-who="doc"><img class="who" data-who="doc" data-mood="think" alt="" aria-hidden="true"><div><b class="name">박사</b><p>상자를 ‘0.7 상자’로 딱 정해 두면, 10번 중 몇 번 받을지는 어떻게 퍼질까요?</p></div></div>
+    <div class="say" data-who="robo"><img class="who" data-who="robo" data-mood="coin" alt="" aria-hidden="true"><div><b class="name">주판봇</b><p>가로줄 11개를 주판으로 다 튕기면 딱 1이 나와. 어느 상자든 똑같아. 확실해!</p></div></div>
+    <div class="say" data-who="fly"><img class="who flip" data-who="fly" data-mood="point" alt="" aria-hidden="true"><div><b class="name">초파리 연구원</b><p>어느 상자든? 0.3 상자로 바꿔서 1,000판 돌려 봐.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div><b class="name">조수 하루</b><p>상자를 바꿔도 아래 합계는 그대로 1.000이에요. 막대 모양만 옮겨 가요.</p></div></div>
+  </div>
+  <div class="panel">
+    <h4>실험 ① 상자를 정하고 10번 조르기</h4>
+    <div class="ctrl">
+      <div class="group" role="group" aria-label="상자 고르기"><span class="glabel">상자</span>
+        <button class="bt" data-t1="0.3">0.3</button><button class="bt" data-t1="0.5">0.5</button><button class="bt" data-t1="0.7" aria-pressed="true">0.7</button><button class="bt" data-t1="0.9">0.9</button></div>
+      <div class="group"><label class="glabel" for="t1">θ 직접</label><input type="range" id="t1" min="0.05" max="0.95" step="0.01" value="0.7"><span class="val" id="t1v">0.70</span></div>
+      <div class="group"><button class="bt primary" id="press10">10번 조르기</button><button class="bt" id="press1000">1,000판 몰아 하기</button><button class="bt" id="press0">기록 지우기</button></div>
+    </div>
+    <div class="cwrap"><canvas id="c1" height="300" aria-label="받은 케이크 개수별 확률 막대와 시뮬레이션 빈도"></canvas></div>
+    <div class="kpis k4">
+      <div class="kpi g"><b id="k1a">0.267</b><span>정확히 7개 받을 확률</span></div>
+      <div class="kpi g"><b id="k1b">1.000</b><span>가로줄 합 (0~10개)</span></div>
+      <div class="kpi a"><b id="k1c">0</b><span>시뮬레이션 판 수</span></div>
+      <div class="kpi m"><b id="k1d">–</b><span>평균 받은 개수 (이론 10θ)</span></div>
+    </div>
+    <div class="insight" aria-live="polite"><p class="g" id="n1"></p></div>
+  </div>
+  <div class="explain">
+    <h4>풀이</h4>
+    <ol>
+      <li>상자를 하나로 정합니다(θ 고정).</li>
+      <li>받을 수 있는 개수 0~10에 확률을 하나씩 매깁니다. 테두리 막대가 공식으로 계산한 값, 초록 막대가 직접 돌려 본 빈도예요.</li>
+      <li>판 수를 늘리면 초록 막대가 테두리 막대에 붙습니다. 어떤 상자든 11개 막대의 합은 1이에요.</li>
+    </ol>
+    <p class="lim"><b>이 단계의 한계:</b> 이 계산은 상자(θ)를 <b>안다</b>고 가정합니다. 그런데 시아와 모아는 상자를 모르고, 케이크 7개라는 결과만 알아요. 그래서 ②에서는 방향을 뒤집습니다.</p>
+  </div>
+  <details class="code"><summary>교안의 파이썬 코드로 보면 (몰라도 됩니다)</summary>
+<pre>from scipy.stats import binom
+binom.pmf(7, 10, 0.7)                        # 0.2668 → 정확히 7개 받을 확률
+sum(binom.pmf(k, 10, 0.7) for k in range(11))  # 1.0 → 가로줄 합</pre>
+  <p>첫 줄은 “10번 중 7번, 상자 0.7”의 확률, 둘째 줄은 0~10개를 모두 더한 값이에요.</p></details>
+  <div class="quiz" data-quiz="q1"></div>
+</div></section>
+
+<!-- ② -->
+<section class="level" id="lv2"><div class="wrap">
+  <h2><span class="hexn">2</span>결과를 고정하면 — 가능도(우도)</h2>
+  <div class="tags"><span class="tag m">방법: 가능도 함수 L(θ)</span><span class="tag d">일상: 이미 받은 케이크 7개</span></div>
+  <div class="mini"><img data-who="doc" data-mood="front" alt="" aria-hidden="true"><p><b>박사:</b> 고객 10명에게 쿠폰을 보냈더니 7명이 썼어요. 쿠폰 사용률이 0.5인 고객층일까, 0.7인 고객층일까? 이번엔 결과를 들고 원인을 따져 봅니다.</p></div>
+  <div class="wm">
+    <div class="why">
+      <h4>왜 이 방법을 쓰나</h4>
+      <p><b>문제 상황:</b> 시아·모아는 상자를 모릅니다. 아는 것은 “10번 중 7번”이라는 결과뿐이에요.</p>
+      <p><b>앞 방법의 한계:</b> ①의 확률 계산은 상자를 알아야만 시작할 수 있어요.</p>
+      <p><b>해법:</b> 결과 7개를 고정하고, 상자 후보마다 “이 상자였다면 7개가 나왔을 확률”을 다시 읽습니다. 이렇게 읽은 값이 <span class="jt" data-g="가능도">가능도</span>예요.</p>
+      <p class="easy"><b>쉽게 말하면:</b> 용의자마다 “이 사람이 범인이라면 이런 발자국이 남았을까?”를 따져 보는 일이에요.</p>
+    </div>
+    <div class="mathbox">
+      <h4>수학 수식을 어려워하는 조수가 대신 물어봅니다</h4>
+      <div class="mini"><img data-who="asst" data-mood="shock" alt="" aria-hidden="true"><p>L(θ)는 ①의 식이랑 글자까지 똑같은데요? 뭐가 달라진 거예요?</p></div>
+      <p><b>학교 수학으로 보면:</b> y = ax²을 ‘x에 대한 함수’로 보다가, x를 고정하고 ‘a에 대한 함수’로 보는 것과 같아요. 식은 그대로, <b>움직이는 글자</b>만 바뀝니다.</p>
+      <div class="eq">L(<em>θ</em>) = P(X = <b>7</b> | <em>θ</em>) = 120 · <em>θ</em><sup>7</sup> · (1 − <em>θ</em>)<sup>3</sup></div>
+      <table class="pieces">
+        <tr><td>X = 7 고정</td><td>이미 일어난 결과. 이제 움직이지 않아요</td></tr>
+        <tr><td>θ 움직임</td><td>상자 후보를 바꿔 가며 같은 식에 넣어 봅니다</td></tr>
+        <tr><td>L</td><td>likelihood의 머리글자. 우도·가능도 모두 이것을 부르는 이름이에요</td></tr>
+      </table>
+      <p><b>숫자로 한 번 해 보기:</b> θ = 0.3, 0.5, 0.7, 0.9를 넣으면 0.009, 0.117, 0.267, 0.057. 모두 더하면 0.009 + 0.117 + 0.267 + 0.057 = <b>0.450</b>.</p>
+      <div class="mini"><img data-who="asst" data-mood="spark" alt="" aria-hidden="true"><p>식은 같은데 고정한 쪽이 바뀌니까, 더해도 1이 안 나오네요!</p></div>
+    </div>
+  </div>
+  <div class="explain" style="background:var(--info-soft);border-left-color:var(--info)">
+    <h4 style="color:var(--info)">이름 정리 — 우도와 가능도는 같은 말</h4>
+    <p>likelihood의 번역어가 둘입니다. 우도(尤度)의 ‘尤’는 ‘더욱, 두드러지다’라는 뜻의 한자라 뜻이 바로 떠오르지 않아요. 한 수학교육 논문은 통계학계에서는 일반적으로 우도로 번역한다고 적었어요<sup>[2]</sup>. 같은 개념을 ‘가능도’라고 부르는 책과 자료도 많습니다. <b>초파리처럼 둘을 다른 것인 양 섞어 쓰면 듣는 사람만 헷갈려요.</b></p>
+    <div class="mini"><img data-who="asst" data-mood="firm" alt="" aria-hidden="true"><p><b>조수 하루:</b> 초파리, “우도로 보면 안 주고 가능도로 보면 줄 수도”라는 말은 성립하지 않아요. 둘은 같은 말이니까요.</p></div>
+    <div class="mini"><img class="flip" data-who="fly" data-mood="coffee" alt="" aria-hidden="true"><p><b>초파리 연구원:</b> …들켰네.</p></div>
+  </div>
+  <div class="pair">
+    <div class="fly"><span class="tg">일상으로 치면</span><p>이미 받은 케이크 7개를 증거로 들고, 상자 후보 넷을 한 명씩 불러 “너였다면 7개가 나왔겠니?”라고 물어보는 일입니다.</p></div>
+    <div class="nn"><span class="tg">통계로는</span><p>데이터를 고정하고 모수를 바꿔 가며 보는 함수 L(θ)입니다. θ에 대한 확률분포가 아니므로, 후보들의 값을 더해 1이 될 이유가 없어요.</p></div>
+  </div>
+  <div class="talk">
+    <div class="say" data-who="doc"><img class="who" data-who="doc" data-mood="think" alt="" aria-hidden="true"><div><b class="name">박사</b><p>이번엔 결과 7개를 고정하고, 상자를 바꿔 가며 세로로 읽어 볼까요?</p></div></div>
+    <div class="say" data-who="robo"><img class="who" data-who="robo" data-mood="coin" alt="" aria-hidden="true"><div><b class="name">주판봇</b><p>세로줄도 다 더하면 1이겠지. 확률은 언제나 1이니까!</p></div></div>
+    <div class="say" data-who="fly"><img class="who flip" data-who="fly" data-mood="point" alt="" aria-hidden="true"><div><b class="name">초파리 연구원</b><p>상자를 하나 더 넣어도 1일까? ‘0.6 상자 추가’ 눌러 봐.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div><b class="name">조수 하루</b><p>후보가 넷일 때 0.450, 0.6 상자를 더하면 0.665예요. 정해진 합이 없어요.</p></div></div>
+  </div>
+  <div class="panel">
+    <h4>실험 ② 결과를 고정하고 상자 후보 심문하기</h4>
+    <div class="ctrl">
+      <div class="group"><label class="glabel" for="k2">받은 케이크 k</label><input type="range" id="k2" min="0" max="10" step="1" value="7"><span class="val" id="k2v">7개</span></div>
+      <div class="group"><button class="bt" id="add6" aria-pressed="false">0.6 상자 추가</button></div>
+    </div>
+    <div class="cwrap"><canvas id="c2" height="300" aria-label="상자 후보별 가능도 막대와 세로줄 합"></canvas></div>
+    <div class="kpis k3">
+      <div class="kpi r"><b id="k2a">0.450</b><span>세로줄 합 (후보 전체)</span></div>
+      <div class="kpi a"><b id="k2b">0.7</b><span>가능도가 가장 큰 상자</span></div>
+      <div class="kpi m"><b id="k2c">4</b><span>상자 후보 수</span></div>
+    </div>
+    <div class="insight" aria-live="polite"><p class="r" id="n2"></p></div>
+  </div>
+  <div class="explain">
+    <h4>풀이</h4>
+    <ol>
+      <li>결과(k = 7)를 고정합니다. 이제 움직이는 것은 상자예요.</li>
+      <li>후보 상자마다 ①과 같은 공식으로 값을 구합니다. 이 값이 가능도예요.</li>
+      <li>후보를 더하거나 빼면 합이 바뀝니다. 서로 다른 상자의 가로줄에서 값을 하나씩 빌려 온 것이라 합이 정해질 수 없어요.</li>
+    </ol>
+    <p class="lim"><b>이 단계의 한계:</b> 가능도는 후보끼리 비교하는 점수일 뿐입니다. 이 값을 그대로 “이 상자일 확률”로 읽으면 초파리의 말장난에 넘어가요. ③에서 그 함정을 직접 확인합니다.</p>
+  </div>
+  <details class="code"><summary>교안의 파이썬 코드로 보면 (몰라도 됩니다)</summary>
+<pre>L = [binom.pmf(7, 10, t) for t in (0.3, 0.5, 0.7, 0.9)]
+sum(L)   # 0.4504 → 세로줄 합, 1이 아님</pre>
+  <p>결과 7은 고정하고, 상자 넷을 바꿔 가며 같은 공식을 부른 것뿐이에요.</p></details>
+  <div class="quiz" data-quiz="q2"></div>
+</div></section>
+
+<!-- ③ -->
+<section class="level" id="lv3"><div class="wrap">
+  <h2><span class="hexn">3</span>바꿔 읽는 함정 — 26.7%의 정체</h2>
+  <div class="tags"><span class="tag m">개념: 조건 뒤집기 · 곡선 넓이</span><span class="tag d">일상: 초파리의 놀림</span></div>
+  <div class="mini"><img data-who="doc" data-mood="front" alt="" aria-hidden="true"><p><b>박사:</b> 품질팀이 “불량 라인이라면 이런 결과가 나올 확률 90%”라고 보고했는데, 회의에서는 “불량 라인일 확률 90%”로 바뀌어 전달되는 일이 있어요. 같은 말일까요?</p></div>
+  <div class="wm">
+    <div class="why">
+      <h4>왜 이 개념이 필요한가</h4>
+      <p><b>문제 상황:</b> 초파리가 “0.7 상자일 확률은 26.7%”라고 우깁니다.</p>
+      <p><b>앞 방법의 한계:</b> 0.267은 P(7개 | 0.7 상자)예요. 초파리는 이것을 P(0.7 상자 | 7개)로 바꿔 읽었어요. 조건과 질문이 자리를 바꾼 전혀 다른 값입니다.</p>
+      <p><b>해법:</b> 가능도를 θ = 0부터 1까지 이어 그린 곡선 전체를 봅니다. 확률분포라면 곡선 아래 넓이가 1이어야 해요.</p>
+      <p class="easy"><b>쉽게 말하면:</b> “범인이라면 발자국이 남을 확률 90%”와 “발자국이 있으니 범인일 확률 90%”는 다른 말이에요.</p>
+    </div>
+    <div class="mathbox">
+      <h4>수학 수식을 어려워하는 조수가 대신 물어봅니다</h4>
+      <div class="mini"><img data-who="asst" data-mood="shock" alt="" aria-hidden="true"><p>길쭉한 S 같은 기호 ∫는 뭐예요? 넓이가 1/11이면 뭐가 문제예요?</p></div>
+      <p><b>학교 수학으로 보면:</b> 미적분의 정적분, 곧 ‘곡선 아래 넓이’예요. 확률분포는 모든 경우를 합친 넓이(합)가 1이어야 합니다.</p>
+      <div class="eq">∫<sub>0</sub><sup>1</sup> 120 · <em>θ</em><sup>7</sup>(1 − <em>θ</em>)<sup>3</sup> d<em>θ</em> = <i>1/11</i> ≈ 0.0909</div>
+      <table class="pieces">
+        <tr><td>∫<sub>0</sub><sup>1</sup> … dθ</td><td>θ를 0부터 1까지 아주 잘게 나눠 높이 × 폭을 모두 더하기</td></tr>
+        <tr><td>1/11</td><td>10번 던진 결과라면 k가 몇이든 이 넓이는 늘 1/11이에요</td></tr>
+      </table>
+      <p><b>숫자로 한 번 해 보기:</b> θ = 0.05, 0.15, …, 0.95 열 곳에서 곡선 높이를 재고 폭 0.1을 곱해 더하면 약 <b>0.091</b>. 1/11 = 0.0909와 거의 같아요.</p>
+      <div class="mini"><img data-who="asst" data-mood="spark" alt="" aria-hidden="true"><p>넓이가 1이 아니니까, 이 곡선은 θ에 대한 확률이 아니군요.</p></div>
+    </div>
+  </div>
+  <div class="pair">
+    <div class="fly"><span class="tg">일상으로 치면</span><p>“우산을 든 사람이 비 오는 날 밖에 있을 확률”과 “밖에 있는 사람이 우산을 들었으니 비가 올 확률”은 다릅니다. 앞뒤가 바뀌면 숫자도 바뀌어요.</p></div>
+    <div class="nn"><span class="tg">통계로는</span><p>P(데이터 | θ) ≠ P(θ | 데이터). 앞의 것을 뒤의 것으로 바꾸려면 <span class="jt" data-g="베이즈 정리">베이즈 정리</span>와 사전 정보가 필요합니다(⑤).</p></div>
+  </div>
+  <div class="talk">
+    <div class="say" data-who="doc"><img class="who" data-who="doc" data-mood="think" alt="" aria-hidden="true"><div><b class="name">박사</b><p>초파리 말대로 26.7%가 ‘상자의 확률’인지, 곡선 전체로 확인해 봅시다.</p></div></div>
+    <div class="say" data-who="robo"><img class="who" data-who="robo" data-mood="coin" alt="" aria-hidden="true"><div><b class="name">주판봇</b><p>26.7%면 소수점까지 딱 떨어지는 확률이지. 숫자가 말해 주잖아!</p></div></div>
+    <div class="say" data-who="fly"><img class="who flip" data-who="fly" data-mood="arms" alt="" aria-hidden="true"><div><b class="name">초파리 연구원</b><p>넓이 같은 건 몰라. 26.7%는 26.7%야. k를 바꿔 봐, 뭐가 달라지나.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div><b class="name">조수 하루</b><p>k를 0부터 10까지 바꿔도 곡선 넓이는 늘 0.0909, 1/11이에요.</p></div></div>
+  </div>
+  <div class="panel">
+    <h4>실험 ③ 가능도 곡선 아래 넓이 재기</h4>
+    <div class="ctrl">
+      <div class="group"><label class="glabel" for="k3">받은 케이크 k</label><input type="range" id="k3" min="0" max="10" step="1" value="7"><span class="val" id="k3v">7개</span></div>
+      <div class="group"><button class="bt" id="x11" aria-pressed="false">×11 해서 넓이 1로 맞추기</button></div>
+    </div>
+    <div class="cwrap"><canvas id="c3" height="300" aria-label="세타에 따른 가능도 곡선과 넓이"></canvas></div>
+    <div class="kpis k4">
+      <div class="kpi r"><b id="k3a">0.0909</b><span>곡선 아래 넓이</span></div>
+      <div class="kpi g"><b id="k3b">1.000</b><span>넓이 × 11</span></div>
+      <div class="kpi a"><b id="k3c">0.70</b><span>곡선이 가장 높은 θ</span></div>
+      <div class="kpi m"><b id="k3d">0.267</b><span>가장 높은 곳의 값</span></div>
+    </div>
+    <div class="insight" aria-live="polite"><p class="m" id="n3"></p></div>
+  </div>
+  <div class="ai" id="aiCorner">
+    <h4>AI 판단 코너 — 이 답변, 그대로 믿어도 될까?</h4>
+    <p>어떤 AI 챗봇에게 “10번 중 7번 성공했어. 성공률이 0.7일 확률은?”이라고 물었더니 이렇게 답했다고 해 봐요.</p>
+    <blockquote>“이항분포로 계산하면 0.267입니다. 따라서 성공률이 0.7일 확률은 26.7%입니다.”</blockquote>
+    <p><b>어디가 이상할까요?</b></p>
+    <div class="group" role="group" aria-label="AI 답변 판단">
+      <button class="bt" data-ai="0">계산이 틀렸다</button>
+      <button class="bt" data-ai="1">조건과 질문을 바꿔 읽었다</button>
+      <button class="bt" data-ai="2">아무 문제 없다</button>
+    </div>
+    <p id="aiFb" aria-live="polite" style="margin-top:8px"></p>
+  </div>
+  <div class="explain">
+    <h4>풀이</h4>
+    <ol>
+      <li>0.267 = P(7개 | 0.7 상자). “0.7 상자라면 7개가 나올 확률”이지 “0.7 상자일 확률”이 아니에요.</li>
+      <li>가능도 곡선의 넓이는 1/11입니다. θ에 대한 확률분포라면 1이어야 하니, 곡선은 확률분포가 아닙니다.</li>
+      <li>곡선을 11배 하면 넓이가 1이 되는데, 이것은 ‘모든 θ를 똑같이 그럴듯하다고 보는’ 사전 정보를 덧붙였을 때의 이야기예요. 이 연결은 대결과 ⑤에서 다룹니다.</li>
+    </ol>
+    <p class="lim"><b>이 단계의 한계:</b> 그럼 가능도로는 아무것도 못 할까요? 아니에요. 확률로 읽지만 않으면 쓸모가 큽니다. ④에서 가능도로 할 수 있는 일을 봅니다.</p>
+  </div>
+  <div class="quiz" data-quiz="q3"></div>
+</div></section>
+
+<!-- ④ -->
+<section class="level" id="lv4"><div class="wrap">
+  <h2><span class="hexn">4</span>가능도로 할 수 있는 일 — 비교와 최대가능도</h2>
+  <div class="tags"><span class="tag m">방법: 가능도 비율 · 최대가능도 추정(MLE)</span><span class="tag d">일상: 상자 후보 맞대결</span></div>
+  <div class="mini"><img data-who="doc" data-mood="front" alt="" aria-hidden="true"><p><b>박사:</b> 광고 시안 A는 클릭률 5%, B는 7%라고 가정하고 실제 클릭 기록을 보면, 어느 가정이 기록을 더 잘 설명하는지 따질 수 있어요. 숫자 하나보다 ‘맞대 보기’가 중요합니다.</p></div>
+  <div class="wm">
+    <div class="why">
+      <h4>왜 이 방법을 쓰나</h4>
+      <p><b>문제 상황:</b> 상자를 하나 골라야 한다면 무엇을 기준으로 할까요?</p>
+      <p><b>앞 방법의 한계:</b> 가능도 값 하나(0.267)는 그 자체로는 뜻이 약해요. 확률도 아니고, 기준선도 없습니다.</p>
+      <p><b>해법:</b> 두 후보의 <span class="jt" data-g="가능도 비율">가능도 비율</span>로 “몇 배 더 잘 설명하나”를 보고, 곡선이 가장 높은 곳을 추정값으로 고릅니다(<span class="jt" data-g="최대가능도 추정">최대가능도 추정</span>).</p>
+      <p class="easy"><b>쉽게 말하면:</b> 오디션 점수는 점수 자체보다 순위와 격차가 중요하잖아요. 가능도도 그래요.</p>
+    </div>
+    <div class="mathbox">
+      <h4>수학 수식을 어려워하는 조수가 대신 물어봅니다</h4>
+      <div class="mini"><img data-who="asst" data-mood="shock" alt="" aria-hidden="true"><p>θ 위에 씌운 모자(θ̂)는 뭐예요? 비율을 왜 나눠요?</p></div>
+      <p><b>학교 수학으로 보면:</b> 미분으로 최댓값 찾기(접선의 기울기가 0인 곳)예요. 이항분포에서는 그 답이 k/n으로 깔끔하게 나옵니다.</p>
+      <div class="eq">L(0.7) ÷ L(0.5) = 0.267 ÷ 0.117 ≈ <b>2.28</b> &nbsp;·&nbsp; <em>θ̂</em> = k ÷ n = 7 ÷ 10 = <b>0.7</b></div>
+      <table class="pieces">
+        <tr><td>θ̂ (세타 햇)</td><td>모자는 ‘데이터로 추정한 값’이라는 표시예요</td></tr>
+        <tr><td>비율</td><td>“0.7 상자가 0.5 상자보다 결과를 몇 배 더 잘 설명하나”</td></tr>
+        <tr><td>120 약분</td><td>두 가능도를 나누면 앞의 120이 위아래에서 지워져요</td></tr>
+      </table>
+      <p><b>숫자로 한 번 해 보기:</b> 0.7<sup>7</sup>×0.3<sup>3</sup> ≈ 0.002224, 0.5<sup>10</sup> ≈ 0.000977. 나누면 0.002224 ÷ 0.000977 ≈ <b>2.28</b>. 120은 쓰지도 않았어요.</p>
+      <div class="mini"><img data-who="asst" data-mood="spark" alt="" aria-hidden="true"><p>비율로 보면 공통 부분이 사라지니까 계산도 쉬워지네요.</p></div>
+    </div>
+  </div>
+  <div class="pair">
+    <div class="fly"><span class="tg">일상으로 치면</span><p>두 용의자 중 “이 발자국을 더 잘 설명하는 쪽”을 고르는 일입니다. 범인일 확률을 말하는 것은 아니에요.</p></div>
+    <div class="nn"><span class="tg">통계로는</span><p>가능도 비율 L(θ₁)/L(θ₂)로 두 모수를 비교하고, L(θ)를 가장 크게 하는 θ̂를 추정값으로 씁니다.</p></div>
+  </div>
+  <div class="talk">
+    <div class="say" data-who="doc"><img class="who" data-who="doc" data-mood="think" alt="" aria-hidden="true"><div><b class="name">박사</b><p>0.267이라는 숫자 하나보다, 두 상자를 맞대 보면 어떨까요?</p></div></div>
+    <div class="say" data-who="robo"><img class="who" data-who="robo" data-mood="coin" alt="" aria-hidden="true"><div><b class="name">주판봇</b><p>제일 높은 0.7 상자가 정답이지. 끝!</p></div></div>
+    <div class="say" data-who="fly"><img class="who flip" data-who="fly" data-mood="point" alt="" aria-hidden="true"><div><b class="name">초파리 연구원</b><p>0.65나 0.75 상자는 없어? 슬라이더를 끝까지 움직여 봐.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div><b class="name">조수 하루</b><p>곡선이 가장 높은 곳은 θ = 0.70이에요. 0.7 상자는 0.5 상자보다 2.28배 더 잘 설명해요.</p></div></div>
+  </div>
+  <div class="panel">
+    <h4>실험 ④ 두 상자 맞대기</h4>
+    <div class="ctrl">
+      <div class="group"><label class="glabel" for="k4">받은 케이크 k</label><input type="range" id="k4" min="0" max="10" step="1" value="7"><span class="val" id="k4v">7개</span></div>
+      <div class="group"><label class="glabel" for="a4">상자 A</label><input type="range" id="a4" min="0.05" max="0.95" step="0.01" value="0.7"><span class="val" id="a4v">0.70</span></div>
+      <div class="group"><label class="glabel" for="b4">상자 B</label><input type="range" id="b4" min="0.05" max="0.95" step="0.01" value="0.5"><span class="val" id="b4v">0.50</span></div>
+    </div>
+    <div class="cwrap"><canvas id="c4" height="300" aria-label="가능도 곡선 위 두 상자와 최대가능도 위치"></canvas></div>
+    <div class="kpis k4">
+      <div class="kpi g"><b id="k4a">0.267</b><span>L(A)</span></div>
+      <div class="kpi m"><b id="k4b">0.117</b><span>L(B)</span></div>
+      <div class="kpi a"><b id="k4c">2.28배</b><span>A가 B보다 잘 설명함</span></div>
+      <div class="kpi r"><b id="k4d">0.70</b><span>최대가능도 θ̂ = k/10</span></div>
+    </div>
+    <div class="insight" aria-live="polite"><p class="a" id="n4"></p></div>
+  </div>
+  <div class="bridge gen"><h4>데이터 분석으로 치면</h4><p>A/B 테스트에서 “클릭률 = 클릭 수 ÷ 노출 수”로 계산하는 값이 바로 최대가능도 추정값이에요. 엑셀로 나눗셈 한 번 한 것이 사실은 가능도 곡선의 꼭대기를 찾은 셈입니다.</p><p class="lm">비유의 한계: 노출이 적으면 꼭대기가 크게 흔들려요. 3번 중 3번 클릭이면 θ̂ = 1.0이 나옵니다.</p></div>
+  <div class="bridge field"><h4>현장에 옮기면</h4><p>불량 0건이면 θ̂ = 0이 되어 “불량률 0%”라고 보고하기 쉽습니다. 표본 수를 함께 쓰고, 과거 라인의 기록(사전 정보)을 더하는 방법은 ⑤에서 봅니다.</p></div>
+  <div class="explain">
+    <h4>풀이</h4>
+    <ol>
+      <li>두 상자의 가능도를 나눕니다. 2.28배라면 “7개라는 결과를 0.7 상자가 2.28배 더 잘 설명한다”는 뜻이에요.</li>
+      <li>곡선이 가장 높은 곳이 최대가능도 추정값 θ̂입니다. 이항분포에서는 k/n과 같아요.</li>
+      <li>k를 바꾸면 꼭대기도 따라 움직입니다. 데이터가 추정값을 정해요.</li>
+    </ol>
+    <p class="lim"><b>이 단계의 한계:</b> 최대가능도는 “가장 그럴듯한 상자”를 알려 줄 뿐, “그 상자일 확률 몇 %”는 말하지 못해요. 그 말을 하려면 초파리가 평소 어떤 상자를 얼마나 자주 꺼내는지 알아야 합니다. 그 이야기가 바로 아래 대결이에요.</p>
+  </div>
+  <div class="quiz" data-quiz="q4"></div>
+</div></section>
+
+<!-- 대결 -->
+<section class="level" id="duel"><div class="wrap">
+  <h2>대결 — 세로줄을 1로 맞추면 ‘상자의 확률’이 될까?</h2>
+  <p>세로줄 합이 0.450이니, 각 값을 0.450으로 나누면 합이 1이 됩니다. 그러면 0.267 ÷ 0.450 ≈ 59%를 “0.7 상자일 확률”이라고 불러도 될까요?</p>
+  <div class="duel" id="duelBox">
+    <div class="head">
+      <div><img class="flip" data-who="fly" data-mood="point" id="dFly" alt="" aria-hidden="true"><div><b style="color:var(--c-fly)">초파리 연구원</b> · 의심하는 쪽</div></div>
+      <div class="vs">VS</div>
+      <div><img data-who="robo" data-mood="coin" id="dRobo" alt="" aria-hidden="true"><div><b style="color:var(--c-robo)">주판봇</b> · 확신하는 쪽</div></div>
+    </div>
+    <div class="choices">
+      <div class="cf"><p><b>초파리:</b> “내가 상자를 얼마나 자주 꺼내는지 모르면 못 정해.”</p><p class="note">선택: 사전 정보 없이는 상자의 확률이라 부를 수 없다</p></div>
+      <div class="cr"><p><b>주판봇:</b> “0.267 ÷ 0.450 = 59%. 나누면 끝이야!”</p><p class="note">선택: 세로줄을 1로 맞춘 값이 곧 상자의 확률이다</p></div>
+    </div>
+    <div class="group" role="group" aria-label="먼저 맞혀 보기"><span class="glabel">먼저 맞혀 보기</span>
+      <button class="bt" data-guess="fly" aria-pressed="false">초파리가 맞을 것 같다</button>
+      <button class="bt" data-guess="robo" aria-pressed="false">주판봇이 맞을 것 같다</button>
+    </div>
+    <div class="ctrl"><button class="bt primary" id="duelRun">결과 보기</button><button class="bt" id="duelReset">다시 닫기</button></div>
+    <div class="verdict" id="duelOut">
+      <div class="group" role="group" aria-label="가정 고르기" style="margin:6px 0">
+        <button class="bt" data-cond="A" aria-pressed="true">가정 A: 네 상자를 똑같이 자주 꺼낸다</button>
+        <button class="bt" data-cond="B" aria-pressed="false">가정 B: 평소 0.3 상자를 94% 꺼낸다</button>
+      </div>
+      <div class="score">
+        <div class="cond on" id="condA"><b>가정 A</b> (사전 25%씩)
+          <div class="glabel">나눈 값 (주판봇)</div><div class="bar"><i id="bAr" style="background:var(--c-robo)"></i><span id="bArv"></span></div>
+          <div class="glabel">0.7 상자의 실제 사후확률</div><div class="bar"><i id="bAp" style="background:var(--gfp)"></i><span id="bApv"></span></div>
+        </div>
+        <div class="cond" id="condB"><b>가정 B</b> (0.3 상자 94%, 나머지 2%씩)
+          <div class="glabel">나눈 값 (주판봇)</div><div class="bar"><i id="bBr" style="background:var(--c-robo)"></i><span id="bBrv"></span></div>
+          <div class="glabel">0.7 상자의 실제 사후확률</div><div class="bar"><i id="bBp" style="background:var(--gfp)"></i><span id="bBpv"></span></div>
+        </div>
+      </div>
+      <div class="talk">
+        <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div><b class="name">조수 하루</b><p id="duelAsst"></p></div></div>
+        <div class="say" data-who="doc"><img class="who" data-who="doc" data-mood="think" alt="" aria-hidden="true"><div><b class="name">박사</b><p>네 상자를 똑같이 꺼낸다면 주판봇, 0.3 상자를 주로 꺼낸다면 초파리. 어느 가정이 현실에 가까운지는 사전 정보가 정한다.</p></div></div>
+      </div>
+      <p class="note" id="duelGuess" aria-live="polite"></p>
+    </div>
+  </div>
+  <div class="explain">
+    <h4>풀이 — 왜 조건부 판정인가</h4>
+    <p>세로줄을 1로 나누는 것은 <b>“모든 상자를 똑같이 그럴듯하다고 본다”는 사전 정보</b>를 몰래 넣은 계산과 같아요. 그 가정이 맞으면 나눈 값이 정말로 사후확률이 되고(가정 A), 가정이 틀리면 크게 어긋납니다(가정 B). 가능도만으로는 어느 쪽인지 정할 수 없어요.</p>
+  </div>
+</div></section>
+
+<!-- ⑤ -->
+<section class="level" id="lv5"><div class="wrap">
+  <h2><span class="hexn">5</span>2막: 역습 — 사전 × 가능도 = 사후, 그리고 야근</h2>
+  <div class="tags"><span class="tag m">방법: 베이즈 정리 (사전분포 · 사후분포)</span><span class="tag d">일상: 초파리의 근무 기록</span></div>
+  <div class="talk">
+    <div class="say" data-who="doc"><img class="who" data-who="doc" data-mood="verdict" alt="" aria-hidden="true"><div><b class="name">박사</b><p>초파리가 상자를 주사위로 골랐다고 실토했어요. 그러니 가정 A, 0.7 상자일 확률은 59.2%. 약속한 50%를 넘었으니 케이크는 시아·모아 몫입니다. 그런데 초파리, 이번 주 일감 10개 중 3개만 끝냈더군요?</p></div></div>
+    <div class="say" data-who="fly"><img class="who flip" data-who="fly" data-mood="point" alt="" aria-hidden="true"><div><b class="name">초파리 연구원</b><p>가능도는 확률이 아니잖아! 그걸로는 나를 판결 못 해!</p></div></div>
+    <div class="say" data-who="doc"><img class="who" data-who="doc" data-mood="magic" alt="" aria-hidden="true"><div><b class="name">박사</b><p>맞아요, 잘 배웠네요. 그래서 지원군을 불렀습니다. 평소 기록을 함께 보면 확률로 말할 수 있거든요.</p></div></div>
+  </div>
+  <div class="ctrl"><button class="bt primary" id="callX" aria-expanded="false" aria-controls="xrow">지원군 부르기</button></div>
+  <div class="xrow" id="xrow">
+    <div class="xc"><img data-who="x1" data-mood="hint" alt="" aria-hidden="true"><div><b>미공개 X1</b><br><small>(…) 지난달 근무 기록을 내민다 → <b>사전분포</b></small></div></div>
+    <div class="xc"><img data-who="x2" data-mood="hint" alt="" aria-hidden="true"><div><b>미공개 X2</b><br><small>(반짝) 이번 주 기록을 읽는다 → <b>가능도</b></small></div></div>
+    <div class="xc"><img data-who="x3" data-mood="hint" alt="" aria-hidden="true"><div><b>미공개 X3</b><br><small>(딸랑) 곱해서 합 1로 맞춘다 → <b>사후분포</b></small></div></div>
+  </div>
+  <div class="mini"><img data-who="doc" data-mood="front" alt="" aria-hidden="true"><p><b>박사:</b> 평소 성실한 동료가 하루 늦은 것과, 늘 늦는 동료가 늦은 것을 똑같이 판단하지는 않잖아요. 평소 기록과 이번 기록을 함께 보는 방법입니다.</p></div>
+  <p>여기서 θ는 초파리의 <b>일 처리 모드</b>, 곧 일감 하나를 끝낼 확률이에요. 0.3(느긋 모드), 0.5, 0.7, 0.9(성실 모드) 넷 중 하나라고 단순하게 봅니다. <b>판결 규칙:</b> 느긋 쪽(θ ≤ 0.5)일 사후확률이 90% 이상이면 야근입니다.</p>
+  <div class="wm">
+    <div class="why">
+      <h4>왜 이 방법을 쓰나</h4>
+      <p><b>문제 상황:</b> “초파리가 느긋 모드일 확률”을 말하고 싶어요.</p>
+      <p><b>앞 방법의 한계:</b> 가능도만으로는 확률이 아니었어요(③). 대결에서 본 것처럼 평소 어떤 모드인지(사전 정보)가 빠져 있습니다.</p>
+      <p><b>해법:</b> <span class="jt" data-g="사전분포">사전분포</span>에 가능도를 곱하고, 합이 1이 되게 나눕니다. 이 결과가 <span class="jt" data-g="사후분포">사후분포</span>예요.</p>
+      <p class="easy"><b>쉽게 말하면:</b> 평소 행실(사전) × 이번 증거(가능도) → 최종 판단(사후).</p>
+    </div>
+    <div class="mathbox">
+      <h4>수학 수식을 어려워하는 조수가 대신 물어봅니다</h4>
+      <div class="mini"><img data-who="asst" data-mood="shock" alt="" aria-hidden="true"><p>사전, 가능도, 사후… 셋을 어떻게 섞는 거예요?</p></div>
+      <p><b>학교 수학으로 보면:</b> 확률과 통계의 ‘조건부확률’에서 나오는 <span class="jt" data-g="베이즈 정리">베이즈 정리</span>예요. 곱한 뒤 전체 합으로 나누는 것이 전부입니다.</p>
+      <div class="eq">P(<em>θ</em> | 데이터) = <b>P(데이터 | θ)</b> × <i>P(θ)</i> ÷ (모든 θ에 대해 더한 값)</div>
+      <table class="pieces">
+        <tr><td>P(θ)</td><td>사전분포. 지난달 기록으로 정한 모드별 비율 (X1)</td></tr>
+        <tr><td>P(데이터 | θ)</td><td>가능도. 이번 주 10개 중 3개를 그 모드로 설명하는 정도 (X2)</td></tr>
+        <tr><td>÷ 전체 합</td><td><span class="jt" data-g="정규화">정규화</span>. 합을 1로 맞춰 확률로 만들기 (X3)</td></tr>
+      </table>
+      <p><b>숫자로 한 번 해 보기:</b> 사전 0.1 · 0.2 · 0.4 · 0.3, 가능도 0.267 · 0.117 · 0.009 · 거의 0(0.000009). 곱하면 0.0267 · 0.0234 · 0.0036 · 거의 0, 합 0.0537. 나누면 사후 0.497 · 0.436 · 0.067 · 거의 0. 느긋 쪽 합 = 0.497 + 0.436 ≈ <b>0.933</b>.</p>
+      <div class="mini"><img data-who="asst" data-mood="spark" alt="" aria-hidden="true"><p>평소엔 성실 쪽이 70%였는데도, 이번 주 기록이 너무 강해서 뒤집혔네요!</p></div>
+    </div>
+  </div>
+  <div class="pair">
+    <div class="fly"><span class="tg">일상으로 치면</span><p>지각 한 번만 보고 판단하지 않고, 평소 출근 기록과 함께 봐서 “요즘 느슨해졌을 가능성이 몇 %”라고 말하는 일입니다.</p></div>
+    <div class="nn"><span class="tg">통계로는</span><p>사후분포 ∝ 가능도 × 사전분포. 가능도는 그대로 쓰되, 사전분포를 곱하고 정규화해야 비로소 θ에 대한 확률이 됩니다.</p></div>
+  </div>
+  <div class="talk">
+    <div class="say" data-who="doc"><img class="who" data-who="doc" data-mood="think" alt="" aria-hidden="true"><div><b class="name">박사</b><p>평소 기록과 이번 주 기록을 함께 보면 판결을 내릴 수 있을까요?</p></div></div>
+    <div class="say" data-who="robo"><img class="who" data-who="robo" data-mood="coin" alt="" aria-hidden="true"><div><b class="name">주판봇</b><p>이번 주 3개면 θ̂ = 0.3. 볼 것도 없이 야근이지!</p></div></div>
+    <div class="say" data-who="fly"><img class="who flip" data-who="fly" data-mood="point" alt="" aria-hidden="true"><div><b class="name">초파리 연구원</b><p>내 평소 기록은 훌륭하다고! ‘초파리 주장’ 기록으로 바꿔 봐.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div><b class="name">조수 하루</b><p>초파리 주장(성실 모드 70%)으로 바꿔도 느긋 쪽 사후확률이 91.4%예요.</p></div></div>
+  </div>
+  <div class="panel">
+    <h4>실험 ⑤ 야근 판결기</h4>
+    <div class="ctrl">
+      <div class="group" role="group" aria-label="사전분포 고르기"><span class="glabel">사전분포</span>
+        <button class="bt" data-prior="ledger" aria-pressed="true">지난달 기록 (X1)</button>
+        <button class="bt" data-prior="fly" aria-pressed="false">초파리 주장</button>
+        <button class="bt" data-prior="uni" aria-pressed="false">정보 없음 (똑같이)</button>
+      </div>
+      <div class="group"><label class="glabel" for="k5">끝낸 일감 (10개 중)</label><input type="range" id="k5" min="0" max="10" step="1" value="3"><span class="val" id="k5v">3개</span></div>
+    </div>
+    <div class="cwrap"><canvas id="c5" height="320" aria-label="사전분포, 가능도, 곱, 사후분포 막대"></canvas></div>
+    <div class="kpis k3">
+      <div class="kpi r"><b id="k5a">93.3%</b><span>느긋 쪽(θ ≤ 0.5) 사후확률</span></div>
+      <div class="kpi a"><b id="k5b">야근</b><span>판결 (기준 90%)</span></div>
+      <div class="kpi m"><b id="k5c">×30,502</b><span>느긋 모드 ÷ 성실 모드 가능도</span></div>
+    </div>
+    <div class="cwrap"><canvas id="c5b" height="200" aria-label="박사의 필살기와 초파리의 퇴근 게이지"></canvas></div>
+    <div class="insight" aria-live="polite"><p class="r" id="n5"></p></div>
+    <h4 style="margin-top:12px">미션</h4>
+    <ul class="mission">
+      <li id="m1">지난달 기록(X1)과 일감 3개로 판결을 확인하기</li>
+      <li id="m2">‘초파리 주장’으로 바꿔도 판결이 유지되는지 확인하기</li>
+      <li id="m3">지난달 기록 기준으로, 몇 개를 끝냈으면 야근을 피했을지 찾기</li>
+    </ul>
+    <div class="after" id="after5">
+      <div class="talk">
+        <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="tea" alt="" aria-hidden="true"><div><b class="name">인턴 모아</b><p>야근하시는 동안 드세요. 케이크는 나눠 먹어야 더 맛있으니까요.</p></div></div>
+        <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="doze" alt="" aria-hidden="true"><div><b class="name">인턴 시아</b><p>판결… 확인했습니… (꾸벅)</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="bridge field"><h4>현장에 옮기면</h4><p>새 납품업체의 불량률을 첫 납품 몇 건만으로 판단하기 어려울 때, 비슷한 업체들의 과거 불량률을 사전분포로 두고 새 기록으로 고쳐 나갑니다. 사전분포의 근거(어떤 기록인지)는 보고서에 꼭 함께 적어요.</p></div>
+  <div class="explain">
+    <h4>풀이</h4>
+    <ol>
+      <li>X1이 지난달 기록으로 모드별 비율(사전분포)을 정합니다.</li>
+      <li>X2가 이번 주 “10개 중 3개”의 가능도를 모드마다 계산합니다.</li>
+      <li>X3가 둘을 곱하고 합이 1이 되게 나눕니다. 이제야 “느긋 모드일 확률”이라고 말할 수 있어요.</li>
+    </ol>
+    <p class="lim"><b>이 단계의 한계:</b> 사전분포를 어떻게 정하느냐에 따라 결과가 달라질 수 있어요. 그래서 사전분포의 근거를 밝히고, 여러 사전분포로 바꿔도 결론이 유지되는지 확인합니다(미션 2). 일감 기록이 많아질수록 사전분포의 영향은 줄어들어요.</p>
+  </div>
+  <details class="code"><summary>교안의 파이썬 코드로 보면 (몰라도 됩니다)</summary>
+<pre>import numpy as np
+from scipy.stats import binom
+theta = np.array([0.3, 0.5, 0.7, 0.9])
+prior = np.array([0.1, 0.2, 0.4, 0.3])      # 지난달 기록
+like  = binom.pmf(3, 10, theta)              # 이번 주 10개 중 3개
+post  = prior * like / (prior * like).sum()  # 사후분포
+post[:2].sum()                               # 0.933 → 야근</pre>
+  <p>곱하고(prior × like) 합으로 나누는 두 줄이 베이즈 정리의 전부예요.</p></details>
+  <div class="quiz" data-quiz="q5"></div>
+</div></section>
+
+<!-- 정리 -->
+<section id="sum"><div class="wrap">
+  <h2>정리 — 확률과 가능도 한눈에</h2>
+  <div class="tw"><table class="cmp">
+    <tr><th></th><th>확률 (가로줄)</th><th>가능도·우도 (세로줄)</th></tr>
+    <tr><th>고정하는 것</th><td class="p">상자(θ)</td><td class="l">결과(데이터, 7개)</td></tr>
+    <tr><th>움직이는 것</th><td class="p">결과 0~10개</td><td class="l">상자 후보 θ</td></tr>
+    <tr><th>합(넓이)</th><td class="p">언제나 1</td><td class="l">정해진 값 없음 (예: 0.450, 곡선 넓이 1/11)</td></tr>
+    <tr><th>묻는 질문</th><td class="p">“이 상자라면 이런 결과가 얼마나 자주 나올까?”</td><td class="l">“이 결과를 어느 상자가 더 잘 설명할까?”</td></tr>
+    <tr><th>바르게 쓰는 법</th><td class="p">결과 예측, 시뮬레이션</td><td class="l">후보끼리 비율 비교, 최대가능도 추정, 사전분포와 곱해 사후분포 만들기</td></tr>
+    <tr><th>흔한 실수</th><td class="p">—</td><td class="l">값을 그대로 “이 상자일 확률”로 읽기</td></tr>
+  </table></div>
+  <h3>용어 대응 카드</h3>
+  <div class="steps">
+    <div class="card"><b>우도 = 가능도 = likelihood</b><p>한 개념의 세 이름. 우도는 통계학계에서 흔히 쓰는 번역, 가능도는 뜻이 더 잘 떠오르는 번역이에요.</p></div>
+    <div class="card"><b>최대가능도 추정 (MLE)</b><p>가능도를 가장 크게 하는 θ. 이항분포에서는 k/n.</p></div>
+    <div class="card"><b>사전 → 사후</b><p>사전분포 × 가능도 ÷ 전체 합 = 사후분포. 이때 비로소 θ에 대한 확률이 됩니다.</p></div>
+  </div>
+  <div class="explain"><h4>비유의 한계 — 여기서는 단순하게 봤어요</h4><p>케이크 상자는 θ 후보를 4개로 줄인 단순화입니다. 실제로 θ는 0과 1 사이 어떤 값이든 될 수 있어서, 사전분포도 곡선(예: 베타분포)으로 다뤄요. 또 실제 근무 성과를 “10개 중 몇 개”만으로 판단하는 것은 지나친 단순화이니, 야근 판결은 계산 연습으로만 봐 주세요.</p></div>
+  <h3>더 알아보기 — 같은 생각이 나오는 곳</h3>
+  <div class="more">
+    <div class="bridge gen"><h4>마르코프 행렬</h4><p>지금 상태에서 다음 상태로 갈 확률을 적은 표예요. 가로줄은 “지금 상태를 고정했을 때의 분포”라 합이 1이고, 세로줄 합은 아무 값이나 될 수 있어요. 케이크 표와 같은 구조입니다.</p><p class="lm">연결: <a href="https://github.com/adminmrobo/Stochastic_labs">Stochastic_labs</a></p></div>
+    <div class="bridge gen"><h4>로지스틱 회귀와 분류 모델</h4><p>분류 모델이 쓰는 손실(교차 엔트로피)은 ‘음의 로그가능도’입니다. 모델을 학습시킨다는 것은 데이터를 고정하고 가중치를 바꿔 가며 가능도를 가장 크게 만드는 일이에요.</p></div>
+    <div class="bridge gen"><h4>은닉 마르코프 모델 (HMM)</h4><p>상태가 바뀌는 확률(마르코프 행렬)과 관측 확률을 이어서 “이 관측 기록의 가능도”를 계산합니다. 음성 인식, 서열 분석에 쓰였어요.</p></div>
+    <div class="bridge gen"><h4>대형 언어 모델 (LLM)</h4><p>앞 문장이 정해지면 다음 단어 후보들의 확률 합은 1(확률, 가로줄)입니다. 반대로 학습 문장을 고정하고 가중치를 바꾸면 가능도(세로줄)가 되고, 사전학습은 이것을 가장 크게 만드는 일이에요.</p><p class="lm">함께 보기: <a href="https://github.com/adminmrobo/bayesian-statistics-for-data-scientists">베이지안 통계 연구실</a> · <a href="https://github.com/adminmrobo/probability_distribution_dictionary">확률분포 딕셔너리</a></p></div>
+  </div>
+</div></section>
+
+<!-- 아웃트로 -->
+<section id="outro"><div class="wrap">
+  <h2>마무리</h2>
+  <div class="talk">
+    <div class="say" data-who="doc"><img class="who" data-who="doc" data-mood="judge" alt="" aria-hidden="true"><div><b class="name">박사</b><p>오늘의 핵심 세 줄입니다. ① 가로줄은 확률, 세로줄은 가능도. ② 가능도는 비교 점수라 합이 1일 이유가 없다. ③ 확률로 말하고 싶으면 사전 정보를 곱해 사후분포를 만든다.</p></div></div>
+    <div class="say" data-who="robo"><img class="who" data-who="robo" data-mood="happy" alt="" aria-hidden="true"><div><b class="name">주판봇</b><p>세로줄을 나누는 건 가정이 맞을 때만 통한다. 이번 판은 반만 본전이야.</p></div></div>
+    <div class="say" data-who="fly"><img class="who flip" data-who="fly" data-mood="cry" alt="" aria-hidden="true"><div><b class="name">초파리 연구원</b><p>…가능도는 확률이 아니라고 내가 말했잖아. 사전분포가 있을 줄은 몰랐지. 인정.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="proud" alt="" aria-hidden="true"><div><b class="name">조수 하루</b><p>표는 하나, 읽는 방향은 둘. 다음에 “○○일 확률”이라는 말을 들으면 무엇을 고정했는지부터 물어봐 주세요.</p></div></div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <h3 style="color:var(--text)">출처</h3>
+  <div class="tw"><table class="tb" style="text-align:left;min-width:520px">
+    <tr><th>#</th><th>자료</th><th>쓰인 곳</th></tr>
+    <tr><td>[1]</td><td style="text-align:left">Muhammad Almas, “Likelihood Is Not a Probability” (LinkedIn 글). <a href="https://www.linkedin.com/pulse/likelihood-probability-muhammad-almas-es7bf/">링크</a> · 2026-11-27 확인</td><td style="text-align:left">구성 아이디어(가로·세로 읽기, 세로줄 합 0.45, 넓이 1/11). 숫자는 이 페이지에서 다시 계산</td></tr>
+    <tr><td>[2]</td><td style="text-align:left">박선용·윤형석 (2016). 우도원리에 대한 분석과 그에 따른 교육적 시사점에 대한 연구. 수학교육 55(2), 193–208. doi:10.7468/mathedu.2016.55.2.193</td><td style="text-align:left">‘우도’와 ‘가능도·가능성’ 번역어</td></tr>
+  </table></div>
+  <p><b>예시값·설명용 모형인 것:</b> 상자 네 개(θ = 0.3·0.5·0.7·0.9), 케이크 10번 중 7번, 초파리의 근무 기록(10개 중 3개), 사전분포 세 가지(지난달 기록 0.1·0.2·0.4·0.3, 초파리 주장 0.05·0.05·0.2·0.7, 균등), 가정 B(0.3 상자 94%), 판결 기준 90%. 모든 확률은 이항분포 공식으로 계산했고, 시뮬레이션은 시드를 고정한 난수입니다.</p>
+  <p>글 · 안상선 (<a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">https://adminmrobo.github.io/who_am_i/who_am_i.html</a>) · (주)M-Robo 대표</p>
+  <p>캐릭터 이름·설정·그림의 저작권은 안상선에게 있습니다. 함께 보기: <a href="https://github.com/adminmrobo/bayesian-statistics-for-data-scientists">베이지안 통계 연구실</a> · <a href="https://github.com/adminmrobo/probability_distribution_dictionary">확률분포 딕셔너리</a> · <a href="https://github.com/adminmrobo/Stochastic_labs">Stochastic_labs</a></p>
+</div></footer>
+
+<div id="tip" role="tooltip"></div>
+<div id="study" aria-live="polite"><span id="stRead">읽은 곳 0%</span> · <span id="stQuiz">퀴즈 0/10</span> <button id="stGl" type="button">밑줄: 핵심</button></div>
+
+<script>
+/*SPRITES*/
+/*MOTION*/
+</script>
+<script>
+(function(){
+'use strict';
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function C(n,k){var r=1;for(var i=1;i<=k;i++)r=r*(n-k+i)/i;return r}
+function L(k,t,n){n=n||10;return C(n,k)*Math.pow(t,k)*Math.pow(1-t,n-k)}
+function f3(x){return x.toFixed(3)}
+function rng(seed){var s=seed>>>0;return function(){s=(s+0x6D2B79F5)>>>0;var t=s;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296}}
+var RM=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ── Cast ── */
+var SP=window.SPRITE||{},AL=window.SPRITE_ALIAS||{};
+var DEF={doc:'doc_front',asst:'asst_smile',fly:'fly_clip',robo:'robo_smile',sia:'sia_smile',moa:'moa_smile',x1:'x1_hint',x2:'x2_hint',x3:'x3_hint'};
+function src(who,mood){var k=who+'_'+mood;var key=AL[k]||k;if(SP[key])return SP[key];var d=AL[DEF[who]]||DEF[who];return SP[d]||''}
+var Cast={fill:function(root){$$('img[data-who][data-mood]',root).forEach(function(im){var s=src(im.getAttribute('data-who'),im.getAttribute('data-mood'));if(s)im.src=s})},
+  set:function(im,who,mood){if(!im)return;im.setAttribute('data-mood',mood);var s=src(who,mood);if(RM){im.src=s;return}im.style.transition='opacity .2s';im.style.opacity='0';setTimeout(function(){im.src=s;im.style.opacity='1'},200)}};
+window.Cast=Cast;Cast.fill();
+
+/* ── 대체 표지 픽셀 소품 ── */
+(function(){var svg=$('#propSvg');if(!svg)return;var h='';
+  function r(x,y,w,hh,c){h+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+hh+'" fill="'+c+'"/>'}
+  var lids=['#c9302c','#4a6a96','#13733a','#9b3fb5'];
+  for(var i=0;i<4;i++){var x=4+i*15;r(x,8,12,12,'#1d1a22');r(x+1,9,10,10,'#f4e7d0');r(x,6,12,3,'#1d1a22');r(x+1,7,10,1,lids[i]);r(x+4,12,4,4,'#1d1a22');r(x+5,13,2,2,'#ffd54a');
+    for(var d=0;d<i+1;d++)r(x+1+d*2,4,1,1,'#a35c00');}
+  /* 케이크 */
+  r(26,0,12,4,'#1d1a22');r(27,1,10,2,'#ffe1ec');r(27,1,10,1,'#c42a6e');r(31,-1,2,1,'#ffd54a');
+  svg.innerHTML=h;svg.setAttribute('viewBox','0 -2 64 23');})();
+
+/* ── canvas 공용 ── */
+var DPR=Math.min(window.devicePixelRatio||1,2);
+function fit(c){var w=c.clientWidth||600,h=+c.getAttribute('height');if(c.__w!==w||c.__d!==DPR){c.__w=w;c.__d=DPR;c.width=Math.round(w*DPR);c.height=Math.round(h*DPR);c.style.height=h+'px'}var x=c.getContext('2d');x.setTransform(DPR,0,0,DPR,0,0);return {x:x,W:w,H:h}}
+function grid(x,W,H){x.clearRect(0,0,W,H);x.fillStyle='#fff';x.fillRect(0,0,W,H);x.strokeStyle='rgba(22,33,43,.05)';x.lineWidth=1;for(var i=0;i<W;i+=24){x.beginPath();x.moveTo(i+.5,0);x.lineTo(i+.5,H);x.stroke()}for(var j=0;j<H;j+=24){x.beginPath();x.moveTo(0,j+.5);x.lineTo(W,j+.5);x.stroke()}}
+function stamp(x,W,t){x.font='12px "IBM Plex Sans KR",sans-serif';var w=x.measureText(t).width+14;x.fillStyle='#fdf3e1';x.strokeStyle='#a35c00';x.lineWidth=1;x.fillRect(W-w-8,8,w,22);x.strokeRect(W-w-8+.5,8.5,w-1,21);x.fillStyle='#a35c00';x.textAlign='left';x.textBaseline='middle';x.fillText(t,W-w-1,19)}
+function txt(x,t,X,Y,o){o=o||{};x.font=(o.b?'700 ':'')+(o.s||12)+'px "IBM Plex Sans KR",sans-serif';x.fillStyle=o.c||'#16212b';x.textAlign=o.a||'center';x.textBaseline=o.bl||'middle';x.fillText(t,X,Y)}
+var DRAW=[],VIS=new Set();
+function reg(c,fn){DRAW.push({c:c,fn:fn});if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)VIS.add(c);else VIS.delete(c)})}).observe(c)}else VIS.add(c)}
+function drawAll(){DRAW.forEach(function(d){d.fn(0)})}
+var last=0;function loop(t){var dt=Math.min(.05,(t-last)/1000||0);last=t;DRAW.forEach(function(d){if(VIS.has(d.c)&&d.fn.anim)d.fn(dt)});requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+window.addEventListener('resize',function(){drawAll()});
+
+/* ── 큰 그림 표 ── */
+var TH=[0.3,0.5,0.7,0.9];
+(function(){var tb=$('#heat');var mode='row',selR=2,selC=7;
+  function build(){var h='<tr><th>상자 θ \\ 받은 개수</th>';for(var k=0;k<=10;k++)h+='<th>'+k+'</th>';h+='<th>가로줄 합</th></tr>';
+    TH.forEach(function(t,i){h+='<tr><th>θ = '+t+'</th>';for(var k=0;k<=10;k++){var v=L(k,t);h+='<td class="c" data-r="'+i+'" data-k="'+k+'" style="background:rgba(74,106,150,'+Math.min(.85,v*2.6).toFixed(2)+');color:'+(v>.18?'#fff':'#16212b')+'">'+f3(v)+'</td>'}h+='<td class="sum">1.000</td></tr>'});
+    h+='<tr><th>세로줄 합</th>';for(var k2=0;k2<=10;k2++){var s=0;TH.forEach(function(t){s+=L(k2,t)});h+='<td class="sum" data-colsum="'+k2+'">'+f3(s)+'</td>'}h+='<td></td></tr>';tb.innerHTML=h;
+    $$('td.c',tb).forEach(function(td){td.addEventListener('click',function(){if(mode==='row')selR=+td.dataset.r;else selC=+td.dataset.k;paint()})})}
+  function paint(){$$('td.c',tb).forEach(function(td){td.classList.remove('hl','hc');if(mode==='row'&&+td.dataset.r===selR)td.classList.add('hl');if(mode==='col'&&+td.dataset.k===selC)td.classList.add('hc')});
+    var n=$('#mapNote');if(mode==='row'){n.className='g';n.textContent='가로로 읽기: 상자 θ = '+TH[selR]+'로 고정하고 받은 개수 0~10을 훑었어요. 11개 값을 더하면 1.000. 상자를 정하면 결과의 확률분포가 됩니다. (다른 줄을 눌러 보세요)'}
+    else{var s=0;TH.forEach(function(t){s+=L(selC,t)});n.className='r';n.textContent='세로로 읽기: 받은 개수 '+selC+'개로 고정하고 상자 넷을 훑었어요. 네 값의 합은 '+f3(s)+'. 각 값은 서로 다른 상자의 가로줄에서 하나씩 빌려 온 것이라 1이 될 이유가 없어요. 이것이 가능도입니다.'}}
+  build();paint();
+  $('#mapRow').onclick=function(){mode='row';this.setAttribute('aria-pressed','true');$('#mapCol').setAttribute('aria-pressed','false');paint()};
+  $('#mapCol').onclick=function(){mode='col';this.setAttribute('aria-pressed','true');$('#mapRow').setAttribute('aria-pressed','false');paint()};
+})();
+
+/* ── ① 확률 막대 + 시뮬레이션 ── */
+(function(){var c=$('#c1'),th=0.7,cnt=new Array(11).fill(0),rounds=0,R=rng(20261127),anim=null,sumK=0;
+  function setT(t){th=t;$('#t1').value=t;$('#t1v').textContent=t.toFixed(2);$$('[data-t1]').forEach(function(b){b.setAttribute('aria-pressed',Math.abs(+b.dataset.t1-t)<1e-9?'true':'false')});cnt.fill(0);rounds=0;sumK=0;anim=null;upd();draw(0)}
+  function oneRound(){var k=0,seq=[];for(var i=0;i<10;i++){var g=R()<th;seq.push(g);if(g)k++}return {k:k,seq:seq}}
+  function upd(){$('#k1a').textContent=f3(L(7,th));var s=0;for(var k=0;k<=10;k++)s+=L(k,th);$('#k1b').textContent=f3(s);$('#k1c').textContent=rounds.toLocaleString('ko-KR');$('#k1d').textContent=rounds?(sumK/rounds).toFixed(2)+' (이론 '+(10*th).toFixed(1)+')':'–';
+    var n=$('#n1');n.textContent=rounds<30?'θ = '+th.toFixed(2)+' 상자: 테두리 막대가 공식값이에요. “10번 조르기”나 “1,000판 몰아 하기”로 직접 돌려 보세요.':rounds+'판을 돌렸더니 초록 막대(빈도)가 테두리 막대(공식값)에 거의 붙었어요. 어느 θ든 막대 11개의 합은 1입니다.'}
+  function draw(dt){var o=fit(c),x=o.x,W=o.W,H=o.H;grid(x,W,H);var top=70,bot=H-30,l=40,r=W-12,bw=(r-l)/11;
+    var mx=0;for(var k=0;k<=10;k++)mx=Math.max(mx,L(k,th),rounds?cnt[k]/rounds:0);mx=Math.max(mx,.1)*1.1;
+    x.strokeStyle='#d5dbe2';x.beginPath();x.moveTo(l,bot+.5);x.lineTo(r,bot+.5);x.stroke();
+    for(var k2=0;k2<=10;k2++){var cx=l+bw*k2,p=L(k2,th),hh=(bot-top)*p/mx;
+      if(rounds){var f=cnt[k2]/rounds,fh=(bot-top)*f/mx;x.fillStyle='#13733a';x.fillRect(cx+bw*.25,bot-fh,bw*.5,fh)}
+      x.strokeStyle='#4a6a96';x.lineWidth=2;x.strokeRect(cx+bw*.1+.5,bot-hh+.5,bw*.8-1,hh);
+      txt(x,String(k2),cx+bw/2,bot+12,{s:12,c:'#5b6874'});if(p>=.005)txt(x,p.toFixed(3),cx+bw/2,bot-hh-9,{s:11,c:'#4a6a96'})}
+    txt(x,'받은 케이크 개수 →',r,H-8,{a:'right',s:11,c:'#5b6874'});
+    /* 마지막 10번 */
+    txt(x,'마지막 10번:',l,22,{a:'left',s:12,c:'#5b6874'});
+    if(anim){anim.t+=dt||0;var shown=RM?10:Math.min(10,Math.floor(anim.t/0.12)+1);for(var i=0;i<shown;i++)cake(x,l+86+i*26,14,anim.seq[i]);if(shown>=10&&!anim.done){anim.done=true;cnt[anim.k]++;rounds++;sumK+=anim.k;upd()}}
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님')}
+  function cake(x,X,Y,g){var p=3;if(g){x.fillStyle='#1d1a22';x.fillRect(X,Y+2*p,6*p,4*p);x.fillStyle='#ffe1ec';x.fillRect(X+p,Y+3*p,4*p,2*p);x.fillStyle='#c42a6e';x.fillRect(X+p,Y+3*p,4*p,p);x.fillStyle='#ffd54a';x.fillRect(X+2.5*p,Y+p,p,p)}else{x.fillStyle='#c9d3e3';x.fillRect(X,Y+5*p,6*p,p);x.fillStyle='#eef2f6';x.fillRect(X+p,Y+4*p,4*p,p)}}
+  draw.anim=true;reg(c,draw);
+  $$('[data-t1]').forEach(function(b){b.onclick=function(){setT(+b.dataset.t1)}});
+  $('#t1').oninput=function(){setT(+this.value)};
+  $('#press10').onclick=function(){var o=oneRound();anim={seq:o.seq,k:o.k,t:0,done:false}};
+  $('#press1000').onclick=function(){for(var i=0;i<1000;i++){var o=oneRound();cnt[o.k]++;sumK+=o.k}rounds+=1000;upd();draw(0)};
+  $('#press0').onclick=function(){setT(th)};
+  upd();
+})();
+
+/* ── ② 가능도 막대 ── */
+(function(){var c=$('#c2'),k=7,add=false;
+  function cands(){return add?[0.3,0.5,0.6,0.7,0.9]:TH}
+  function upd(){var cs=cands(),s=0,bi=0,bv=-1;cs.forEach(function(t){var v=L(k,t);s+=v;if(v>bv){bv=v;bi=t}});$('#k2a').textContent=f3(s);$('#k2b').textContent=String(bi);$('#k2c').textContent=cs.length;$('#k2v').textContent=k+'개';
+    $('#n2').textContent='받은 개수 '+k+'개를 고정했을 때 후보 '+cs.length+'개의 가능도 합은 '+f3(s)+'예요. 오른쪽 막대의 점선(1)과 맞을 이유가 없어요. 후보를 바꾸면 합도 바뀝니다.';draw(0)}
+  function draw(){var o=fit(c),x=o.x,W=o.W,H=o.H;grid(x,W,H);var cs=cands(),top=50,bot=H-34,l=40,r=W-12,sumW=Math.min(120,W*.18),gap=24;var area=r-l-sumW-gap,bw=area/cs.length;
+    var s=0;cs.forEach(function(t){s+=L(k,t)});var mx=Math.max(1,s)*1.08;
+    x.strokeStyle='#d5dbe2';x.beginPath();x.moveTo(l,bot+.5);x.lineTo(r,bot+.5);x.stroke();
+    var cols=['#4a6a96','#4a6a96','#4a6a96','#4a6a96','#4a6a96'];var acc=0;
+    cs.forEach(function(t,i){var v=L(k,t),hh=(bot-top)*v/mx,cx=l+bw*i;x.fillStyle=t===0.6?'#9b3fb5':'#4a6a96';x.fillRect(cx+bw*.2,bot-hh,bw*.6,hh);txt(x,'θ='+t,cx+bw/2,bot+13,{s:12});txt(x,f3(v),cx+bw/2,bot-hh-9,{s:12,b:true,c:'#16212b'})});
+    var sx=r-sumW;cs.forEach(function(t){var v=L(k,t),hh=(bot-top)*v/mx;x.fillStyle=t===0.6?'#9b3fb5':'rgba(74,106,150,'+(0.45+0.12*(acc*10%3))+')';x.fillRect(sx+10,bot-acc-hh,sumW-20,hh);x.strokeStyle='#fff';x.strokeRect(sx+10.5,bot-acc-hh+.5,sumW-21,hh);acc+=hh});
+    var y1=bot-(bot-top)*1/mx;x.setLineDash([5,4]);x.strokeStyle='#c9302c';x.beginPath();x.moveTo(sx,y1+.5);x.lineTo(r,y1+.5);x.stroke();x.setLineDash([]);txt(x,'1 (확률이라면)',r,y1-9,{a:'right',s:11,c:'#c9302c'});
+    txt(x,'세로줄 합 '+f3(s),sx+sumW/2,bot+13,{s:12,b:true,c:'#c9302c'});
+    stamp(x,W,'예시값')}
+  reg(c,draw);
+  $('#k2').oninput=function(){k=+this.value;upd()};
+  $('#add6').onclick=function(){add=!add;this.setAttribute('aria-pressed',add?'true':'false');upd()};
+  upd();
+})();
+
+/* ── ③ 곡선 넓이 ── */
+(function(){var c=$('#c3'),k=7,x11=false;
+  function area(kk){var N=2000,s=0;for(var i=0;i<N;i++)s+=L(kk,(i+.5)/N);return s/N}
+  function upd(){$('#k3v').textContent=k+'개';var a=area(k);$('#k3a').textContent=a.toFixed(4);$('#k3b').textContent=(a*11).toFixed(3);$('#k3c').textContent=(k/10).toFixed(2);$('#k3d').textContent=f3(L(k,k/10));
+    $('#n3').textContent='k = '+k+'일 때 곡선 아래 넓이는 '+a.toFixed(4)+' (= 1/11). 확률분포라면 1이어야 해요.'+(x11?' 점선은 곡선을 11배 한 것으로, 넓이가 1이 됩니다(모든 θ를 똑같이 그럴듯하게 본 사전 정보를 덧붙인 결과).':'');draw()}
+  function draw(){var o=fit(c),x=o.x,W=o.W,H=o.H;grid(x,W,H);var l=46,r=W-14,top=40,bot=H-34;var mx=x11?3.6:0.42;
+    function X(t){return l+(r-l)*t}function Y(v){return bot-(bot-top)*v/mx}
+    x.strokeStyle='#d5dbe2';x.beginPath();x.moveTo(l,bot+.5);x.lineTo(r,bot+.5);x.moveTo(l+.5,top);x.lineTo(l+.5,bot);x.stroke();
+    for(var t=0;t<=10;t+=2)txt(x,(t/10).toFixed(1),X(t/10),bot+13,{s:11,c:'#5b6874'});txt(x,'θ (상자) →',r,H-6,{a:'right',s:11,c:'#5b6874'});
+    var tk=x11?[0,1,2,3]:[0,.1,.2,.3,.4];tk.forEach(function(v){txt(x,String(v),l-6,Y(v),{a:'right',s:11,c:'#5b6874'})});
+    x.beginPath();x.moveTo(X(0),bot);for(var i=0;i<=200;i++){var th=i/200;x.lineTo(X(th),Y(L(k,th)))}x.lineTo(X(1),bot);x.closePath();x.fillStyle='rgba(74,106,150,.18)';x.fill();
+    x.beginPath();for(var j=0;j<=200;j++){var t2=j/200;var yy=Y(L(k,t2));if(j)x.lineTo(X(t2),yy);else x.moveTo(X(t2),yy)}x.strokeStyle='#4a6a96';x.lineWidth=2.5;x.stroke();
+    if(x11){x.setLineDash([6,4]);x.beginPath();for(var m=0;m<=200;m++){var t3=m/200,y3=Y(11*L(k,t3));if(m)x.lineTo(X(t3),y3);else x.moveTo(X(t3),y3)}x.strokeStyle='#13733a';x.stroke();x.setLineDash([])}
+    TH.forEach(function(t){var v=L(k,t);x.fillStyle='#c9302c';x.beginPath();x.arc(X(t),Y(v),4,0,7);x.fill();txt(x,f3(v),X(t),Y(v)-12,{s:11,c:'#c9302c'})});
+    txt(x,'넓이 = '+area(k).toFixed(4)+' ≈ 1/11',l+10,top-12,{a:'left',s:13,b:true,c:'#4a6a96'});
+    stamp(x,W,'예시값')}
+  reg(c,draw);
+  $('#k3').oninput=function(){k=+this.value;upd()};
+  $('#x11').onclick=function(){x11=!x11;this.setAttribute('aria-pressed',x11?'true':'false');upd()};
+  upd();
+  var FB=['계산은 맞아요. P(7번 | 성공률 0.7) = 0.267은 정확합니다. 문제는 해석이에요.','맞아요. 0.267은 “성공률이 0.7이라면 7번이 나올 확률”이에요. “성공률이 0.7일 확률”을 말하려면 사전 정보와 베이즈 정리가 필요합니다. AI 답변도 무엇을 고정했는지부터 확인하세요.','숫자는 맞지만, 조건과 질문이 뒤바뀌었어요. 다시 골라 보세요.'];
+  $$('[data-ai]').forEach(function(b){b.onclick=function(){$$('[data-ai]').forEach(function(z){z.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');var i=+b.dataset.ai;var f=$('#aiFb');f.textContent=FB[i];f.style.color=i===1?'var(--gfp)':'var(--eye)'}});
+})();
+
+/* ── ④ 비교 ── */
+(function(){var c=$('#c4'),k=7,A=.7,B=.5;
+  function upd(){$('#k4v').textContent=k+'개';$('#a4v').textContent=A.toFixed(2);$('#b4v').textContent=B.toFixed(2);var la=L(k,A),lb=L(k,B);$('#k4a').textContent=la<.001?la.toExponential(1):f3(la);$('#k4b').textContent=lb<.001?lb.toExponential(1):f3(lb);var rr=la/lb;$('#k4c').textContent=(rr>=100?Math.round(rr).toLocaleString('ko-KR'):rr.toFixed(2))+'배';$('#k4d').textContent=(k/10).toFixed(2);
+    $('#n4').textContent=rr>=1?'k = '+k+'개라는 결과를 상자 A('+A.toFixed(2)+')가 상자 B('+B.toFixed(2)+')보다 '+(rr>=100?Math.round(rr).toLocaleString('ko-KR'):rr.toFixed(2))+'배 더 잘 설명해요. “A일 확률”은 아니라는 점, 기억하세요.':'이번에는 B가 A보다 '+(1/rr).toFixed(2)+'배 더 잘 설명해요. 곡선 꼭대기(θ̂ = '+(k/10).toFixed(2)+')에 가까운 쪽이 이깁니다.';draw()}
+  function draw(){var o=fit(c),x=o.x,W=o.W,H=o.H;grid(x,W,H);var l=46,r=W-14,top=40,bot=H-34,mx=Math.max(.42,L(k,k/10)*1.15);
+    function X(t){return l+(r-l)*t}function Y(v){return bot-(bot-top)*v/mx}
+    x.strokeStyle='#d5dbe2';x.beginPath();x.moveTo(l,bot+.5);x.lineTo(r,bot+.5);x.stroke();for(var t=0;t<=10;t+=2)txt(x,(t/10).toFixed(1),X(t/10),bot+13,{s:11,c:'#5b6874'});
+    x.beginPath();for(var j=0;j<=200;j++){var t2=j/200,yy=Y(L(k,t2));if(j)x.lineTo(X(t2),yy);else x.moveTo(X(t2),yy)}x.strokeStyle='#4a6a96';x.lineWidth=2.5;x.stroke();
+    var mle=k/10;x.setLineDash([4,4]);x.strokeStyle='#c9302c';x.beginPath();x.moveTo(X(mle)+.5,top-10);x.lineTo(X(mle)+.5,bot);x.stroke();x.setLineDash([]);txt(x,'θ̂ = '+mle.toFixed(2),X(mle),top-18,{s:12,b:true,c:'#c9302c'});
+    [[A,'A','#13733a'],[B,'B','#9b3fb5']].forEach(function(p){var v=L(k,p[0]);x.strokeStyle=p[2];x.lineWidth=2;x.beginPath();x.moveTo(X(p[0])+.5,bot);x.lineTo(X(p[0])+.5,Y(v));x.stroke();x.fillStyle=p[2];x.beginPath();x.arc(X(p[0]),Y(v),6,0,7);x.fill();txt(x,p[1],X(p[0]),Y(v)-16,{s:13,b:true,c:p[2]})});
+    stamp(x,W,'예시값')}
+  reg(c,draw);
+  $('#k4').oninput=function(){k=+this.value;upd()};$('#a4').oninput=function(){A=+this.value;upd()};$('#b4').oninput=function(){B=+this.value;upd()};
+  upd();
+})();
+
+/* ── 대결 (조건부 C) ── */
+(function(){var guess=null,cond='A';
+  function post(pr){var p=pr.map(function(a,i){return a*L(7,TH[i])}),z=p.reduce(function(a,b){return a+b},0);return p.map(function(v){return v/z})}
+  function run(){var s=0;TH.forEach(function(t){s+=L(7,t)});var div=L(7,.7)/s;var pA=post([.25,.25,.25,.25])[2],pB=post([.94,.02,.02,.02])[2];
+    function setB(id,v){$('#'+id).style.width=(v*100).toFixed(1)+'%';$('#'+id+'v').textContent=(v*100).toFixed(1)+'%'}
+    setB('bAr',div);setB('bAp',pA);setB('bBr',div);setB('bBp',pB);
+    return {div:div,pA:pA,pB:pB}}
+  function show(){var r=run();$('#duelOut').classList.add('on');
+    $('#duelAsst').textContent='나눈 값은 두 가정 모두 '+(r.div*100).toFixed(1)+'%예요. 0.7 상자의 실제 사후확률은 가정 A에서 '+(r.pA*100).toFixed(1)+'%, 가정 B에서 '+(r.pB*100).toFixed(1)+'%예요.';
+    Cast.set($('#dFly'),'fly','coffee');Cast.set($('#dRobo'),'robo','calc');
+    $('#duelGuess').textContent=guess?('먼저 맞혀 보기에서 '+(guess==='fly'?'초파리':'주판봇')+'를 골랐어요. 이 판은 조건부라 가정에 따라 둘 다 맞을 수 있어요.'):'';setCond(cond)}
+  function setCond(cn){cond=cn;$$('[data-cond]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.cond===cn?'true':'false')});$('#condA').classList.toggle('on',cn==='A');$('#condB').classList.toggle('on',cn==='B')}
+  $$('[data-guess]').forEach(function(b){b.onclick=function(){guess=b.dataset.guess;$$('[data-guess]').forEach(function(z){z.setAttribute('aria-pressed',z===b?'true':'false')})}});
+  $$('[data-cond]').forEach(function(b){b.onclick=function(){setCond(b.dataset.cond)}});
+  $('#duelRun').onclick=show;
+  $('#duelReset').onclick=function(){$('#duelOut').classList.remove('on');Cast.set($('#dFly'),'fly','point');Cast.set($('#dRobo'),'robo','coin');guess=null;$$('[data-guess]').forEach(function(z){z.setAttribute('aria-pressed','false')})};
+})();
+
+/* ── ⑤ 야근 판결기 ── */
+(function(){var c=$('#c5'),c2=$('#c5b'),k=3,pk='ledger',PRI={ledger:[.1,.2,.4,.3],fly:[.05,.05,.2,.7],uni:[.25,.25,.25,.25]};
+  var NAME={ledger:'지난달 기록',fly:'초파리 주장',uni:'정보 없음'};var hp=1,hpT=1,fx=0,touched=false,seen={};
+  var flyImg=new Image(),ok=false;flyImg.onload=function(){ok=true};flyImg.src=src('fly','cry');var flyImg2=new Image();flyImg2.src=src('fly','point');var docImg=new Image();docImg.src=src('doc','think');
+  function calc(){var pr=PRI[pk],li=TH.map(function(t){return L(k,t)}),pd=pr.map(function(a,i){return a*li[i]}),z=pd.reduce(function(a,b){return a+b},0),po=pd.map(function(v){return v/z});return {pr:pr,li:li,pd:pd,po:po,lazy:po[0]+po[1],lr:li[0]/li[3]}}
+  function fmtLR(v){return v>=100?Math.round(v).toLocaleString('ko-KR'):v>=1?v.toFixed(1):v.toFixed(3)}
+  function upd(){$('#k5v').textContent=k+'개';var r=calc(),guilty=r.lazy>=.9;$('#k5a').textContent=(r.lazy*100).toFixed(1)+'%';$('#k5b').textContent=guilty?'야근':'퇴근';$('#k5b').style.color=guilty?'var(--eye)':'var(--gfp)';$('#k5c').textContent='×'+fmtLR(r.lr);
+    hpT=guilty?0:1;if(guilty&&touched)fx=0;
+    $('#n5').className=guilty?'r':'g';$('#n5').textContent=NAME[pk]+' + 일감 '+k+'개: 느긋 쪽 사후확률 '+(r.lazy*100).toFixed(1)+'% → '+(guilty?'90% 이상이라 야근 크리티컬! 이번 주 기록에서 느긋 모드가 성실 모드보다 '+fmtLR(r.lr)+'배 더 그럴듯했어요.':'90% 미만이라 퇴근. 기록이 판결을 뒤집었어요.');
+    if(touched){if(pk==='ledger'&&k===3){seen.m1=1}if(pk==='fly'&&k===3&&guilty)seen.m2=1;if(pk==='ledger'&&!guilty&&k===4)seen.m3=1}
+    ['m1','m2','m3'].forEach(function(m){$('#'+m).classList.toggle('ok',!!seen[m])});
+    $('#after5').classList.toggle('on',touched&&guilty);draw()}
+  function draw(){var o=fit(c),x=o.x,W=o.W,H=o.H;grid(x,W,H);var r=calc();var titles=['사전 (X1)','가능도 (X2)','곱','사후 (X3)'],data=[r.pr,r.li,r.pd,r.po];var gw=(W-20)/4,top=46,bot=H-40;
+    data.forEach(function(arr,g){var gx=10+gw*g,mx=Math.max.apply(null,arr)*1.15||1;if(g===3||g===0)mx=1;txt(x,titles[g],gx+gw/2,22,{s:13,b:true,c:g===3?'#13733a':'#16212b'});
+      x.strokeStyle='#d5dbe2';x.beginPath();x.moveTo(gx+6,bot+.5);x.lineTo(gx+gw-6,bot+.5);x.stroke();var bw=(gw-12)/4;
+      arr.forEach(function(v,i){var hh=(bot-top)*v/mx,bx=gx+6+bw*i;x.fillStyle=g===3?(i<2?'#c9302c':'#13733a'):(i<2?'rgba(201,48,44,.55)':'rgba(19,115,58,.55)');x.fillRect(bx+bw*.15,bot-hh,bw*.7,hh);txt(x,String(TH[i]),bx+bw/2,bot+12,{s:11,c:'#5b6874'});
+        var lab=v>=.001?v.toFixed(3):'≈0';txt(x,lab,bx+bw/2,bot-hh-8,{s:10,c:'#16212b'})});
+      if(g<3)txt(x,g===2?'÷ 합':'×',gx+gw,top+(bot-top)/2,{s:16,b:true,c:'#9b3fb5'})});
+    txt(x,'0.3·0.5 = 느긋 쪽(빨강), 0.7·0.9 = 성실 쪽(초록) · ≈0은 0.001보다 작은 값 · 가능도와 곱은 크게 확대해 그림',W/2,H-10,{s:11,c:'#5b6874'});
+    stamp(x,W,'예시값')}
+  function draw2(dt){var o=fit(c2),x=o.x,W=o.W,H=o.H;grid(x,W,H);hp+=(hpT-hp)*Math.min(1,(dt||0)*3);if(RM||!dt)hp=hpT;fx+=dt||0;
+    var guilty=hpT===0;var dx=W*.22,fxp=W*.74,base=H-24;
+    var drew=false;if(guilty&&touched&&window.drawMotion)drew=window.drawMotion(x,'D6','broadcast_wave',RM?0.45:fx,dx,base,140,{face:'right',fps:10,once:true});
+    if(!drew&&!(guilty&&touched)&&window.drawMotion)drew=window.drawMotion(x,'D6','broadcast_wave',0,dx,base,140,{frame:0,face:'right'});
+    if(!drew&&docImg.complete&&docImg.naturalWidth)x.drawImage(docImg,dx-48,base-110,96,96);
+    var fi=guilty&&touched?flyImg:flyImg2;if(fi.complete&&fi.naturalWidth){x.drawImage(fi,fxp-40,base-90,80,80)}
+    /* 퇴근 게이지 */
+    var gw=Math.min(220,W*.36),gx=fxp-gw/2,gy=16;x.fillStyle='#eef2f6';x.fillRect(gx,gy,gw,14);x.fillStyle=hp>.5?'#13733a':'#c9302c';x.fillRect(gx,gy,gw*hp,14);x.strokeStyle='#16212b';x.strokeRect(gx+.5,gy+.5,gw-1,13);txt(x,'초파리 퇴근 게이지',fxp,gy+26,{s:11,c:'#5b6874'});
+    if(guilty&&touched&&fx>0.6){var r=calc();var s=RM?1:Math.min(1,(fx-.6)*3);x.save();x.globalAlpha=s;var mx=(dx+fxp)/2;txt(x,'야근 크리티컬!',mx,H*.38,{s:22,b:true,c:'#c9302c'});txt(x,'데미지 ×'+fmtLR(r.lr),mx,H*.38+26,{s:15,b:true,c:'#a35c00'});x.restore()}
+    if(!guilty||!touched)txt(x,guilty?'사전분포나 일감 수를 바꾸면 판결이 실행돼요':'퇴근!',(dx+fxp)/2,H*.42,{s:16,b:true,c:guilty?'#5b6874':'#13733a'})}
+  draw2.anim=true;reg(c,draw);reg(c2,draw2);
+  $$('[data-prior]').forEach(function(b){b.onclick=function(){pk=b.dataset.prior;touched=true;$$('[data-prior]').forEach(function(z){z.setAttribute('aria-pressed',z===b?'true':'false')});upd()}});
+  $('#k5').oninput=function(){k=+this.value;touched=true;upd()};
+  $('#callX').onclick=function(){var on=$('#xrow').classList.toggle('on');this.setAttribute('aria-expanded',on?'true':'false');this.textContent=on?'지원군 숨기기':'지원군 부르기';if(on){touched=true;upd()}};
+  upd();
+})();
+
+/* ── 용어 말풍선 ── */
+var GL={
+ '확률':['확률','기초','상자(θ)를 고정했을 때 각 결과가 나올 정도. 가능한 모든 결과의 확률을 더하면 1입니다.',1],
+ '가능도':['가능도 (우도, likelihood)','핵심','결과(데이터)를 고정하고 모수 θ를 바꿔 가며 본 값. “이 θ가 데이터를 얼마나 잘 설명하나”를 나타내며, 합이 1일 필요가 없습니다.',1],
+ '우도':['우도 = 가능도','용어','likelihood의 다른 번역어. 통계학계에서 흔히 쓰며 가능도와 같은 개념입니다.',1],
+ '이항분포':['이항분포','분포','성공 확률 θ인 독립시행을 n번 했을 때 성공 횟수의 분포. P(X=k)= nCk θ^k (1−θ)^(n−k).',1],
+ '독립시행':['독립시행','기초','한 번의 결과가 다른 번의 결과에 영향을 주지 않는 시행. 동전 던지기처럼요.',0],
+ '모수':['모수 (θ)','기초','분포의 모양을 정하는 숫자. 여기서는 상자가 케이크를 줄 확률 θ입니다.',1],
+ '베이즈 정리':['베이즈 정리','방법','P(θ|데이터) = P(데이터|θ) × P(θ) ÷ 전체 합. 가능도를 θ에 대한 확률로 바꾸는 규칙입니다.',1],
+ '가능도 비율':['가능도 비율','방법','두 후보의 가능도를 나눈 값. “A가 B보다 데이터를 몇 배 더 잘 설명하나”를 뜻합니다.',1],
+ '최대가능도 추정':['최대가능도 추정 (MLE)','방법','가능도를 가장 크게 만드는 θ를 추정값으로 고르는 방법. 이항분포에서는 k/n.',1],
+ '사전분포':['사전분포','베이즈','데이터를 보기 전에 θ 후보들에 매겨 둔 확률. 근거(과거 기록 등)를 밝혀야 합니다.',1],
+ '사후분포':['사후분포','베이즈','사전분포 × 가능도를 합이 1이 되게 나눈 결과. 데이터를 본 뒤의 θ에 대한 확률입니다.',1],
+ '정규화':['정규화','계산','값들을 모두 더한 값으로 나눠 합을 1로 맞추는 일.',0]
+};
+(function(){var tip=$('#tip'),level='core',cur=null;
+  function show(el){var g=GL[el.dataset.g];if(!g)return;tip.innerHTML='<b>'+g[0]+'</b><small>'+g[1]+'</small><div>'+g[2]+'</div>';tip.style.display='block';var r=el.getBoundingClientRect();var l=Math.min(window.innerWidth-tip.offsetWidth-10,Math.max(10,r.left+window.scrollX));tip.style.left=l+'px';tip.style.top=(r.bottom+window.scrollY+6)+'px';cur=el}
+  function hide(){tip.style.display='none';cur=null}
+  $$('.jt').forEach(function(el){el.setAttribute('tabindex','0');el.setAttribute('role','button');el.addEventListener('mouseenter',function(){show(el)});el.addEventListener('mouseleave',hide);el.addEventListener('focus',function(){show(el)});el.addEventListener('blur',hide);el.addEventListener('click',function(e){e.stopPropagation();if(cur===el)hide();else show(el)})});
+  document.addEventListener('click',hide);document.addEventListener('keydown',function(e){if(e.key==='Escape')hide()});window.addEventListener('scroll',function(){if(cur)hide()},{passive:true});
+  function apply(){$$('.jt').forEach(function(el){var g=GL[el.dataset.g];var on=level==='all'||(level==='core'&&g&&g[3]);el.style.borderBottom=on?'':'none';el.style.cursor=on?'help':'auto'});$('#stGl').textContent='밑줄: '+({core:'핵심',all:'전체',off:'끄기'})[level]}
+  $('#stGl').onclick=function(){level=level==='core'?'all':level==='all'?'off':'core';apply()};apply();
+})();
+
+/* ── 퀴즈 ── */
+var QZ={
+ q1:[{q:'0.5 상자에서 케이크를 0~10번 받을 확률을 모두 더하면?',o:['0.5','1','11'],a:1,why:'상자를 고정하면 결과의 확률분포가 되므로, 가능한 모든 결과의 확률 합은 언제나 1이에요.',hint:'가로줄 합을 떠올려 보세요.'},
+     {q:'0.5 상자에서 정확히 7번 받을 확률은? (소수 셋째 자리)',num:0.117,tol:0.002,why:'120 × 0.5^10 = 120 ÷ 1024 ≈ 0.117.',hint:'120 × 0.5^7 × 0.5^3 = 120 × 0.5^10.'}],
+ q2:[{q:'‘우도’와 ‘가능도’의 관계는?',o:['서로 반대 개념','likelihood를 옮긴 같은 말','우도는 확률, 가능도는 비율'],a:1,why:'둘 다 likelihood의 번역어예요. 다른 것처럼 섞어 쓰면 듣는 사람만 헷갈립니다.',hint:'영어로 바꿔 보세요.'},
+     {q:'결과 7개를 고정한 채 상자 후보를 하나 더 넣으면 세로줄 합은?',o:['언제나 1로 유지','바뀐다','0이 된다'],a:1,why:'세로줄은 서로 다른 분포에서 값을 하나씩 빌려 온 것이라 후보가 바뀌면 합도 바뀌어요(0.450 → 0.665).',hint:'‘0.6 상자 추가’ 버튼을 눌러 보세요.'}],
+ q3:[{q:'P(7개 | 0.7 상자) = 0.267의 바른 해석은?',o:['0.7 상자일 확률이 26.7%','0.7 상자라면 7개가 나올 확률이 26.7%','7개가 나올 확률은 언제나 26.7%'],a:1,why:'세로 막대 뒤가 조건이에요. 상자를 정해 둔 상태에서 결과의 확률입니다.',hint:'무엇을 고정했나요?'},
+     {q:'10번 던진 경우 가능도 곡선의 넓이 1/11에 몇을 곱하면 1이 될까?',num:11,tol:0,why:'1/11 × 11 = 1. 11배 한 곡선은 ‘모든 θ를 똑같이 본 사전 정보’를 덧붙인 사후분포와 같아요.',hint:'1/11 × ? = 1'}],
+ q4:[{q:'가능도 비율 L(0.7)/L(0.5) ≈ 2.28의 뜻은?',o:['0.7 상자일 확률이 2.28배 높다','7개라는 결과를 0.7 상자가 2.28배 더 잘 설명한다','0.7 상자가 케이크를 2.28배 많이 준다'],a:1,why:'가능도 비율은 ‘데이터를 설명하는 정도’의 비교예요. 확률의 비교로 바꾸려면 사전 정보가 필요해요.',hint:'가능도는 무엇을 고정했나요?'},
+     {q:'20번 눌러 14번 받았다면 최대가능도 추정값 θ̂는?',num:0.7,tol:0.001,why:'θ̂ = k ÷ n = 14 ÷ 20 = 0.7.',hint:'받은 횟수 ÷ 누른 횟수.'}],
+ q5:[{q:'사후분포의 값들을 모두 더하면?',o:['1','가능도의 합과 같다','사전분포의 합의 2배'],a:0,why:'곱한 뒤 전체 합으로 나눴기 때문에(정규화) 합이 1이 되고, 그래서 θ에 대한 확률이라 부를 수 있어요.',hint:'X3가 한 일을 떠올려 보세요.'},
+     {q:'일감 기록이 100개, 1,000개로 많아지면 사전분포의 영향은?',o:['커진다','줄어든다','변하지 않는다'],a:1,why:'데이터가 많을수록 가능도가 훨씬 뾰족해져 사후분포를 주도해요.',hint:'증거가 쌓이면 평소 인상보다 증거를 따르게 되죠.'}]
+};
+(function(){var total=0,solved={};
+  Object.keys(QZ).forEach(function(id){total+=QZ[id].length;var box=$('[data-quiz="'+id+'"]');if(!box)return;var h='<b style="color:var(--info)">확인 퀴즈</b>';
+    QZ[id].forEach(function(q,i){h+='<div class="qq">'+(i+1)+'. '+q.q+'</div>';if(q.o){h+='<div class="opts">'+q.o.map(function(o,j){return '<button class="bt" data-q="'+id+'-'+i+'" data-j="'+j+'">'+o+'</button>'}).join('')+'</div>'}else{h+='<div class="opts"><input type="text" inputmode="decimal" aria-label="답 입력" id="in-'+id+'-'+i+'"><button class="bt" data-q="'+id+'-'+i+'" data-num="1">확인</button></div>'}h+='<div class="fb" id="fb-'+id+'-'+i+'" aria-live="polite"></div>'});box.innerHTML=h});
+  function upd(){$('#stQuiz').textContent='퀴즈 '+Object.keys(solved).length+'/'+total}
+  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-q]');if(!b)return;var p=b.dataset.q.split('-'),id=p[0],i=+p[1],q=QZ[id][i],fb=$('#fb-'+id+'-'+i),good;
+    if(b.dataset.num){var v=parseFloat(($('#in-'+id+'-'+i).value||'').replace(',','.'));good=!isNaN(v)&&Math.abs(v-q.num)<=q.tol+1e-9}else{good=+b.dataset.j===q.a;$$('[data-q="'+b.dataset.q+'"]').forEach(function(z){z.setAttribute('aria-pressed',z===b?'true':'false')})}
+    fb.className='fb '+(good?'ok':'no');fb.textContent=good?'정답! '+q.why:'다시 생각해 봐요. 힌트: '+q.hint;if(good){solved[b.dataset.q]=1;upd()}});
+  upd();
+})();
+
+/* ── 진행률 ── */
+(function(){function f(){var h=document.documentElement,s=h.scrollTop||document.body.scrollTop,m=h.scrollHeight-h.clientHeight,p=m>0?Math.round(s/m*100):0;$('#prog').style.width=p+'%';$('#stRead').textContent='읽은 곳 '+p+'%'}window.addEventListener('scroll',f,{passive:true});f()})();
+
+drawAll();
+})();
+</script>
+</body>
+</html>
