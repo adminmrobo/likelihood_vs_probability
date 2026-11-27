@@ -201,7 +201,8 @@ details.code pre{background:var(--panel2);padding:10px;border-radius:8px;overflo
 .seat{font-size:13px;font-weight:700;color:#fff;background:#2b2d42;border-radius:6px;padding:0 6px;margin-left:6px}
 .ck,.pl{display:inline-block;min-width:1.6em;padding:0 4px;border-radius:4px;font-size:13px;font-weight:700;text-align:center;line-height:1.6}
 .ck{background:#ffe1ec;color:#c42a6e;border:1px solid #e8a3bf}.pl{background:#eef2f6;color:#5b6874;border:1px solid #d5dbe2}
-#wSeq td{min-width:64px}#wSeq .sq{white-space:nowrap;display:inline-block;margin:2px 6px 2px 0}
+#wSeq td{min-width:64px}@media (max-width:520px){#wSeq .sq small{display:block;margin-bottom:4px}#wSeq th{font-size:13px}}
+#wSeq td:last-child{min-width:96px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}#wSeq .sq{white-space:nowrap;display:inline-block;margin:2px 6px 2px 0}
 #wTab td.c{cursor:pointer;min-width:60px}
 #wTab td.c.hl{outline:3px solid var(--gfp);outline-offset:-3px;font-weight:700}
 #wTab td.c.hc{outline:3px solid #e07a2c;outline-offset:-3px;font-weight:700}
@@ -331,7 +332,7 @@ details.abbr{margin-top:10px;font-size:15px}
   </div>
   <div class="panel">
     <h4>준비 ② 세 번 누르기 — 나올 수 있는 순서 8가지</h4>
-    <p>세 번 누르면 케이크(<span class="ck">케</span>)와 빈 접시(<span class="pl">빈</span>)가 나오는 순서는 2 × 2 × 2 = 8가지예요. 순서마다 확률을 곱하고, 케이크 개수끼리 묶어 더합니다.</p>
+    <p>세 번 누르면 케이크(<span class="ck">케</span>)와 빈 접시(<span class="pl">빈</span>)가 나오는 순서는 2 × 2 × 2 = 8가지예요. 순서마다 나온 차례대로 확률을 곱하고, 케이크 개수가 같은 순서끼리 묶어 더합니다.</p>
     <div class="tw"><table class="tb" id="wSeq" aria-label="세 번 누를 때 나올 수 있는 순서와 확률"></table></div>
     <div class="insight" aria-live="polite"><p class="g" id="w2"></p></div>
   </div>
@@ -942,13 +943,14 @@ window.addEventListener('resize',function(){drawAll()});
   function p3(k,t){return L(k,t,3)}
   function draw(){$$('[data-w]').forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.w===th?'true':'false')});
     $('#w1').innerHTML='<span class="ck">케</span> 케이크: <b>'+th.toFixed(1)+'</b> &nbsp; · &nbsp; <span class="pl">빈</span> 빈 접시: <b>'+(1-th).toFixed(1)+'</b> &nbsp; → 둘을 더하면 1';
-    var S=seqs(),h='<tr><th>케이크 개수</th><th>나올 수 있는 순서</th><th>순서 하나의 확률</th><th>묶음 합</th></tr>';
+    var S=seqs(),h='<tr><th>케이크 개수</th><th>나올 수 있는 순서와 그 확률 (나온 순서대로 곱하기)</th><th>묶음 합 (순서 상관없이 더하기)</th></tr>';
+    var T=th.toFixed(1),F=(1-th).toFixed(1);
     for(var k=0;k<=3;k++){var g=S.filter(function(a){return a[0]+a[1]+a[2]===k});var one=Math.pow(th,k)*Math.pow(1-th,3-k);
-      var icons=g.map(function(a){return '<span class="sq">'+a.map(function(v){return v?'<span class="ck">케</span>':'<span class="pl">빈</span>'}).join('')+'</span>'}).join(' ');
-      var f=[];for(var i=0;i<3;i++)f.push(i<k?th.toFixed(1):(1-th).toFixed(1));
-      h+='<tr><td>'+k+'개</td><td style="text-align:left">'+icons+'</td><td>'+f.join(' × ')+' = '+one.toFixed(3)+'</td><td><b>'+g.length+' × '+one.toFixed(3)+' = '+p3(k,th).toFixed(3)+'</b></td></tr>'}
-    h+='<tr><th colspan="3">네 묶음을 모두 더하면</th><th>1.000</th></tr>';$('#wSeq').innerHTML=h;
-    $('#w2').textContent='예를 들어 “케이크 2개”는 순서가 3가지라서, 순서 하나의 확률에 3을 곱해요. 이 “3”이 큰 표 공식의 ₁₀C₇ 자리에 들어가는 “순서를 고르는 방법 수”예요.';
+      var cells=g.map(function(a){return '<span class="sq">'+a.map(function(v){return v?'<span class="ck">케</span>':'<span class="pl">빈</span>'}).join('')+' <small>'+a.map(function(v){return v?T:F}).join('×')+' = '+one.toFixed(3)+'</small></span>'}).join('<br>');
+      var sum=g.map(function(){return one.toFixed(3)}).join('<br>+ ')+'<br>= <b>'+p3(k,th).toFixed(3)+'</b>'+(g.length>1?'<br><small>(= '+g.length+' × '+one.toFixed(3)+')</small>':'');
+      h+='<tr><td>'+k+'개</td><td style="text-align:left">'+cells+'</td><td>'+sum+'</td></tr>'}
+    h+='<tr><th colspan="2">네 묶음을 모두 더하면</th><th>1.000</th></tr>';$('#wSeq').innerHTML=h;
+    $('#w2').textContent='케이크 개수가 같은 순서들은 곱하는 순서만 다를 뿐 값이 같아요(빈빈케 = 빈케빈 = 케빈빈). 그래서 묶음 합은 “순서 상관없이 그 개수가 나올 확률”이고, 같은 값을 순서 수만큼 더한 것 = 순서 수 × 한 순서의 확률이에요. 이 순서 수(3)가 큰 표 공식의 ₁₀C₇ 자리에 들어가요.';
     var t='<tr><th>상자 \\ 케이크 개수</th><th>0개</th><th>1개</th><th>2개</th><th>3개</th><th>가로줄 합</th></tr>';
     W2.forEach(function(tt,i){t+='<tr><th>'+tt+' 상자</th>';for(var k=0;k<=3;k++)t+='<td class="c" data-r="'+i+'" data-k="'+k+'">'+p3(k,tt).toFixed(3)+'</td>';t+='<td><b>1.000</b></td></tr>'});
     t+='<tr><th>세로줄 합</th>';for(var k2=0;k2<=3;k2++)t+='<td><b>'+(p3(k2,.3)+p3(k2,.7)).toFixed(3)+'</b></td>';t+='<td></td></tr>';$('#wTab').innerHTML=t;
