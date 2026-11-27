@@ -178,7 +178,7 @@
       "robot": "jupanbot-v2",
       "prompt_en": "docs/GENSPARK_01_likelihood_vs_probability.md",
       "source_of": null,
-      "status": "redo"
+      "status": "ok"
     },
     {
       "id": "sc_01_act2",
@@ -192,7 +192,7 @@
       "robot": "jupanbot-v2",
       "prompt_en": "docs/GENSPARK_01_likelihood_vs_probability.md",
       "source_of": null,
-      "status": "redo"
+      "status": "ok"
     }
   ],
   "updated": "2026-11-27"
