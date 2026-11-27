@@ -1,0 +1,1828 @@
+{
+ "version": "1.0",
+ "page": "01b_likelihood_court",
+ "nodes": [
+  {
+   "id": "lab:concept/probability",
+   "type": "Concept",
+   "label": {
+    "ko": "확률",
+    "en": "Probability"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability",
+   "definition": {
+    "ko": "상자(θ)를 고정했을 때 각 결과가 나올 정도. 가능한 모든 결과의 확률을 더하면 1이다."
+   }
+  },
+  {
+   "id": "lab:concept/parameter",
+   "type": "Concept",
+   "label": {
+    "ko": "모수 θ",
+    "en": "Parameter (theta)"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability",
+   "definition": {
+    "ko": "분포의 모양을 정하는 숫자. 여기서는 상자가 케이크를 줄 확률."
+   }
+  },
+  {
+   "id": "lab:concept/independent-trials",
+   "type": "Concept",
+   "label": {
+    "ko": "독립시행",
+    "en": "Independent trials"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability",
+   "definition": {
+    "ko": "한 번의 결과가 다른 번의 결과에 영향을 주지 않는 시행."
+   }
+  },
+  {
+   "id": "lab:distribution/binomial",
+   "type": "Distribution",
+   "label": {
+    "ko": "이항분포",
+    "en": "Binomial distribution"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "distributions",
+   "definition": {
+    "ko": "성공 확률 θ인 독립시행을 n번 했을 때 성공 횟수의 분포."
+   }
+  },
+  {
+   "id": "lab:concept/likelihood",
+   "type": "Concept",
+   "label": {
+    "ko": "가능도(우도)",
+    "en": "Likelihood"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv2",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation",
+   "definition": {
+    "ko": "결과(데이터)를 고정하고 모수 θ를 바꿔 가며 본 값. θ가 데이터를 얼마나 잘 설명하는지 나타내며 합이 1일 필요가 없다."
+   },
+   "altLabel": {
+    "ko": [
+     "우도",
+     "가능도 함수",
+     "L(θ)"
+    ]
+   }
+  },
+  {
+   "id": "lab:limitation/condition-swap",
+   "type": "Limitation",
+   "label": {
+    "ko": "조건 뒤집기 오류",
+    "en": "Transposed conditional"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv3",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability",
+   "definition": {
+    "ko": "P(데이터|θ)를 P(θ|데이터)로 바꿔 읽는 실수."
+   }
+  },
+  {
+   "id": "lab:concept/likelihood-area",
+   "type": "Concept",
+   "label": {
+    "ko": "가능도 곡선 넓이 1/11",
+    "en": "Area under the likelihood curve"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv3",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation",
+   "definition": {
+    "ko": "n=10 이항 가능도 곡선 아래 넓이는 k와 상관없이 1/11로, 1이 아니므로 θ에 대한 확률분포가 아니다."
+   }
+  },
+  {
+   "id": "lab:method/likelihood-ratio",
+   "type": "Method",
+   "label": {
+    "ko": "가능도 비율",
+    "en": "Likelihood ratio"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv4",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation",
+   "definition": {
+    "ko": "두 후보의 가능도를 나눈 값. 한 후보가 다른 후보보다 데이터를 몇 배 더 잘 설명하는지 뜻한다."
+   }
+  },
+  {
+   "id": "lab:method/maximum-likelihood-estimation",
+   "type": "Method",
+   "label": {
+    "ko": "최대가능도 추정",
+    "en": "Maximum likelihood estimation (MLE)"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv4",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation",
+   "definition": {
+    "ko": "가능도를 가장 크게 만드는 θ를 추정값으로 고르는 방법. 이항분포에서는 k/n."
+   },
+   "altLabel": {
+    "ko": [
+     "최대우도 추정",
+     "MLE"
+    ]
+   }
+  },
+  {
+   "id": "lab:concept/prior-distribution",
+   "type": "Concept",
+   "label": {
+    "ko": "사전분포",
+    "en": "Prior distribution"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv5",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "bayes",
+   "definition": {
+    "ko": "데이터를 보기 전에 θ 후보들에 매겨 둔 확률."
+   }
+  },
+  {
+   "id": "lab:concept/posterior-distribution",
+   "type": "Concept",
+   "label": {
+    "ko": "사후분포",
+    "en": "Posterior distribution"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv5",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "bayes",
+   "definition": {
+    "ko": "사전분포 × 가능도를 합이 1이 되게 나눈 결과. 데이터를 본 뒤 θ에 대한 확률."
+   }
+  },
+  {
+   "id": "lab:method/bayes-theorem",
+   "type": "Method",
+   "label": {
+    "ko": "베이즈 정리",
+    "en": "Bayes' theorem"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv5",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "bayes",
+   "definition": {
+    "ko": "P(θ|데이터) = P(데이터|θ)×P(θ) ÷ 전체 합."
+   }
+  },
+  {
+   "id": "lab:concept/normalization",
+   "type": "Concept",
+   "label": {
+    "ko": "정규화",
+    "en": "Normalization"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv5",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "bayes",
+   "definition": {
+    "ko": "값들을 모두 더한 값으로 나눠 합을 1로 맞추는 일."
+   }
+  },
+  {
+   "id": "lab:concept/conditional-probability",
+   "type": "Concept",
+   "label": {
+    "ko": "조건부확률 P(A|B)",
+    "en": "Conditional probability"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#intro",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability",
+   "definition": {
+    "ko": "B라고 정해 두었을 때 A일 확률. 세로 막대는 조건 표시."
+   }
+  },
+  {
+   "id": "lab:limitation/theta-must-be-known",
+   "type": "Limitation",
+   "label": {
+    "ko": "확률 계산은 θ를 알아야 한다",
+    "en": "Probability requires a known parameter"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability"
+  },
+  {
+   "id": "lab:limitation/likelihood-not-probability",
+   "type": "Limitation",
+   "label": {
+    "ko": "가능도는 θ의 확률이 아니다",
+    "en": "Likelihood is not a probability over θ"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv2",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation"
+  },
+  {
+   "id": "lab:limitation/mle-no-probability",
+   "type": "Limitation",
+   "label": {
+    "ko": "최대가능도는 θ의 확률을 말하지 못한다",
+    "en": "MLE gives no probability statement"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv4",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation"
+  },
+  {
+   "id": "lab:limitation/prior-sensitivity",
+   "type": "Limitation",
+   "label": {
+    "ko": "사전분포에 따라 결과가 달라질 수 있다",
+    "en": "Prior sensitivity"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv5",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "bayes"
+  },
+  {
+   "id": "lab:method/normalize-likelihood-column",
+   "type": "Method",
+   "label": {
+    "ko": "세로줄을 1로 나눠 확률로 읽기",
+    "en": "Normalize the likelihood column"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#duel",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "bayes",
+   "definition": {
+    "ko": "가능도를 합으로 나눈 값을 θ의 확률로 읽는 방법. 균등 사전분포를 가정한 것과 같다."
+   }
+  },
+  {
+   "id": "lab:method/require-prior-information",
+   "type": "Method",
+   "label": {
+    "ko": "사전 정보를 먼저 정하기",
+    "en": "Specify the prior first"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#duel",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "bayes",
+   "definition": {
+    "ko": "θ의 확률을 말하기 전에 사전분포를 밝히는 방법."
+   }
+  },
+  {
+   "id": "lab:metric/posterior-probability-0p7",
+   "type": "Metric",
+   "label": {
+    "ko": "0.7 상자의 사후확률",
+    "en": "Posterior probability of θ=0.7"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#duel",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "bayes"
+  },
+  {
+   "id": "lab:claim/column-sum-045",
+   "type": "Claim",
+   "label": {
+    "ko": "결과 7개일 때 θ=0.3·0.5·0.7·0.9의 가능도 합은 약 0.450이다",
+    "en": "Likelihoods of 7 heads over four θ values sum to about 0.450"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#map",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation",
+   "source": [
+    {
+     "ref": "almas2026likelihood",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/likelihood-area-one-eleventh",
+   "type": "Claim",
+   "label": {
+    "ko": "10번 중 7번의 가능도 곡선 넓이는 1/11이다",
+    "en": "The likelihood curve for 7 of 10 has area 1/11"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv3",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation",
+   "source": [
+    {
+     "ref": "almas2026likelihood",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/likelihood-translated-udo",
+   "type": "Claim",
+   "label": {
+    "ko": "통계학계에서는 likelihood를 흔히 우도로 번역한다",
+    "en": "Likelihood is commonly translated as udo in Korean statistics"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#why",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation",
+   "source": [
+    {
+     "ref": "park2016likelihood",
+     "loc": "각주 1"
+    }
+   ]
+  },
+  {
+   "id": "lab:work/almas2026likelihood",
+   "type": "Work",
+   "label": {
+    "ko": "Almas, Likelihood Is Not a Probability (LinkedIn)",
+    "en": "Likelihood Is Not a Probability"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:work/park2016likelihood",
+   "type": "Work",
+   "label": {
+    "ko": "박선용·윤형석 (2016) 수학교육",
+    "en": "A Study on Analysis of Likelihood Principle and its Educational Implications"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:question/is-267-prob-of-box",
+   "type": "Question",
+   "label": {
+    "ko": "7번 받았으면 0.7 상자일 확률은 26.7%일까?",
+    "en": "Is 0.267 the probability of θ=0.7?"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#top",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation"
+  },
+  {
+   "id": "lab:question/normalize-equals-probability",
+   "type": "Question",
+   "label": {
+    "ko": "세로줄을 1로 맞추면 상자의 확률이 될까?",
+    "en": "Does normalizing the likelihood give a probability?"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#duel",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "bayes"
+  },
+  {
+   "id": "lab:analogy/cake-box",
+   "type": "Analogy",
+   "label": {
+    "ko": "케이크 상자",
+    "en": "Cake box"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability"
+  },
+  {
+   "id": "lab:analogy/footprint-suspect",
+   "type": "Analogy",
+   "label": {
+    "ko": "발자국과 용의자",
+    "en": "Footprints and suspects"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv3",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability"
+  },
+  {
+   "id": "lab:analogy/attendance-record",
+   "type": "Analogy",
+   "label": {
+    "ko": "평소 출근 기록과 지각 한 번",
+    "en": "Usual record and one late day"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv5",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "bayes"
+  },
+  {
+   "id": "lab:analogy/audition-score",
+   "type": "Analogy",
+   "label": {
+    "ko": "오디션 점수의 격차",
+    "en": "Audition score gaps"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv4",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation"
+  },
+  {
+   "id": "lab:simulation/p01-heat-table",
+   "type": "Simulation",
+   "label": {
+    "ko": "케이크 표 가로·세로 읽기",
+    "en": "Row/column reading table"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#map",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability"
+  },
+  {
+   "id": "lab:simulation/p01-binomial-presses",
+   "type": "Simulation",
+   "label": {
+    "ko": "상자 정하고 10번 조르기",
+    "en": "Binomial presses"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability"
+  },
+  {
+   "id": "lab:simulation/p01-column-likelihood",
+   "type": "Simulation",
+   "label": {
+    "ko": "결과 고정 상자 심문",
+    "en": "Fixed-outcome likelihood bars"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv2",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation"
+  },
+  {
+   "id": "lab:simulation/p01-likelihood-area",
+   "type": "Simulation",
+   "label": {
+    "ko": "가능도 곡선 넓이 재기",
+    "en": "Likelihood curve area"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv3",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation"
+  },
+  {
+   "id": "lab:simulation/p01-ratio-mle",
+   "type": "Simulation",
+   "label": {
+    "ko": "두 상자 맞대기",
+    "en": "Likelihood ratio and MLE"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv4",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation"
+  },
+  {
+   "id": "lab:simulation/p01-overtime-verdict",
+   "type": "Simulation",
+   "label": {
+    "ko": "야근 판결기",
+    "en": "Prior × likelihood verdict"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv5",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "bayes"
+  },
+  {
+   "id": "lab:concept/markov-matrix",
+   "type": "Concept",
+   "label": {
+    "ko": "마르코프 행렬",
+    "en": "Markov transition matrix"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#sum",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "mentioned",
+   "match": [],
+   "domain": [
+    "stats",
+    "math"
+   ],
+   "family": "probability",
+   "definition": {
+    "ko": "지금 상태를 고정했을 때 다음 상태의 분포를 가로줄로 적은 표. 가로줄 합이 1이다."
+   }
+  },
+  {
+   "id": "lab:concept/negative-log-likelihood",
+   "type": "Concept",
+   "label": {
+    "ko": "음의 로그가능도(교차 엔트로피)",
+    "en": "Negative log-likelihood"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#sum",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "mentioned",
+   "match": [],
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "family": "estimation",
+   "definition": {
+    "ko": "분류 모델 손실. 학습은 가능도 최대화와 같다."
+   }
+  },
+  {
+   "id": "lab:concept/hidden-markov-model",
+   "type": "Concept",
+   "label": {
+    "ko": "은닉 마르코프 모델",
+    "en": "Hidden Markov model"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#sum",
+   "level": 4,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "mentioned",
+   "match": [],
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "family": "timeseries"
+  },
+  {
+   "id": "lab:concept/llm-pretraining-likelihood",
+   "type": "Concept",
+   "label": {
+    "ko": "LLM 사전학습과 가능도",
+    "en": "LLM pretraining as maximum likelihood"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#sum",
+   "level": 4,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "mentioned",
+   "match": [],
+   "domain": [
+    "ai",
+    "llm"
+   ],
+   "family": "estimation"
+  },
+  {
+   "id": "lab:concept/prosecutors-fallacy",
+   "type": "Concept",
+   "label": {
+    "ko": "검사의 오류",
+    "en": "Prosecutor's fallacy"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv3",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability",
+   "definition": {
+    "ko": "P(증거|무죄)를 P(무죄|증거)로 바꿔 읽는 실수."
+   },
+   "altLabel": {
+    "ko": [
+     "prosecutor's fallacy"
+    ]
+   }
+  },
+  {
+   "id": "lab:claim/prosecutors-fallacy-named-1987",
+   "type": "Claim",
+   "label": {
+    "ko": "검사의 오류라는 이름은 Thompson과 Schumann(1987)이 붙였다",
+    "en": "The term prosecutor's fallacy was coined by Thompson and Schumann (1987)"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv3",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability",
+   "source": [
+    {
+     "ref": "thompson1987interpretation",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/forensic-likelihood-ratio-reporting",
+   "type": "Claim",
+   "label": {
+    "ko": "법과학 보고에서 가능도 비율로 결론을 쓰자는 논의가 있다",
+    "en": "Forensic reporting using likelihood ratios is discussed to avoid the fallacy"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv3",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "estimation",
+   "source": [
+    {
+     "ref": "arxiv2025prosecutor",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:work/thompson1987interpretation",
+   "type": "Work",
+   "label": {
+    "ko": "Thompson·Schumann (1987) Law and Human Behavior",
+    "en": "Interpretation of statistical evidence in criminal trials"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:work/arxiv2025prosecutor",
+   "type": "Work",
+   "label": {
+    "ko": "arXiv:2502.03217 (2025)",
+    "en": "The Prosecutor's Fallacy and Expert Testimony: A Modern Take Using Likelihood Ratios"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#export",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:simulation/p01b-testimony",
+   "type": "Simulation",
+   "label": {
+    "ko": "증언 흔들기",
+    "en": "Testimony cross-examination game"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv3",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability"
+  },
+  {
+   "id": "lab:quiz/p01b-q1-1",
+   "type": "QuizItem",
+   "label": {
+    "ko": "가로줄 합은 1",
+    "en": "가로줄 합은 1"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv1",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:quiz/p01b-q1-2",
+   "type": "QuizItem",
+   "label": {
+    "ko": "0.5 상자 7개 확률",
+    "en": "0.5 상자 7개 확률"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv1",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:quiz/p01b-q2-1",
+   "type": "QuizItem",
+   "label": {
+    "ko": "우도와 가능도의 관계",
+    "en": "우도와 가능도의 관계"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv2",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:quiz/p01b-q2-2",
+   "type": "QuizItem",
+   "label": {
+    "ko": "후보 추가 시 세로줄 합",
+    "en": "후보 추가 시 세로줄 합"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv2",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:quiz/p01b-q3-1",
+   "type": "QuizItem",
+   "label": {
+    "ko": "0.267의 바른 해석",
+    "en": "0.267의 바른 해석"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv3",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:quiz/p01b-q3-2",
+   "type": "QuizItem",
+   "label": {
+    "ko": "넓이 1/11 ×11",
+    "en": "넓이 1/11 ×11"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv3",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:quiz/p01b-q4-1",
+   "type": "QuizItem",
+   "label": {
+    "ko": "가능도 비율의 뜻",
+    "en": "가능도 비율의 뜻"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv4",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:quiz/p01b-q4-2",
+   "type": "QuizItem",
+   "label": {
+    "ko": "θ̂ = 14/20",
+    "en": "θ̂ = 14/20"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv4",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:quiz/p01b-q5-1",
+   "type": "QuizItem",
+   "label": {
+    "ko": "사후분포의 합",
+    "en": "사후분포의 합"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv5",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  },
+  {
+   "id": "lab:quiz/p01b-q5-2",
+   "type": "QuizItem",
+   "label": {
+    "ko": "데이터가 많을 때 사전의 영향",
+    "en": "데이터가 많을 때 사전의 영향"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#lv5",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "s": "lab:concept/prosecutors-fallacy",
+   "p": "lab:broader",
+   "o": "lab:topic/conditional-probability",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/condition-swap",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/prosecutors-fallacy",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/prosecutors-fallacy-named-1987",
+   "p": "lab:supports",
+   "o": "lab:concept/prosecutors-fallacy",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/prosecutors-fallacy-named-1987",
+   "p": "lab:assertedIn",
+   "o": "lab:work/thompson1987interpretation",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/forensic-likelihood-ratio-reporting",
+   "p": "lab:supports",
+   "o": "lab:method/likelihood-ratio",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/forensic-likelihood-ratio-reporting",
+   "p": "lab:assertedIn",
+   "o": "lab:work/arxiv2025prosecutor",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/prosecutors-fallacy",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/p01b-testimony",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/prosecutors-fallacy",
+   "p": "lab:addressedBy",
+   "o": "lab:method/likelihood-ratio",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:quiz/p01b-q1-1",
+   "p": "lab:assesses",
+   "o": "lab:concept/probability",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:quiz/p01b-q1-2",
+   "p": "lab:assesses",
+   "o": "lab:distribution/binomial",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:quiz/p01b-q2-1",
+   "p": "lab:assesses",
+   "o": "lab:concept/likelihood",
+   "anchor": "#lv2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:quiz/p01b-q2-2",
+   "p": "lab:assesses",
+   "o": "lab:concept/likelihood",
+   "anchor": "#lv2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:quiz/p01b-q3-1",
+   "p": "lab:assesses",
+   "o": "lab:limitation/condition-swap",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:quiz/p01b-q3-2",
+   "p": "lab:assesses",
+   "o": "lab:concept/likelihood-area",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:quiz/p01b-q4-1",
+   "p": "lab:assesses",
+   "o": "lab:method/likelihood-ratio",
+   "anchor": "#lv4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:quiz/p01b-q4-2",
+   "p": "lab:assesses",
+   "o": "lab:method/maximum-likelihood-estimation",
+   "anchor": "#lv4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:quiz/p01b-q5-1",
+   "p": "lab:assesses",
+   "o": "lab:concept/posterior-distribution",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:quiz/p01b-q5-2",
+   "p": "lab:assesses",
+   "o": "lab:concept/prior-distribution",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/probability",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:concept/likelihood",
+   "anchor": "#lv2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:limitation/condition-swap",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/likelihood-ratio",
+   "anchor": "#lv4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/likelihood-ratio",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/maximum-likelihood-estimation",
+   "anchor": "#lv4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/bayes-theorem",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/prior-distribution",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:concept/posterior-distribution",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/normalization",
+   "p": "lab:partOf",
+   "o": "lab:method/bayes-theorem",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/conditional-probability",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/bayes-theorem",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/independent-trials",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:distribution/binomial",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/parameter",
+   "p": "lab:partOf",
+   "o": "lab:distribution/binomial",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:distribution/binomial",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:concept/probability",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/probability",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/theta-must-be-known",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/theta-must-be-known",
+   "p": "lab:addressedBy",
+   "o": "lab:concept/likelihood",
+   "anchor": "#lv2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/likelihood-not-probability",
+   "anchor": "#lv2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/likelihood-not-probability",
+   "p": "lab:addressedBy",
+   "o": "lab:method/bayes-theorem",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/likelihood-not-probability",
+   "p": "lab:raises",
+   "o": "lab:question/is-267-prob-of-box",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/condition-swap",
+   "p": "lab:addressedBy",
+   "o": "lab:method/bayes-theorem",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood-area",
+   "p": "lab:supports",
+   "o": "lab:limitation/likelihood-not-probability",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/maximum-likelihood-estimation",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/mle-no-probability",
+   "anchor": "#lv4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/mle-no-probability",
+   "p": "lab:addressedBy",
+   "o": "lab:method/bayes-theorem",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/bayes-theorem",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/prior-sensitivity",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/posterior-distribution",
+   "p": "lab:derivedFrom",
+   "o": "lab:concept/likelihood",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/posterior-distribution",
+   "p": "lab:derivedFrom",
+   "o": "lab:concept/prior-distribution",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/bayes-theorem",
+   "p": "lab:solves",
+   "o": "lab:question/is-267-prob-of-box",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/probability",
+   "p": "lab:contrastsWith",
+   "o": "lab:concept/likelihood",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/normalize-likelihood-column",
+   "p": "lab:contrastsWith",
+   "o": "lab:method/require-prior-information",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/normalize-likelihood-column",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/posterior-probability-0p7",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/require-prior-information",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/posterior-probability-0p7",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/normalize-likelihood-column",
+   "p": "lab:assumes",
+   "o": "lab:concept/prior-distribution",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood",
+   "p": "lab:raises",
+   "o": "lab:question/normalize-equals-probability",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/require-prior-information",
+   "p": "lab:broader",
+   "o": "lab:topic/prior-posterior",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/normalize-likelihood-column",
+   "p": "lab:broader",
+   "o": "lab:topic/prior-posterior",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/column-sum-045",
+   "p": "lab:supports",
+   "o": "lab:concept/likelihood",
+   "anchor": "#map",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/column-sum-045",
+   "p": "lab:assertedIn",
+   "o": "lab:work/almas2026likelihood",
+   "anchor": "#map",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/likelihood-area-one-eleventh",
+   "p": "lab:supports",
+   "o": "lab:concept/likelihood-area",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/likelihood-area-one-eleventh",
+   "p": "lab:assertedIn",
+   "o": "lab:work/almas2026likelihood",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/likelihood-translated-udo",
+   "p": "lab:supports",
+   "o": "lab:concept/likelihood",
+   "anchor": "#why",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/likelihood-translated-udo",
+   "p": "lab:assertedIn",
+   "o": "lab:work/park2016likelihood",
+   "anchor": "#why",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/cake-box",
+   "p": "lab:analogyOf",
+   "o": "lab:distribution/binomial",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/footprint-suspect",
+   "p": "lab:analogyOf",
+   "o": "lab:limitation/condition-swap",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/attendance-record",
+   "p": "lab:analogyOf",
+   "o": "lab:method/bayes-theorem",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/audition-score",
+   "p": "lab:analogyOf",
+   "o": "lab:method/likelihood-ratio",
+   "anchor": "#lv4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/p01-heat-table",
+   "anchor": "#map",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:distribution/binomial",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/p01-binomial-presses",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/p01-column-likelihood",
+   "anchor": "#lv2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood-area",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/p01-likelihood-area",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/maximum-likelihood-estimation",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/p01-ratio-mle",
+   "anchor": "#lv4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/posterior-distribution",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/p01-overtime-verdict",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/markov-matrix",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/probability",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/negative-log-likelihood",
+   "p": "lab:derivedFrom",
+   "o": "lab:concept/likelihood",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/hidden-markov-model",
+   "p": "lab:derivedFrom",
+   "o": "lab:concept/markov-matrix",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/hidden-markov-model",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/likelihood",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/llm-pretraining-likelihood",
+   "p": "lab:derivedFrom",
+   "o": "lab:method/maximum-likelihood-estimation",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/probability",
+   "p": "lab:broader",
+   "o": "lab:topic/probability-rules",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/conditional-probability",
+   "p": "lab:broader",
+   "o": "lab:topic/conditional-probability",
+   "anchor": "#intro",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:distribution/binomial",
+   "p": "lab:broader",
+   "o": "lab:topic/discrete-distributions",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/parameter",
+   "p": "lab:broader",
+   "o": "lab:topic/discrete-distributions",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/independent-trials",
+   "p": "lab:broader",
+   "o": "lab:topic/probability-rules",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood",
+   "p": "lab:broader",
+   "o": "lab:topic/maximum-likelihood",
+   "anchor": "#lv2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood-area",
+   "p": "lab:broader",
+   "o": "lab:topic/maximum-likelihood",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/likelihood-ratio",
+   "p": "lab:broader",
+   "o": "lab:topic/maximum-likelihood",
+   "anchor": "#lv4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/maximum-likelihood-estimation",
+   "p": "lab:broader",
+   "o": "lab:topic/maximum-likelihood",
+   "anchor": "#lv4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/mle-no-probability",
+   "p": "lab:broader",
+   "o": "lab:topic/maximum-likelihood",
+   "anchor": "#lv4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/likelihood-not-probability",
+   "p": "lab:broader",
+   "o": "lab:topic/maximum-likelihood",
+   "anchor": "#lv2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/theta-must-be-known",
+   "p": "lab:broader",
+   "o": "lab:topic/discrete-distributions",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/condition-swap",
+   "p": "lab:broader",
+   "o": "lab:topic/conditional-probability",
+   "anchor": "#lv3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/prior-distribution",
+   "p": "lab:broader",
+   "o": "lab:topic/prior-posterior",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/posterior-distribution",
+   "p": "lab:broader",
+   "o": "lab:topic/prior-posterior",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/prior-sensitivity",
+   "p": "lab:broader",
+   "o": "lab:topic/prior-posterior",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/bayes-theorem",
+   "p": "lab:broader",
+   "o": "lab:topic/bayes-theorem",
+   "anchor": "#lv5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/normalization",
+   "p": "lab:broader",
+   "o": "lab:topic/bayes-theorem",
+   "anchor": "#lv5",
+   "confidence": "high"
+  }
+ ]
+}

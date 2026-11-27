@@ -94,3 +94,60 @@ Funny, not scary, no injury. No text, no letters, no numbers.
 - 표지: `LANCZOS` 1600×900 WebP(220 KB 이하) → `assets/img/cover_01.webp`, 공유 미리보기 `og_01.jpg`(1200×630), 썸네일 `thumb_01.webp`(600×400)
 - 장면: 1200×800 WebP(180 KB 이하) → 해당 단계 위에 배치
 - `python3 build/build.py` → `sh build/kg.sh` → `cover_manifest.json`의 `status`를 `ok`로
+
+---
+
+# 법정판 (`court.html`) 그림
+
+**주의:** 특정 법정 게임·작품의 캐릭터, 말풍선 디자인, 손가락 포즈 구도, 로고를 닮지 않게 합니다. 우리 연구실 식구가 연구실 안에 꾸민 장난스러운 모의 법정입니다.
+
+## 저장 이름 체크리스트
+
+- [ ] `cover_01b.png` — 16:9, 1920×1080 이상
+- [ ] `sc_01b_trial.png` — 3:2, 1536×1024 (선택) · 증언 흔들기 장면
+- [ ] `sc_01b_act2.png` — 3:2, 1536×1024 (선택) · 2막 피고석의 초파리
+
+## 6. 법정판 표지 — `cover_01b` (16:9)
+
+| 항목 | 내용 |
+|---|---|
+| 장소 | 연구실 회의실을 책상·상자로 꾸민 모의 법정 (낮, 큰 창) |
+| 주제 은유 | 높은 책상 뒤 판사석, 양쪽 마주 보는 두 책상, 가운데 증거 탁자 위 케이크 상자 넷과 글자 없는 색 격자 판 |
+| 포즈 | 박사: 가운데 높은 책상 뒤 판사석, 나무 망치를 들고 생각하는 얼굴 / 초파리: 왼쪽 책상(검사석)에서 오른쪽을 보며 서류를 흔듦 / 하루: 오른쪽 책상(변호인석)에서 왼쪽을 보며 격자 판을 들어 올림 / 주판봇: 하루 옆 감정인석, 주판을 튕김 / 시아·모아: 뒤쪽 방청석, 빈 접시를 든 채 |
+| 대체 글 (alt) | 연구실 모의 법정에서 판사 박사와 검사 초파리, 변호인 하루가 케이크 상자 증거를 두고 마주 선 픽셀아트 표지 |
+| 결과 암시 | 없음 |
+
+**Genspark에 붙여 넣기 ↓**
+```
+웹페이지 맨 위에 거는 표지 그림 1장을 만들어 줘.
+- 비율 16:9, 가로 1920px 이상
+- 그림체는 반드시 16비트 RPG풍 픽셀아트 (가로 1600 이상에서 그린 작고 촘촘한 픽셀로 세밀하게 — 작은 그림을 확대한 큰 네모 블록 금지, 매끈한 일러스트·벡터·수채화·3D 금지)
+- 첨부한 참고 이미지의 캐릭터(박사, 조수 하루, 초파리 연구원, 주판봇, 인턴 시아, 인턴 모아)를 같은 외형으로 등장
+- 특정 게임·만화의 법정 장면이나 캐릭터를 닮지 않게, 그림 안에 글자·숫자·로고 금지
+아래 영어 프롬프트를 그대로 써 줘.
+
+Website top cover illustration, wide 16:9.
+Art style (required, always): 16-bit RPG style pixel art rendered natively at high resolution with small, dense pixels (NOT a small image blown up into big square blocks), rich detail in faces, hair, hands, clothes and props, bold dark outline, 2–3 tone shading, small highlights; no smooth gradients, no painterly, vector, watercolor or 3D look.
+Match the characters' proportions and colors of the attached reference images exactly, drawn in this same pixel-art style.
+Scene: a playful mock courtroom built inside a bright daytime research lab meeting room, big windows, white walls, desks and stacked boxes arranged as a judge's bench, two facing tables and a small public gallery; lavender, mint and pink props. Original design, not resembling any existing game or anime courtroom.
+Characters:
+  chibi scientist (thin teal rectangular glasses, spiky black hair with one white streak, small ponytail, white lab coat over black vest and tie) sitting behind the high bench at the back center as the judge, holding a small wooden gavel, thoughtful face;
+  anthropomorphic fruit fly researcher (black body, big red compound eyes, blue helmet with a gold stripe and pink and blue cables, white lab coat over a black vest, black gloves, transparent wings) at the left table, facing right, confidently waving a sheet of paper;
+  girl researcher (long pink hair with two round buns and a navy streak, blue eyes, white lab coat over lavender hoodie, jeans) at the right table, facing left, holding up a blank colored grid board (blue squares, one glowing row, one glowing column, no numbers);
+  boxy beige retro CRT-monitor robot (dark green screen face with mint pixel eyes, abacus-bead antenna, gray segmented arms, tank treads) beside her, facing left, flicking beads on a wooden abacus;
+  two maid interns (one with long straight jet-black hair and charcoal maid dress, one with long ash-beige wavy hair, white frilled headband and camel cardigan) sitting in the gallery at the back, holding empty plates.
+Visual metaphor: a small evidence table in the center with four closed cake boxes of different lid colors (red, blue, green, purple).
+Composition: faces and hands inside the central safe area (12% margin left and right, 10% top, 18% bottom); bottom-left corner plain and bright; light falls on the evidence table.
+Mood: playful, curious, the moment before the contradiction is revealed.
+No text, no letters, no numbers, no logos, no speech bubbles, no weapons, no real brands.
+```
+
+## 7. 장면 — `sc_01b_trial` (3:2, 선택)
+```
+3:2 scene, 1536x1024, same 16-bit high-resolution pixel-art style and characters as the attached cover. The pink-haired girl researcher at the right table, facing left, thrusts a blank grid board forward with determination; small shape-only impact lines around the board (no text, no speech bubble). The fruit fly researcher at the left table, facing right, recoils in surprise, sweat drops, papers flying. The chibi judge at the back raises his eyebrows. Bright daytime lab mock courtroom. No text, no letters, no numbers.
+```
+
+## 8. 장면 — `sc_01b_act2` (3:2, 선택)
+```
+3:2 scene, 1536x1024, same 16-bit high-resolution pixel-art style and characters as the attached cover. Roles reversed: the fruit fly researcher now sits small at a defendant's stool in the middle, clutching a tall pile of work papers. Three cute solid dark navy-black silhouettes with a thin purple rim light and round white dot eyes stand as witnesses: one with a pink ribbon holding an old record book, one with teal glasses reflection holding a magnifier, one with a small yellow bell. The chibi judge brings down the gavel with harmless purple sparks. The ash-beige maid intern quietly brings tea and a slice of cake to the fly. Funny, not scary. No text, no letters, no numbers.
+```

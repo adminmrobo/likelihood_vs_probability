@@ -9,12 +9,20 @@
         "path": "index.html",
         "kg": true,
         "export": true
+      },
+      {
+        "path": "court.html",
+        "kg": true,
+        "export": true
       }
     ],
     "files": [
       "kg/kg.json",
       "kg/refs.json",
-      "kg/meta.json"
+      "kg/meta.json",
+      "kg/court/kg.json",
+      "kg/court/refs.json",
+      "kg/court/meta.json"
     ]
   },
   "i18n": {
@@ -22,7 +30,7 @@
       "ko"
     ],
     "pages": {
-      "ko": 1
+      "ko": 2
     },
     "readme_langs": [
       "ko"
@@ -72,6 +80,27 @@
       "robot": "jupanbot-v2",
       "prompt_en": null,
       "source_of": "cover_01",
+      "status": "pending"
+    },
+    {
+      "id": "cover_01b",
+      "role": "cover",
+      "path": "assets/img/cover_01b.webp",
+      "size": [
+        1600,
+        900
+      ],
+      "characters": [
+        "doc",
+        "asst",
+        "fly",
+        "jupanbot",
+        "sia",
+        "moa"
+      ],
+      "robot": "jupanbot-v2",
+      "prompt_en": "see docs/GENSPARK_01_likelihood_vs_probability.md §6",
+      "source_of": null,
       "status": "pending"
     }
   ],

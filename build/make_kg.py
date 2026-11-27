@@ -2,7 +2,11 @@
 """지식 색인·꾸러미용 kg.json / refs.json / meta.json 생성"""
 import json,os
 R=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PG='01_likelihood_vs_probability'
+import sys
+COURT='court' in sys.argv
+PG='01b_likelihood_court' if COURT else '01_likelihood_vs_probability'
+OUT=os.path.join(R,'kg','court') if COURT else os.path.join(R,'kg')
+os.makedirs(OUT,exist_ok=True)
 N=[];E=[]
 def node(id,type,ko,en,anchor,level=2,family=None,defn=None,cov='explained',conf='high',dom=('stats',),alt=None,src=None):
     n={"id":id,"type":type,"label":{"ko":ko,"en":en},"page":PG,"anchor":anchor,"level":level,"status":"known","confidence":conf,"coverage":cov,"match":[],"domain":list(dom)}
@@ -64,12 +68,21 @@ M1=node(c('markov-matrix'),'Concept','마르코프 행렬','Markov transition ma
 M2=node(c('negative-log-likelihood'),'Concept','음의 로그가능도(교차 엔트로피)','Negative log-likelihood','#sum',3,'estimation','분류 모델 손실. 학습은 가능도 최대화와 같다.',cov='mentioned',dom=('stats','ai'))
 M3=node(c('hidden-markov-model'),'Concept','은닉 마르코프 모델','Hidden Markov model','#sum',4,'timeseries',cov='mentioned',dom=('stats','ai'))
 M4=node(c('llm-pretraining-likelihood'),'Concept','LLM 사전학습과 가능도','LLM pretraining as maximum likelihood','#sum',4,'estimation',cov='mentioned',dom=('ai','llm'))
+# 법정판 추가
+if COURT:
+    PF=node(c('prosecutors-fallacy'),'Concept','검사의 오류','Prosecutor\'s fallacy','#lv3',2,'probability','P(증거|무죄)를 P(무죄|증거)로 바꿔 읽는 실수.',alt=['prosecutor\'s fallacy'])
+    C4=node('lab:claim/prosecutors-fallacy-named-1987','Claim','검사의 오류라는 이름은 Thompson과 Schumann(1987)이 붙였다','The term prosecutor\'s fallacy was coined by Thompson and Schumann (1987)','#lv3',2,'probability',src=[{"ref":"thompson1987interpretation","loc":""}])
+    C5=node('lab:claim/forensic-likelihood-ratio-reporting','Claim','법과학 보고에서 가능도 비율로 결론을 쓰자는 논의가 있다','Forensic reporting using likelihood ratios is discussed to avoid the fallacy','#lv3',3,'estimation',src=[{"ref":"arxiv2025prosecutor","loc":""}])
+    W3=node('lab:work/thompson1987interpretation','Work','Thompson·Schumann (1987) Law and Human Behavior','Interpretation of statistical evidence in criminal trials','#export',2)
+    W4=node('lab:work/arxiv2025prosecutor','Work','arXiv:2502.03217 (2025)','The Prosecutor\'s Fallacy and Expert Testimony: A Modern Take Using Likelihood Ratios','#export',3)
+    TG=node('lab:simulation/p01b-testimony','Simulation','증언 흔들기','Testimony cross-examination game','#lv3',2,'probability')
+    edge(PF,'broader',t('conditional-probability'),'#lv3');edge(SWAP,'relatedTo',PF,'#lv3');edge(C4,'supports',PF,'#lv3');edge(C4,'assertedIn',W3,'#lv3');edge(C5,'supports',LR,'#lv3');edge(C5,'assertedIn',W4,'#lv3');edge(PF,'demonstratedBy',TG,'#lv3');edge(PF,'addressedBy',LR,'#lv3')
 # 퀴즈
 QZ={'q1':['#lv1',[P,BIN]],'q2':['#lv2',[LIK,LIK]],'q3':['#lv3',[SWAP,AREA]],'q4':['#lv4',[LR,MLE]],'q5':['#lv5',[POS,PRI]]}
 qlab={'q1':['가로줄 합은 1','0.5 상자 7개 확률'],'q2':['우도와 가능도의 관계','후보 추가 시 세로줄 합'],'q3':['0.267의 바른 해석','넓이 1/11 ×11'],'q4':['가능도 비율의 뜻','θ̂ = 14/20'],'q5':['사후분포의 합','데이터가 많을 때 사전의 영향']}
 for q,(a,tg) in QZ.items():
     for i in range(2):
-        qi=node(f'lab:quiz/p01-{q}-{i+1}','QuizItem',qlab[q][i],qlab[q][i],a,2); edge(qi,'assesses',tg[i],a)
+        qi=node(f'lab:quiz/{"p01b" if COURT else "p01"}-{q}-{i+1}','QuizItem',qlab[q][i],qlab[q][i],a,2); edge(qi,'assesses',tg[i],a)
 # 관계
 edge(P,'prerequisiteOf',LIK,'#lv2');edge(LIK,'prerequisiteOf',SWAP,'#lv3');edge(LIK,'prerequisiteOf',LR,'#lv4');edge(LR,'prerequisiteOf',MLE,'#lv4');edge(LIK,'prerequisiteOf',BAY,'#lv5')
 edge(PRI,'prerequisiteOf',POS,'#lv5');edge(NORM,'partOf',BAY,'#lv5');edge(COND,'prerequisiteOf',BAY,'#lv5');edge(IND,'prerequisiteOf',BIN,'#lv1');edge(TH,'partOf',BIN,'#lv1');edge(BIN,'prerequisiteOf',P,'#lv1')
@@ -88,14 +101,22 @@ edge(M1,'relatedTo',P,'#sum');edge(M2,'derivedFrom',LIK,'#sum');edge(M3,'derived
 for a,b in [(P,'probability-rules'),(COND,'conditional-probability'),(BIN,'discrete-distributions'),(TH,'discrete-distributions'),(IND,'probability-rules'),(LIK,'maximum-likelihood'),(AREA,'maximum-likelihood'),(LR,'maximum-likelihood'),(MLE,'maximum-likelihood'),(L4,'maximum-likelihood'),(L2,'maximum-likelihood'),(L1,'discrete-distributions'),(SWAP,'conditional-probability'),(PRI,'prior-posterior'),(POS,'prior-posterior'),(L5,'prior-posterior'),(BAY,'bayes-theorem'),(NORM,'bayes-theorem')]:
     edge(a,'broader',t(b),N[[n['id'] for n in N].index(a)]['anchor'])
 kg={"version":"1.0","page":PG,"nodes":N,"edges":E}
-json.dump(kg,open(os.path.join(R,'kg/kg.json'),'w'),ensure_ascii=False,indent=1)
+json.dump(kg,open(os.path.join(OUT,'kg.json'),'w'),ensure_ascii=False,indent=1)
 refs=[{"id":"almas2026likelihood","type":"webpage","title":"Likelihood Is Not a Probability","author":[{"family":"Almas","given":"Muhammad"}],"container-title":"LinkedIn","URL":"https://www.linkedin.com/pulse/likelihood-probability-muhammad-almas-es7bf/","accessed":{"date-parts":[[2026,11,27]]},
  "lab":{"work":W1,"role":"primary","supports":[C1,C2],"locs":[],"verified":{"title":True,"author":True,"year":False,"container":True,"pages":False,"doi":False},"checkedBy":"사용자가 준 글과 그림에서 옮김, 숫자는 이 페이지에서 다시 계산 (2026-11-27)","checkedSource":"user"}},
  {"id":"park2016likelihood","type":"article-journal","title":"우도원리에 대한 분석과 그에 따른 교육적 시사점에 대한 연구","author":[{"literal":"박선용"},{"literal":"윤형석"}],"issued":{"date-parts":[[2016]]},"container-title":"수학교육 (The Mathematical Education)","volume":"55","issue":"2","page":"193-208","DOI":"10.7468/mathedu.2016.55.2.193",
  "lab":{"work":W2,"role":"background","supports":[C3],"locs":[{"claim":C3,"loc":"각주 1"}],"verified":{"title":True,"author":True,"year":True,"container":True,"pages":True,"doi":True},"checkedBy":"웹 검색(koreascience.kr) 2026-11-27","checkedSource":"web"}}]
-json.dump(refs,open(os.path.join(R,'kg/refs.json'),'w'),ensure_ascii=False,indent=1)
+if COURT:
+    refs+=[{"id":"thompson1987interpretation","type":"article-journal","title":"Interpretation of statistical evidence in criminal trials: The prosecutor's fallacy and the defense attorney's fallacy","author":[{"family":"Thompson","given":"William C."},{"family":"Schumann","given":"Edward L."}],"issued":{"date-parts":[[1987]]},"container-title":"Law and Human Behavior","volume":"11","issue":"3","page":"167-187",
+      "lab":{"work":"lab:work/thompson1987interpretation","role":"background","supports":["lab:claim/prosecutors-fallacy-named-1987"],"locs":[],"verified":{"title":True,"author":True,"year":True,"container":True,"pages":True,"doi":False},"checkedBy":"웹 검색 2026-11-27","checkedSource":"web"}},
+     {"id":"arxiv2025prosecutor","type":"article-journal","title":"The Prosecutor's Fallacy and Expert Testimony: A Modern Take Using Likelihood Ratios","author":[{"literal":"(저자 확인 필요)"}],"issued":{"date-parts":[[2025]]},"container-title":"arXiv","URL":"https://arxiv.org/abs/2502.03217",
+      "lab":{"work":"lab:work/arxiv2025prosecutor","role":"background","supports":["lab:claim/forensic-likelihood-ratio-reporting"],"locs":[],"verified":{"title":True,"author":False,"year":True,"container":True,"pages":False,"doi":False},"checkedBy":"웹 검색 2026-11-27","checkedSource":"web"}}]
+json.dump(refs,open(os.path.join(OUT,'refs.json'),'w'),ensure_ascii=False,indent=1)
 meta={"title":"초파리의 케이크 상자 — 확률과 가능도는 왜 다를까","number":"01","series":"고급통계 연구실 · 확률 vs 가능도","about":[P,LIK,MLE,BAY,POS],"basedOn":["almas2026likelihood"],"educationalLevel":"입문",
  "creator":[{"name":"안상선","role":"author"}],"contributor":[{"name":"AI 보조 제작","role":"assistant"}],"date":"2026-11-27","version":"1.0","language":["ko"],"license":"","url":"https://adminmrobo.github.io/likelihood_vs_probability/","registry":"KG_00_registry 0.2","learningResourceType":"interactive explainer","seeAlso":"",
  "suggestedCitation":"안상선 (2026). 초파리의 케이크 상자 — 확률과 가능도는 왜 다를까. 고급통계 연구실 · 확률 vs 가능도 01, v1.0."}
-json.dump(meta,open(os.path.join(R,'kg/meta.json'),'w'),ensure_ascii=False,indent=1)
+if COURT:
+    meta.update({"title":"케이크 상자 재판 — 그 확률, 모순입니다!","number":"01b","series":"고급통계 연구실 · 확률 vs 가능도 (법정편)","url":"https://adminmrobo.github.io/likelihood_vs_probability/court.html","basedOn":["almas2026likelihood","thompson1987interpretation"],
+      "suggestedCitation":"안상선 (2026). 케이크 상자 재판 — 그 확률, 모순입니다!. 고급통계 연구실 · 확률 vs 가능도 (법정편) 01b, v1.0."})
+json.dump(meta,open(os.path.join(OUT,'meta.json'),'w'),ensure_ascii=False,indent=1)
 print(len(N),'nodes',len(E),'edges')

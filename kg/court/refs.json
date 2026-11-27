@@ -1,0 +1,172 @@
+[
+ {
+  "id": "almas2026likelihood",
+  "type": "webpage",
+  "title": "Likelihood Is Not a Probability",
+  "author": [
+   {
+    "family": "Almas",
+    "given": "Muhammad"
+   }
+  ],
+  "container-title": "LinkedIn",
+  "URL": "https://www.linkedin.com/pulse/likelihood-probability-muhammad-almas-es7bf/",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     27
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/almas2026likelihood",
+   "role": "primary",
+   "supports": [
+    "lab:claim/column-sum-045",
+    "lab:claim/likelihood-area-one-eleventh"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": false,
+    "container": true,
+    "pages": false,
+    "doi": false
+   },
+   "checkedBy": "사용자가 준 글과 그림에서 옮김, 숫자는 이 페이지에서 다시 계산 (2026-11-27)",
+   "checkedSource": "user"
+  }
+ },
+ {
+  "id": "park2016likelihood",
+  "type": "article-journal",
+  "title": "우도원리에 대한 분석과 그에 따른 교육적 시사점에 대한 연구",
+  "author": [
+   {
+    "literal": "박선용"
+   },
+   {
+    "literal": "윤형석"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2016
+    ]
+   ]
+  },
+  "container-title": "수학교육 (The Mathematical Education)",
+  "volume": "55",
+  "issue": "2",
+  "page": "193-208",
+  "DOI": "10.7468/mathedu.2016.55.2.193",
+  "lab": {
+   "work": "lab:work/park2016likelihood",
+   "role": "background",
+   "supports": [
+    "lab:claim/likelihood-translated-udo"
+   ],
+   "locs": [
+    {
+     "claim": "lab:claim/likelihood-translated-udo",
+     "loc": "각주 1"
+    }
+   ],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "pages": true,
+    "doi": true
+   },
+   "checkedBy": "웹 검색(koreascience.kr) 2026-11-27",
+   "checkedSource": "web"
+  }
+ },
+ {
+  "id": "thompson1987interpretation",
+  "type": "article-journal",
+  "title": "Interpretation of statistical evidence in criminal trials: The prosecutor's fallacy and the defense attorney's fallacy",
+  "author": [
+   {
+    "family": "Thompson",
+    "given": "William C."
+   },
+   {
+    "family": "Schumann",
+    "given": "Edward L."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1987
+    ]
+   ]
+  },
+  "container-title": "Law and Human Behavior",
+  "volume": "11",
+  "issue": "3",
+  "page": "167-187",
+  "lab": {
+   "work": "lab:work/thompson1987interpretation",
+   "role": "background",
+   "supports": [
+    "lab:claim/prosecutors-fallacy-named-1987"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "pages": true,
+    "doi": false
+   },
+   "checkedBy": "웹 검색 2026-11-27",
+   "checkedSource": "web"
+  }
+ },
+ {
+  "id": "arxiv2025prosecutor",
+  "type": "article-journal",
+  "title": "The Prosecutor's Fallacy and Expert Testimony: A Modern Take Using Likelihood Ratios",
+  "author": [
+   {
+    "literal": "(저자 확인 필요)"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "container-title": "arXiv",
+  "URL": "https://arxiv.org/abs/2502.03217",
+  "lab": {
+   "work": "lab:work/arxiv2025prosecutor",
+   "role": "background",
+   "supports": [
+    "lab:claim/forensic-likelihood-ratio-reporting"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": false,
+    "year": true,
+    "container": true,
+    "pages": false,
+    "doi": false
+   },
+   "checkedBy": "웹 검색 2026-11-27",
+   "checkedSource": "web"
+  }
+ }
+]

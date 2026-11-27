@@ -1,0 +1,40 @@
+{
+ "title": "케이크 상자 재판 — 그 확률, 모순입니다!",
+ "number": "01b",
+ "series": "고급통계 연구실 · 확률 vs 가능도 (법정편)",
+ "about": [
+  "lab:concept/probability",
+  "lab:concept/likelihood",
+  "lab:method/maximum-likelihood-estimation",
+  "lab:method/bayes-theorem",
+  "lab:concept/posterior-distribution"
+ ],
+ "basedOn": [
+  "almas2026likelihood",
+  "thompson1987interpretation"
+ ],
+ "educationalLevel": "입문",
+ "creator": [
+  {
+   "name": "안상선",
+   "role": "author"
+  }
+ ],
+ "contributor": [
+  {
+   "name": "AI 보조 제작",
+   "role": "assistant"
+  }
+ ],
+ "date": "2026-11-27",
+ "version": "1.0",
+ "language": [
+  "ko"
+ ],
+ "license": "",
+ "url": "https://adminmrobo.github.io/likelihood_vs_probability/court.html",
+ "registry": "KG_00_registry 0.2",
+ "learningResourceType": "interactive explainer",
+ "seeAlso": "",
+ "suggestedCitation": "안상선 (2026). 케이크 상자 재판 — 그 확률, 모순입니다!. 고급통계 연구실 · 확률 vs 가능도 (법정편) 01b, v1.0."
+}
