@@ -238,8 +238,8 @@ details.abbr{margin-top:10px;font-size:15px}
 <div id="prog"></div>
 <nav class="top" aria-label="페이지 목차">
   <a class="logo" href="#top">고급통계 연구실 · 법정편</a>
-  <a href="#intro">사건 개요</a><a href="#cast">법정 배치</a><a href="#warm">증거물 0</a><a href="#map">증거물 1</a>
-  <a href="#lv1">제1 증거</a><a href="#lv2">제2 증거</a><a href="#lv3">증언 흔들기</a><a href="#lv4">변호 반론</a>
+  <a href="#intro">사건 개요</a><a href="#cast">법정 배치</a><a href="#warm">증거물 0</a>
+  <a href="#lv1">제1 증거</a><a href="#lv2">제2 증거</a><a href="#map">증거물 1</a><a href="#lv3">증언 흔들기</a><a href="#lv4">변호 반론</a>
   <a href="#duel">쟁점</a><a href="#lv5">2막 뒤집힌 법정</a><a href="#sum">정리</a><a href="#outro">폐정</a><a href="index.html">기본판 보기</a>
 </nav>
 
@@ -354,25 +354,7 @@ details.abbr{margin-top:10px;font-size:15px}
     <div class="tw"><table class="tb" id="wTab" aria-label="상자 두 개, 세 번 누를 때의 작은 표"></table></div>
     <div class="insight" aria-live="polite"><p class="g" id="w3"></p></div>
   </div>
-  <div class="mini"><img data-who="asst" data-mood="spark" alt="" aria-hidden="true"><p><b>조수 하루 <span class="seat">변호인</span>:</b> 가로줄은 상자를 정해 두고 결과를 훑으니 합이 1, 세로줄은 결과를 정해 두고 상자를 훑으니 합이 아무 값이에요. 아래 증거물 1는 이 작은 표를 상자 네 개, 10번으로 키운 것뿐이에요.</p></div>
-</div></section>
-
-<section id="map"><div class="wrap">
-  <h2>증거물 1 — 케이크 표: 표는 하나, 읽는 방향은 둘</h2>
-  <p>방금 본 작은 표(상자 2개 × 3번)를 그대로 키웠어요. 상자는 네 개(θ = 0.3, 0.5, 0.7, 0.9), 누르는 횟수는 10번, 케이크 개수는 0~10개입니다. 읽는 법은 똑같아요. 가로줄은 합이 1, 세로줄은 아무 값. 시아·모아가 실제로 받은 것은 <b>7개</b>이니 7개 세로줄을 눌러 보세요.</p>
-  <div class="panel">
-    <h4>케이크 표 — 가로줄과 세로줄</h4>
-    <div class="ctrl"><div class="group" role="group" aria-label="읽는 방향">
-      <button class="bt" id="mapRow" aria-pressed="true">가로로 읽기 (확률)</button>
-      <button class="bt" id="mapCol" aria-pressed="false">세로로 읽기 (가능도)</button>
-    </div></div>
-    <div class="tw"><table class="tb" id="heat" aria-label="상자별 케이크 횟수 확률 표"></table></div>
-    <div class="insight" aria-live="polite"><p class="g" id="mapNote"></p></div>
-    <p class="note">예시값 · 이항분포로 계산 · 소수 셋째 자리 반올림이라 표의 값을 손으로 더하면 0.001 차이가 날 수 있어요.</p>
-  </div>
-  <div class="tags" style="margin-top:10px">
-    <span class="tag">제1 증거: 가로줄 = 확률</span><span class="tag">→ 제2 증거: 세로줄 = 가능도</span><span class="tag">→ 증언 흔들기: 모순 지적</span><span class="tag">→ 변호 반론: 가능도로 비교</span><span class="tag">→ 2막: 사전 × 가능도 = 사후</span>
-  </div>
+  <div class="mini"><img data-who="asst" data-mood="spark" alt="" aria-hidden="true"><p><b>조수 하루 <span class="seat">변호인</span>:</b> 가로줄은 상자를 정해 두고 결과를 훑으니 합이 1, 세로줄은 결과를 정해 두고 상자를 훑으니 합이 아무 값이에요. 이제 ①에서 상자 하나를 10번 누르는 가로줄을, ②에서 세로줄을 차례로 키워 볼게요.</p></div>
 </div></section>
 
 <!-- ① -->
@@ -400,7 +382,7 @@ details.abbr{margin-top:10px;font-size:15px}
         <tr><td>| θ</td><td>상자를 정해 둔 상태(조건). 여기서는 θ가 고정, k가 움직입니다</td></tr>
       </table>
       <p><b>숫자로 한 번 해 보기:</b> 0.7<sup>7</sup> ≈ 0.0824, 0.3<sup>3</sup> = 0.027이니 120 × 0.0824 × 0.027 ≈ <b>0.267</b>.</p>
-      <div class="mini"><img data-who="asst" data-mood="spark" alt="" aria-hidden="true"><p>막대는 나누기가 아니라 ‘~라고 정해 두면’이었네요. 표의 0.267이 이렇게 나온 거였어요!</p></div>
+      <div class="mini"><img data-who="asst" data-mood="spark" alt="" aria-hidden="true"><p>막대는 나누기가 아니라 ‘~라고 정해 두면’이었네요. 초파리가 말한 0.267이 이렇게 나온 거였어요!</p></div>
     </div>
   </div>
   <div class="pair">
@@ -518,6 +500,24 @@ sum(binom.pmf(k, 10, 0.7) for k in range(11))  # 1.0 → 가로줄 합</pre>
 sum(L)   # 0.4504 → 세로줄 합, 1이 아님</pre>
   <p>결과 7은 고정하고, 상자 넷을 바꿔 가며 같은 공식을 부른 것뿐이에요.</p></details>
   <div class="quiz" data-quiz="q2"></div>
+</div></section>
+
+<section id="map"><div class="wrap">
+  <h2>증거물 1 — 제1·제2 증거를 한 표에</h2>
+  <p>①에서 본 가로줄(상자 하나의 확률)과 ②에서 본 세로줄(결과 7개의 가능도)을 한 표에 모았어요. 준비 단계의 작은 표를 상자 네 개, 10번으로 키운 것입니다. 읽는 법은 똑같아요. 가로줄은 합이 1, 세로줄은 아무 값. 7개 세로줄을 눌러 ②의 0.450이 여기서 나온 것인지 확인해 보세요.</p>
+  <div class="panel">
+    <h4>케이크 표 — 가로줄과 세로줄</h4>
+    <div class="ctrl"><div class="group" role="group" aria-label="읽는 방향">
+      <button class="bt" id="mapRow" aria-pressed="true">가로로 읽기 (확률)</button>
+      <button class="bt" id="mapCol" aria-pressed="false">세로로 읽기 (가능도)</button>
+    </div></div>
+    <div class="tw"><table class="tb" id="heat" aria-label="상자별 케이크 횟수 확률 표"></table></div>
+    <div class="insight" aria-live="polite"><p class="g" id="mapNote"></p></div>
+    <p class="note">예시값 · 이항분포로 계산 · 소수 셋째 자리 반올림이라 표의 값을 손으로 더하면 0.001 차이가 날 수 있어요.</p>
+  </div>
+  <div class="tags" style="margin-top:10px">
+    <span class="tag">제1 증거: 가로줄 = 확률</span><span class="tag">→ 제2 증거: 세로줄 = 가능도</span><span class="tag">→ 증언 흔들기: 모순 지적</span><span class="tag">→ 변호 반론: 가능도로 비교</span><span class="tag">→ 2막: 사전 × 가능도 = 사후</span>
+  </div>
 </div></section>
 
 <!-- ③ -->
