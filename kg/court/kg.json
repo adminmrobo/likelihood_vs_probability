@@ -802,6 +802,25 @@
    "family": "bayes"
   },
   {
+   "id": "lab:simulation/p01-warmup",
+   "type": "Simulation",
+   "label": {
+    "ko": "상자 하나 세 번 누르기와 작은 표",
+    "en": "Three presses and a 2×4 table"
+   },
+   "page": "01b_likelihood_court",
+   "anchor": "#warm",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "match": [],
+   "domain": [
+    "stats"
+   ],
+   "family": "probability"
+  },
+  {
    "id": "lab:concept/markov-matrix",
    "type": "Concept",
    "label": {
@@ -1201,6 +1220,27 @@
   }
  ],
  "edges": [
+  {
+   "s": "lab:concept/probability",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/p01-warmup",
+   "anchor": "#warm",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/likelihood",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/p01-warmup",
+   "anchor": "#warm",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/independent-trials",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/p01-warmup",
+   "anchor": "#warm",
+   "confidence": "high"
+  },
   {
    "s": "lab:concept/prosecutors-fallacy",
    "p": "lab:broader",

@@ -63,6 +63,8 @@ S=[node('lab:simulation/p01-heat-table','Simulation','케이크 표 가로·세�
    node('lab:simulation/p01-likelihood-area','Simulation','가능도 곡선 넓이 재기','Likelihood curve area','#lv3',2,'estimation'),
    node('lab:simulation/p01-ratio-mle','Simulation','두 상자 맞대기','Likelihood ratio and MLE','#lv4',2,'estimation'),
    node('lab:simulation/p01-overtime-verdict','Simulation','야근 판결기','Prior × likelihood verdict','#lv5',3,'bayes')]
+WU=node('lab:simulation/p01-warmup','Simulation','상자 하나 세 번 누르기와 작은 표','Three presses and a 2×4 table','#warm',1,'probability')
+edge(P,'demonstratedBy',WU,'#warm');edge(LIK,'demonstratedBy',WU,'#warm');edge(IND,'demonstratedBy',WU,'#warm')
 # 더 알아보기
 M1=node(c('markov-matrix'),'Concept','마르코프 행렬','Markov transition matrix','#sum',3,'probability','지금 상태를 고정했을 때 다음 상태의 분포를 가로줄로 적은 표. 가로줄 합이 1이다.',cov='mentioned',dom=('stats','math'))
 M2=node(c('negative-log-likelihood'),'Concept','음의 로그가능도(교차 엔트로피)','Negative log-likelihood','#sum',3,'estimation','분류 모델 손실. 학습은 가능도 최대화와 같다.',cov='mentioned',dom=('stats','ai'))
